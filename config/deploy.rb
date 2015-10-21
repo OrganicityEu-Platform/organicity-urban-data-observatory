@@ -2,13 +2,13 @@
 lock '3.4.0'
 
 
-set :application, 'smartcitizen-web'
+set :application, 'oc-observatory-web'
 set :repo_url, 'git@github.com:fablabbcn/smartcitizen-web.git'
 
 # Default branch is :master
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
-set :deploy_to, '/home/deployer/apps/smartcitizen-web'
+set :deploy_to, '/home/deployer/apps/oc-observatory-web'
 set :linked_dirs, %w{node_modules app/bower_components}
 set :default_env, {
   path: ["~/.rbenv/shims",
