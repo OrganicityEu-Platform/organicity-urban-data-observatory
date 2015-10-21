@@ -43,7 +43,7 @@
       }
 
       function getAllDevices() {
-        return Restangular.all('devices/world_map').getList();
+        return Restangular.all('devices').getList(); 
       }
 
       function getDevice(id) {
@@ -67,7 +67,7 @@
       }
 
       function getWorldMarkers() {
-        return worldMarkers || ($window.localStorage.getItem('smartcitizen.markers') && JSON.parse($window.localStorage.getItem('smartcitizen.markers') ).data);
+        return worldMarkers || ($window.localStorage.getItem('organicity.markers') && JSON.parse($window.localStorage.getItem('organicity.markers') ).data);
       }
 
       function setWorldMarkers(data) {
@@ -76,12 +76,12 @@
           data: data
         };
 
-        $window.localStorage.setItem('smartcitizen.markers', JSON.stringify(obj) );
+        $window.localStorage.setItem('organicity.markers', JSON.stringify(obj) );
         worldMarkers = obj.data; 
       }
 
       function getTimeStamp() {
-        return ($window.localStorage.getItem('smartcitizen.markers') && JSON.parse($window.localStorage.getItem('smartcitizen.markers') ).timestamp); 
+        return ($window.localStorage.getItem('organicity.markers') && JSON.parse($window.localStorage.getItem('organicity.markers') ).timestamp); 
       }
 
       function areMarkersOld() {
@@ -90,7 +90,7 @@
       }
 
       function removeMarkers() {
-        $window.localStorage.removeItem('smartcitizen.markers');
+        $window.localStorage.removeItem('organicity.markers');
       }
 	  }
 })();
