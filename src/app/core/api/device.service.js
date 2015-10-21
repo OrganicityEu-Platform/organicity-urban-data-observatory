@@ -47,6 +47,7 @@
       }
 
       function getDevice(id) {
+        debugger;
         return Restangular.one('devices', id).get();
       }
 

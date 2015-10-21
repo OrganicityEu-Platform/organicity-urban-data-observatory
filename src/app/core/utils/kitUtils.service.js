@@ -43,6 +43,7 @@
       }
 
       function parseLabels(object) {
+        object.system_tags = ["online"];
         /*jshint camelcase: false */
         return object.system_tags;
       }
@@ -107,6 +108,7 @@
       }
 
       function parseStateName(object) {
+        object.state = "has_published"; //fixture
         return object.state.replace('_', ' ');
       }
 
@@ -120,9 +122,11 @@
       }
 
       function belongsToUser(kitsArray, kitID) {
-        return _.some(kitsArray, function(kit) {
-          return kit.id === kitID;
-        });
+        debugger;
+        return kitsArray;
+        // return _.some(kitsArray, function(kit) {
+        //   return kit.id === kitID;
+        // });
       }
     }
 })();

@@ -23,33 +23,48 @@
        * @property {number} elevation
        */
       function FullKit(object) {
+
         Kit.call(this, object);
 
-        this.version = kitUtils.parseVersion(object);
+        debugger;
+
+        this.version = "1.1";
         this.time = kitUtils.parseTime(object);
         this.timeParsed = !this.time ? 'No time' : moment(this.time).format('MMMM DD, YYYY - HH:mm');
         this.timeAgo = !this.time ? 'No time' : moment(this.time).fromNow();
         this.class = kitUtils.classify(kitUtils.parseType(object)); 
-        this.description = object.description;
+        this.description = "";
         this.owner = kitUtils.parseOwner(object);
         this.data = object.data.sensors;
         this.latitude = object.data.location.latitude;
         this.longitude = object.data.location.longitude;
         /*jshint camelcase: false */
-        this.macAddress = object.mac_address;
-        this.elevation = object.data.location.elevation;
+        //this.macAddress = object.mac_address;
+        //this.elevation = object.data.location.elevation;
+        debugger;
+
+        console.log(this);
       }
 
       FullKit.prototype = Object.create(Kit.prototype);
       FullKit.prototype.constructor = FullKit;
 
       FullKit.prototype.getSensors = function(sensorTypes, options) {
-        var sensors = _(this.data)
+        debugger;
+        console.log(sensorTypes);
+
+
+
+      var sensors = _(this.data)
           .chain()
           .map(function(sensor) {
+                    debugger;
+
             return new Sensor(sensor, sensorTypes); 
+
           })
           .tap(function(sensors) {
+            debugger;
             if(options.type === 'compare') {
               sensors.unshift({
                 name: 'NONE',
@@ -59,7 +74,7 @@
             }
           })
           .value();
-          
+          debugger;
           return sensors.reduce(function(acc, sensor, index, arr) {
             if(sensor.name === 'BATTERY') {
               arr.splice(index, 1);
@@ -74,7 +89,7 @@
             return acc;
           }, []);
       };
-
+      debugger;
       return FullKit;
     }]); 
 })();

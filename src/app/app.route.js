@@ -150,14 +150,17 @@
 
           resolve: {
             kitData: function($stateParams, device, FullKit) {
+              debugger;
+
               var kitID = $stateParams.id;
 
               if(!kitID) {
                 return undefined;
               }
-
+              
               return device.getDevice(kitID)
                 .then(function(deviceData) {
+                  debugger;
                   return new FullKit(deviceData);
                 });
             },
@@ -189,15 +192,16 @@
               );
             },
             belongsToUser: function($window, $stateParams, auth, AuthUser, kitUtils, userUtils) {
-              if(!auth.isAuth() || !$stateParams.id) {
-                return false;
-              }
-              var kitID = parseInt($stateParams.id);
-              var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('smartcitizen.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('smartcitizen.data') )));
-              var belongsToUser = kitUtils.belongsToUser(userData.kits, kitID);
-              var isAdmin = userUtils.isAdmin(userData);
+              return false;
+              // if(!auth.isAuth() || !$stateParams.id) {
+              //   return false;
+              // }
+              // var kitID = parseInt($stateParams.id);
+              // var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('smartcitizen.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('smartcitizen.data') )));
+              // var belongsToUser = kitUtils.belongsToUser(userData.kits, kitID);
+              // var isAdmin = userUtils.isAdmin(userData);
 
-              return isAdmin || belongsToUser;
+              // return isAdmin || belongsToUser;
             }
           }
         })
@@ -417,7 +421,8 @@
       }).hashPrefix('!');
 
       // RestangularProvider.setBaseUrl('https://new-api.smartcitizen.me/v0');
-      RestangularProvider.setBaseUrl('http://150.140.92.203:8090');
+      // RestangularProvider.setBaseUrl('http://150.140.92.203:8090');
+      RestangularProvider.setBaseUrl('http://localhost:3000');
 
       /* Remove angular leaflet logs */
       $logProvider.debugEnabled(false);

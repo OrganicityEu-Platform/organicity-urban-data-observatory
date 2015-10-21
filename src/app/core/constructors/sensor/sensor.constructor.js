@@ -20,20 +20,29 @@
        * @property {string} previewDescription - Short Description for dashboard. Max 140 chars
        */
       function Sensor(sensorData, sensorTypes) {
+        console.log(sensorData);
+        console.log(sensorTypes);
+        debugger;
         this.name = sensorUtils.getSensorName(sensorData);
         this.id = sensorData.id;
-        this.unit = sensorUtils.getSensorUnit(this.name);
+        this.unit = sensorUtils.getSensorUnit("TEMPERATURE");
         this.value = sensorUtils.getSensorValue(sensorData);
-        this.prevValue = sensorUtils.getSensorPrevValue(sensorData);
-        this.icon = sensorUtils.getSensorIcon(this.name);
+        //this.prevValue = sensorUtils.getSensorPrevValue(sensorData);
+        this.prevValue = 0;
+        this.icon = sensorUtils.getSensorIcon("TEMPERATURE");
         this.arrow = sensorUtils.getSensorArrow(this.value, this.prevValue);
-        this.color = sensorUtils.getSensorColor(this.name);
+        this.color = sensorUtils.getSensorColor("TEMPERATURE");
+        var description = "A";
+        debugger;
 
-        var description = sensorUtils.getSensorDescription(this.id, sensorTypes);
+        // var description = sensorUtils.getSensorDescription(this.id, sensorTypes);
         this.fullDescription = description;
-        this.previewDescription = description.length > 140 ? description.slice(0, 140).concat(' ... ') : description;
-      }
 
+        this.previewDescription = description.length > 140 ? description.slice(0, 140).concat(' ... ') : description;
+        console.log(this);
+
+      }
+      console.log(Sensor);
       return Sensor; 
     }]);
 })();

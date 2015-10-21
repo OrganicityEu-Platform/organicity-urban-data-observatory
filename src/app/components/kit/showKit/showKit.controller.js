@@ -21,9 +21,14 @@
       var mainSensorID, compareSensorID;
       var picker = initializePicker();
 
+      debugger;
+
       if(kitData){
+        console.log(kitData);
         animation.kitLoaded({lat: kitData.latitude ,lng: kitData.longitude, id: parseInt($stateParams.id) });
       }
+      console.log("H");
+      debugger;
 
       vm.kit = kitData;
       vm.ownerKits = ownerKits;
