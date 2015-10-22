@@ -20,9 +20,7 @@
        * @property {string} previewDescription - Short Description for dashboard. Max 140 chars
        */
       function Sensor(sensorData, sensorTypes) {
-        console.log(sensorData);
-        console.log(sensorTypes);
-        
+              
         this.name = sensorUtils.getSensorName(sensorData);
         this.id = sensorData.id;
         this.unit = sensorData.unit;

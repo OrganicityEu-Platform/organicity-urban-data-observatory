@@ -24,10 +24,8 @@
       
 
       if(kitData){
-        console.log(kitData);
         animation.kitLoaded({lat: kitData.latitude ,lng: kitData.longitude, id: parseInt($stateParams.id) });
       }
-      console.log(mainSensors);
       
 
       vm.kit = kitData;
