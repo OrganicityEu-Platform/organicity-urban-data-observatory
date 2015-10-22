@@ -1812,6 +1812,26 @@ section .stickMenu {
   background-color: rgba(0,0,0,0.2);
 }
 
+.markerOrganicityNormal {
+  border: 1px solid $organicity_pink;
+  border-radius: 20px;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.30);
+}
+
+.markerOrganicityOnline {
+  border: 2px solid $organicity_pink;
+  border-radius: 20px;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.30);
+  background-color: $organicity_pink;
+}
+
+.markerOrganicityOffline {
+  border: 2px solid rgba(0,0,0, 0.2);
+  border-radius: 20px;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.30);
+  background-color: rgba(0,0,0,0.2);
+}
+
 /* .marker_blink {
   -webkit-animation: pulse 2s linear infinite;
   -moz-animation: pulse 2s linear infinite;

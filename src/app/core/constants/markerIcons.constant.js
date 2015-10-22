@@ -34,6 +34,31 @@
         type: 'div',
         className: 'markerSmartCitizenOffline marker_blink',
         iconSize: [24, 24]
+      },
+      markerOrganicityNormal: {
+        type: 'div',
+        className: 'markerOrganicityNormal',
+        iconSize: [24, 24]
+      },
+      markerOrganicityOnline: {
+        type: 'div',
+        className: 'markerOrganicityOnline',
+        iconSize: [24, 24]
+      },
+      markerOrganicityOnlineActive: {
+        type: 'div',
+        className: 'markerOrganicityOnline marker_blink',
+        iconSize: [24, 24]
+      },
+      markerOrganicityOffline: {
+        type: 'div',
+        className: 'markerOrganicityOffline',
+        iconSize: [24, 24]
+      },
+      markerOrganicityOfflineActive: {
+        type: 'div',
+        className: 'markerOrganicityOffline marker_blink',
+        iconSize: [24, 24]
       }
     });
 })();

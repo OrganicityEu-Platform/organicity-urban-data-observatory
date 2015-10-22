@@ -88,9 +88,9 @@
         var icon;
 
         if(hasLabel(labels, 'offline')) {
-          icon = MARKER_ICONS.markerSmartCitizenOffline;
+          icon = MARKER_ICONS.markerOrganicityOffline;
         } else {
-          icon = MARKER_ICONS.markerSmartCitizenOnline;
+          icon = MARKER_ICONS.markerOrganicityOnline;
         }  
         return icon;
       }
