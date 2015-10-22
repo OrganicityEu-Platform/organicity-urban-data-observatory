@@ -50,10 +50,6 @@
       FullKit.prototype.constructor = FullKit;
 
       FullKit.prototype.getSensors = function(sensorTypes, options) {
-        
-        console.log(sensorTypes);
-
-
 
       var sensors = _(this.data)
           .chain()
@@ -87,8 +83,6 @@
             return acc;
           }, []);
       };
-      
-      console.warn(FullKit);
       return FullKit;
     }]); 
 })();
