@@ -7,6 +7,7 @@
     markerUtils.$inject = ['device', 'kitUtils', 'COUNTRY_CODES', 'MARKER_ICONS'];
     function markerUtils(device, kitUtils, COUNTRY_CODES, MARKER_ICONS) {
       var service = {
+        parseName: parseName,
         parseType: parseType,
         parseLocation: parseLocation,
         parseLabels: parseLabels,
@@ -16,7 +17,8 @@
         getIcon: getIcon,
         parseName: parseName,
         parseTime: parseTime,
-        getMarkerIcon: getMarkerIcon
+        getMarkerIcon: getMarkerIcon,
+        isOnline: isOnline
       };
       _.defaults(service, kitUtils);
       return service;
@@ -60,17 +62,28 @@
         return location;
       }
 
+      function isOnline(object) {
+        var time = this.parseTime(object);
+        var timeDifference =  (new Date() - new Date(time))/1000;
+        if(!time || timeDifference > 15*60) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+
       function parseLabels(object) {
-        console.log("parseLabels");
-        object.system_tags = ["online", "organicity"];
+        var system_tags = [];
+
+        system_tags.push((this.isOnline(object)) ? "online" : "offline");
+
         /*jshint camelcase: false */
-        return object.system_tags;
+        return system_tags;
       }
 
       function parseUserTags(object) {
-        console.log("parseUserTags");
-        object.system_tags = ["online", "organicity"];
-        return object.user_tags;
+        var user_tags = ["organicity"]; //temp
+        return user_tags;
       }
 
       function parseCoordinates(object) {
@@ -105,11 +118,21 @@
         if(!object.name) {
           return;
         }
+        var startsIn = 4;
+        var entityName = object.name.split(":");
+        var name = entityName[startsIn];
+
+        for (var i = startsIn+1; i < entityName.length; i++) {
+          name += " " + entityName[i];
+        };
+
+        object.name = name;
+
         return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
       }
 
       function parseTime(object) {
-        var time = object.data && object.data['recorded_at'];
+        var time = object['last_reading_at'];
         if(!time) {
           return 'No time';
         }
