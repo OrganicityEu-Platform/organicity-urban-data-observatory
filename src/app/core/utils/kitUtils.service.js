@@ -7,6 +7,7 @@
     kitUtils.$inject = ['COUNTRY_CODES', 'device'];
     function kitUtils(COUNTRY_CODES, device) {
       var service = {
+        parseName: parseName,
         parseLocation: parseLocation,
         parseLabels: parseLabels,
         parseUserTags: parseUserTags,
@@ -18,13 +19,31 @@
         parseState: parseState,
         parseAvatar: parseAvatar,
         belongsToUser: belongsToUser,
-        parseSensorTime: parseSensorTime
+        parseSensorTime: parseSensorTime,
+        isOnline: isOnline
       };
 
       return service;
 
 
       ///////////////
+
+      function parseName(object) {
+        if(!object.name) {
+          return;
+        }
+        var startsIn = 4;
+        var entityName = object.name.split(":");
+        var name = entityName[startsIn];
+
+        for (var i = startsIn+1; i < entityName.length; i++) {
+          name += " " + entityName[i];
+        };
+
+        object.name = this.makeCase(name);
+
+        return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
+      }
 
       function parseLocation(object) {
         var location = '';
@@ -43,13 +62,17 @@
       }
 
       function parseLabels(object) {
-        object.system_tags = ["online"];
+        var system_tags = [];
+
+        system_tags.push((this.isOnline(object)) ? "online" : "offline");
+
         /*jshint camelcase: false */
-        return object.system_tags;
+        return system_tags;
       }
 
       function parseUserTags(object) {
-        return object.user_tags;
+        var user_tags = ["organicity"]; //temp
+        return user_tags;
       }
 
       function parseType(object) {
@@ -128,5 +151,16 @@
         //   return kit.id === kitID;
         // });
       }
+
+      function isOnline(object) {
+        var time = this.parseTime(object);
+        var timeDifference =  (new Date() - new Date(time))/1000;
+        if(!time || timeDifference > 15*60) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+
     }
 })();

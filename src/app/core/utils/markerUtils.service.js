@@ -15,10 +15,10 @@
         parseCoordinates: parseCoordinates,
         parseId: parseId,
         getIcon: getIcon,
-        parseName: parseName,
         parseTime: parseTime,
         getMarkerIcon: getMarkerIcon,
-        isOnline: isOnline
+        isOnline: isOnline,
+        makeCase: makeCase
       };
       _.defaults(service, kitUtils);
       return service;
@@ -26,21 +26,8 @@
       ///////////////
 
       function parseType(object) {
-        debugger;
         var kitType; 
-
-        // var genericKitData = device.getGenericKitData();
-        // /*jshint camelcase: false */
-        // var kit = genericKitData[object.kit_id];
-        // var kitName = !kit ? 'No name': kit.name;
-
-        // if((new RegExp('sck', 'i')).test(kitName)) { 
-        //   kitType = 'SmartCitizen Kit';
-        // } else {
-        //   kitType = 'Unknown Kit';
-        // }
-        kitType = 'Organicity';
-
+        kitType = 'Organicity'; //tmp
         return kitType; 
       }
 
@@ -126,7 +113,7 @@
           name += " " + entityName[i];
         };
 
-        object.name = name;
+        object.name = this.makeCase(name);
 
         return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
       }
@@ -150,6 +137,10 @@
           marker.icon = MARKER_ICONS[targetClass];
         }
         return marker;
+      }
+
+      function makeCase(str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
       }
     }
 })();
