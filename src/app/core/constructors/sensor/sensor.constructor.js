@@ -39,10 +39,8 @@
         this.fullDescription = description;
 
         this.previewDescription = description.length > 140 ? description.slice(0, 140).concat(' ... ') : description;
-        console.log(this);
 
       }
-      console.log(Sensor);
       return Sensor; 
     }]);
 })();

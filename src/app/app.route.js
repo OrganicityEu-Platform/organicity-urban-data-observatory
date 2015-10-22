@@ -170,7 +170,9 @@
               if(!kitData) {
                 return undefined;
               }
-              return kitData.getSensors(sensorTypes, {type: 'main'});
+              var a = kitData.getSensors(sensorTypes, {type: 'main'});
+              console.warn(a);
+              return a;
             },
             compareSensors: function(kitData, sensorTypes) {
               if(!kitData) {

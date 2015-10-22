@@ -58,38 +58,37 @@
       var sensors = _(this.data)
           .chain()
           .map(function(sensor) {
-                    debugger;
-
+            debugger;
             return new Sensor(sensor, sensorTypes); 
-
           })
           .tap(function(sensors) {
             debugger;
-            if(options.type === 'compare') {
+            /*if(options.type === 'compare') {
               sensors.unshift({
                 name: 'NONE',
                 color: 'white',
                 id: -1
               });
-            }
+            }*/
           })
           .value();
           debugger;
           return sensors.reduce(function(acc, sensor, index, arr) {
-            if(sensor.name === 'BATTERY') {
-              arr.splice(index, 1);
+          // if(sensor.name === 'BATTERY') {
+          //     arr.splice(index, 1);
               
-              if(options.type === 'main') {
+          //     if(options.type === 'main') {
                 acc[0] = arr;              
-                acc[1] = sensor;
-              } else if(options.type === 'compare') {
-                acc = arr;
-              }
-            }
+            //     acc[1] = sensor;
+            //   } else if(options.type === 'compare') {
+            //     acc = arr;
+            //   }
+            // }
             return acc;
           }, []);
       };
       debugger;
+      console.warn(FullKit);
       return FullKit;
     }]); 
 })();
