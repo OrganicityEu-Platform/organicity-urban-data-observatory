@@ -150,7 +150,7 @@
 
           resolve: {
             kitData: function($stateParams, device, FullKit) {
-              debugger;
+              
 
               var kitID = $stateParams.id;
 
@@ -160,7 +160,7 @@
               
               return device.getDevice(kitID)
                 .then(function(deviceData) {
-                  debugger;
+                  
                   return new FullKit(deviceData);
                 });
             },

@@ -26,7 +26,7 @@
 
         Kit.call(this, object);
 
-        debugger;
+        
 
         this.version = "1.1";
         this.time = kitUtils.parseTime(object);
@@ -41,7 +41,7 @@
         /*jshint camelcase: false */
         //this.macAddress = object.mac_address;
         //this.elevation = object.data.location.elevation;
-        debugger;
+        
 
         console.log(this);
       }
@@ -50,7 +50,7 @@
       FullKit.prototype.constructor = FullKit;
 
       FullKit.prototype.getSensors = function(sensorTypes, options) {
-        debugger;
+        
         console.log(sensorTypes);
 
 
@@ -58,11 +58,11 @@
       var sensors = _(this.data)
           .chain()
           .map(function(sensor) {
-            debugger;
+            
             return new Sensor(sensor, sensorTypes); 
           })
           .tap(function(sensors) {
-            debugger;
+            
             /*if(options.type === 'compare') {
               sensors.unshift({
                 name: 'NONE',
@@ -72,7 +72,7 @@
             }*/
           })
           .value();
-          debugger;
+          
           return sensors.reduce(function(acc, sensor, index, arr) {
           // if(sensor.name === 'BATTERY') {
           //     arr.splice(index, 1);
@@ -87,7 +87,7 @@
             return acc;
           }, []);
       };
-      debugger;
+      
       console.warn(FullKit);
       return FullKit;
     }]); 

@@ -146,7 +146,7 @@
       }
 
       function belongsToUser(kitsArray, kitID) {
-        debugger;
+        
         return kitsArray;
         // return _.some(kitsArray, function(kit) {
         //   return kit.id === kitID;
