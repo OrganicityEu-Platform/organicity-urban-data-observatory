@@ -67,9 +67,17 @@
 
         system_tags.push((this.isOnline(object)) ? "online" : "offline");
 
+        var entityName = object.uuid.split(":");
+        var source = entityName[3];
+        var origin = entityName[4];
+
+        if(source) system_tags.push(source);
+        if(origin) system_tags.push(origin);
+
         /*jshint camelcase: false */
         return system_tags;
       }
+
 
       function parseUserTags(object) {
         var user_tags = ["organicity"]; //temp
