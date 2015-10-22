@@ -25,18 +25,16 @@
         debugger;
         this.name = sensorUtils.getSensorName(sensorData);
         this.id = sensorData.id;
-        this.unit = sensorUtils.getSensorUnit("TEMPERATURE");
+        this.unit = sensorData.unit;
         this.value = sensorUtils.getSensorValue(sensorData);
-        //this.prevValue = sensorUtils.getSensorPrevValue(sensorData);
-        this.prevValue = 0;
-        this.icon = sensorUtils.getSensorIcon("TEMPERATURE");
+        this.prevValue = sensorUtils.getSensorPrevValue(sensorData);
+        this.icon = sensorUtils.getSensorIcon(sensorData.id);
         this.arrow = sensorUtils.getSensorArrow(this.value, this.prevValue);
-        this.color = sensorUtils.getSensorColor("TEMPERATURE");
-        var description = "A";
+        this.color = sensorUtils.getSensorColor(sensorData.id);
         debugger;
 
-        // var description = sensorUtils.getSensorDescription(this.id, sensorTypes);
-        this.fullDescription = description;
+        var description = sensorUtils.getSensorDescription(this.id, sensorTypes);
+        this.fullDescription = (description) ? description : "Not available";
 
         this.previewDescription = description.length > 140 ? description.slice(0, 140).concat(' ... ') : description;
 

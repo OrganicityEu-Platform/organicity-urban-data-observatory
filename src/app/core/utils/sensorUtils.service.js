@@ -198,10 +198,12 @@
         return _(sensorTypes)
           .chain()
           .find(function(sensorType) {
+            console.log(sensorType.id);
+            console.log(sensorID);
             return sensorType.id === sensorID;
           })
           .value()
-          .measurement.description;
+          .description;
       }
     }
 })();
