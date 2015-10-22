@@ -64,6 +64,13 @@
 
         system_tags.push((this.isOnline(object)) ? "online" : "offline");
 
+        var entityName = object.uuid.split(":");
+        var source = entityName[3];
+        var origin = entityName[4];
+
+        if(source) system_tags.push(source);
+        if(origin) system_tags.push(origin);
+
         /*jshint camelcase: false */
         return system_tags;
       }
@@ -102,11 +109,11 @@
       }
 
       function parseName(object) {
-        if(!object.name) {
-          return;
+        if(!object.uuid) {
+          object.name;
         }
         var startsIn = 4;
-        var entityName = object.name.split(":");
+        var entityName = object.uuid.split(":");
         var name = entityName[startsIn];
 
         for (var i = startsIn+1; i < entityName.length; i++) {
