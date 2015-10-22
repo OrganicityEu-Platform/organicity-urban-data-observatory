@@ -19,7 +19,8 @@
        */
       function Kit(object) {
         this.id = object.id;
-        this.name = object.name;
+        this.name = kitUtils.parseName(object);
+        this.uuid = object.uuid;
         this.type = kitUtils.parseType(object);
         this.location = kitUtils.parseLocation(object);
         this.avatar = kitUtils.parseAvatar(object, this.type);

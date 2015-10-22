@@ -20,7 +20,8 @@
         parseAvatar: parseAvatar,
         belongsToUser: belongsToUser,
         parseSensorTime: parseSensorTime,
-        isOnline: isOnline
+        isOnline: isOnline,
+        makeCase: makeCase
       };
 
       return service;
@@ -161,6 +162,9 @@
           return true;
         }
       }
-
+      
+      function makeCase(str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+      }
     }
 })();
