@@ -39,14 +39,14 @@
       }
       //run on app initialization so that we can keep auth across different sessions
       function setCurrentUser(time) {
-        user.token = $window.localStorage.getItem('smartcitizen.token') && JSON.parse( $window.localStorage.getItem('smartcitizen.token') );
-        user.data = $window.localStorage.getItem('smartcitizen.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('smartcitizen.data') ));
+        user.token = $window.localStorage.getItem('organicity.token') && JSON.parse( $window.localStorage.getItem('organicity.token') );
+        user.data = $window.localStorage.getItem('organicity.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('organicity.data') ));
         if(!user.token) {
           return;
         }
         return getCurrentUserInfo()
           .then(function(data) {
-            $window.localStorage.setItem('smartcitizen.data', JSON.stringify(data.plain()) );
+            $window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
 
             var newUser = new AuthUser(data);
             //check sensitive information
@@ -76,7 +76,7 @@
       function updateUser() {
         return getCurrentUserInfo()
           .then(function(data) {
-            $window.localStorage.setItem('smartcitizen.data', JSON.stringify(data.plain()) );
+            $window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
           });
       }
 
@@ -85,11 +85,11 @@
       }
 
       function isAuth() {
-        return !!$window.localStorage.getItem('smartcitizen.token');
+        return !!$window.localStorage.getItem('organicity.token');
       }
       //save to localstorage and
       function saveData(token) {
-        $window.localStorage.setItem('smartcitizen.token', JSON.stringify(token) );
+        $window.localStorage.setItem('organicity.token', JSON.stringify(token) );
         setCurrentUser();
       }
 

@@ -54,7 +54,7 @@
                 return;
               }
               var kitID = parseInt($stateParams.id);
-              var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('smartcitizen.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('smartcitizen.data') )));
+              var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('organicity.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('organicity.data') )));
               var belongsToUser = kitUtils.belongsToUser(userData.kits, kitID);
               var isAdmin = userUtils.isAdmin(userData);
 
@@ -201,7 +201,7 @@
               //   return false;
               // }
               // var kitID = parseInt($stateParams.id);
-              // var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('smartcitizen.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('smartcitizen.data') )));
+              // var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('organicity.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('organicity.data') )));
               // var belongsToUser = kitUtils.belongsToUser(userData.kits, kitID);
               // var isAdmin = userUtils.isAdmin(userData);
 
@@ -255,7 +255,7 @@
               );
             },
             isAdmin: function($window, $location, $stateParams, auth, AuthUser) {
-              var userRole = (auth.getCurrentUser().data && auth.getCurrentUser().data.role) || ($window.localStorage.getItem('smartcitizen.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('smartcitizen.data') )).role);
+              var userRole = (auth.getCurrentUser().data && auth.getCurrentUser().data.role) || ($window.localStorage.getItem('organicity.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('organicity.data') )).role);
               if(userRole === 'admin') {
                 var userID = $stateParams.id;
                 $location.path('/profile/' + userID);
@@ -277,7 +277,7 @@
           controllerAs: 'vm',
           resolve: {
             userData: function($location, $window, user, auth, AuthUser) {
-              var userData = (auth.getCurrentUser().data) || ( $window.localStorage.getItem('smartcitizen.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('smartcitizen.data') )));
+              var userData = (auth.getCurrentUser().data) || ( $window.localStorage.getItem('organicity.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('organicity.data') )));
               if(!userData) {
                 return;
               }
@@ -312,7 +312,7 @@
           controllerAs: 'vm',
           resolve: {
             isAdmin: function($window, auth, $location, AuthUser) {
-              var userRole = (auth.getCurrentUser().data && auth.getCurrentUser().data.role) || ( $window.localStorage.getItem('smartcitizen.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('smartcitizen.data') )).role );
+              var userRole = (auth.getCurrentUser().data && auth.getCurrentUser().data.role) || ( $window.localStorage.getItem('organicity.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('organicity.data') )).role );
               if(userRole !== 'admin') {
                 $location.path('/');
               } else {
