@@ -50,7 +50,7 @@
       }
 
       function isOnline(object) {
-        var time = this.parseTime(object);
+        var time = object['last_reading_at'];
         var timeDifference =  (new Date() - new Date(time))/1000;
         if(!time || timeDifference > 15*60) {
           return false;
