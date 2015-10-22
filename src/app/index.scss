@@ -954,18 +954,21 @@ section .kit_menu {
   .kit_details_version {
     span {
       color: #4F8390;
-      font-weight: bold;
-      font-size: 12px;   
-    }
-    .kit_details_uuid{
       font-weight: normal;
-      font-size: 12px;   
+      font-size: 12px; 
+    }
+    .kit_details_uuid {
+        font-size: 12px;   
     }
   }
   .kit_details_id {
     span {
       color: #4F8390;
       font-weight: bold;
+      font-size: 13px;
+    }
+    .kit_details_uuid {
+      font-weight: normal;
     }
   }
   .kit_details_labels {
