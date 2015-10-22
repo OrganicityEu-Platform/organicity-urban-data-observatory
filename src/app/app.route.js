@@ -165,6 +165,8 @@
                 });
             },
             mainSensors: function(kitData, sensorTypes) {
+              console.log(kitData);
+              console.log(sensorTypes);
               if(!kitData) {
                 return undefined;
               }

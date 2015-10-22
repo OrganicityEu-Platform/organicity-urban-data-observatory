@@ -17,9 +17,10 @@
        * @property {Object} myData - Marker id and labels 
        */
       function Marker(deviceData) {
-        this.lat = markerUtils.parseCoordinates(deviceData).lat;
-        this.lng = markerUtils.parseCoordinates(deviceData).lng;
-        this.message = '<div class="popup"><div class="popup_top ' + markerUtils.classify(markerUtils.parseType(deviceData)) + '"><p class="popup_name">' + markerUtils.parseName(deviceData) + '</p><p class="popup_type">' + markerUtils.parseType(deviceData) + '</p><p class="popup_time"><md-icon class="popup_icon" md-svg-src="./assets/images/update_icon.svg"></md-icon>' + markerUtils.parseTime(deviceData) + '</p></div><div class="popup_bottom"><p class="popup_location"><md-icon class="popup_icon" md-svg-src="./assets/images/location_icon_dark.svg"></md-icon>' + markerUtils.parseLocation(deviceData) + '</p><div class="popup_labels">' + createTagsTemplate(markerUtils.parseLabels(deviceData)) + createTagsTemplate(markerUtils.parseUserTags(deviceData)) + '</div></div></div>'; //<span>' + markerUtils.parseLabels(deviceData).status + '</span><span>' + markerUtils.parseLabels(deviceData).exposure + '</span>
+        debugger;
+        this.lat = markerUtils.parseCoordinates(deviceData.data.location).lat;
+        this.lng = markerUtils.parseCoordinates(deviceData.data.location).lng;
+        this.message = '<div class="popup"><div class="popup_top ' + markerUtils.classify(markerUtils.parseType(deviceData)) + '"><p class="popup_name">' + markerUtils.parseName(deviceData) + '</p><p class="popup_type">' + markerUtils.parseType(deviceData) + '</p><p class="popup_time"><md-icon class="popup_icon" md-svg-src="./assets/images/update_icon.svg"></md-icon>' + markerUtils.parseTime(deviceData) + '</p></div><div class="popup_bottom"><p class="popup_location"><md-icon class="popup_icon" md-svg-src="./assets/images/location_icon_dark.svg"></md-icon>' + markerUtils.parseLocation(deviceData.data.location) + '</p><div class="popup_labels">' + createTagsTemplate(markerUtils.parseLabels(deviceData)) + createTagsTemplate(markerUtils.parseUserTags(deviceData)) + '</div></div></div>'; //<span>' + markerUtils.parseLabels(deviceData).status + '</span><span>' + markerUtils.parseLabels(deviceData).exposure + '</span>
         this.icon = markerUtils.getIcon(markerUtils.parseLabels(deviceData));
         this.layer = 'realworld'; 
         this.focus = false;

@@ -88,6 +88,8 @@
         var id = data.leafletEvent.target.options.myData.id;
 
         var availability = data.leafletEvent.target.options.myData.labels[0];
+        console.log(availability);
+        
         ga('send', 'event', 'Kit Marker', 'click', availability);
 
         $state.go('layout.home.kit', {id: id});

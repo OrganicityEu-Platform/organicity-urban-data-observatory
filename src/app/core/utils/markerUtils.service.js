@@ -24,18 +24,21 @@
       ///////////////
 
       function parseType(object) {
+        debugger;
         var kitType; 
 
-        var genericKitData = device.getGenericKitData();
-        /*jshint camelcase: false */
-        var kit = genericKitData[object.kit_id];
-        var kitName = !kit ? 'No name': kit.name;
+        // var genericKitData = device.getGenericKitData();
+        // /*jshint camelcase: false */
+        // var kit = genericKitData[object.kit_id];
+        // var kitName = !kit ? 'No name': kit.name;
 
-        if((new RegExp('sck', 'i')).test(kitName)) { 
-          kitType = 'SmartCitizen Kit';
-        } else {
-          kitType = 'Unknown Kit';
-        }
+        // if((new RegExp('sck', 'i')).test(kitName)) { 
+        //   kitType = 'SmartCitizen Kit';
+        // } else {
+        //   kitType = 'Unknown Kit';
+        // }
+        kitType = 'Organicity';
+
         return kitType; 
       }
 
@@ -58,11 +61,15 @@
       }
 
       function parseLabels(object) {
+        console.log("parseLabels");
+        object.system_tags = ["online", "organicity"];
         /*jshint camelcase: false */
         return object.system_tags;
       }
 
       function parseUserTags(object) {
+        console.log("parseUserTags");
+        object.system_tags = ["online", "organicity"];
         return object.user_tags;
       }
 
@@ -102,7 +109,7 @@
       }
 
       function parseTime(object) {
-        var time = object.data && object.data[''];
+        var time = object.data && object.data['recorded_at'];
         if(!time) {
           return 'No time';
         }

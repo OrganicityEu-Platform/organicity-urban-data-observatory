@@ -27,7 +27,7 @@
         console.log(kitData);
         animation.kitLoaded({lat: kitData.latitude ,lng: kitData.longitude, id: parseInt($stateParams.id) });
       }
-      console.log("H");
+      console.log(mainSensors);
       debugger;
 
       vm.kit = kitData;
