@@ -33,11 +33,12 @@
         this.color = sensorUtils.getSensorColor(sensorData.id);
         debugger;
 
-        var description = sensorUtils.getSensorDescription(this.id, sensorTypes);
-        this.fullDescription = (description) ? description : "Not available";
-
+        var description = false;//sensorUtils.getSensorDescription(this.id, sensorTypes);
+        debugger;
+        description = (description) ? description : "Not available";
+        this.fullDescription = description;
         this.previewDescription = description.length > 140 ? description.slice(0, 140).concat(' ... ') : description;
-
+        debugger;
       }
       return Sensor; 
     }]);
