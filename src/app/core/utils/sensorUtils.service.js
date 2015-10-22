@@ -36,28 +36,8 @@
       }
 
       function getSensorName(sensor) {
-        var name = sensor.name;
-        var description = sensor.description;
-        var sensorName;
-
-        // if( new RegExp('custom circuit', 'i').test(description) ) {
-          sensorName = name;
-        // } else {
-        //   if(new RegExp('noise', 'i').test(description) ) {
-        //     sensorName = 'SOUND';
-        //   } else if(new RegExp('light', 'i').test(description) ) {
-        //     sensorName = 'LIGHT';
-        //   } else if(new RegExp('wifi', 'i').test(description) ) {  
-        //     sensorName = 'NETWORKS';
-        //   } else if(new RegExp('co', 'i').test(description) ) {
-        //     sensorName = 'CO';
-        //   } else if(new RegExp('no2', 'i').test(description) ) {
-        //     sensorName = 'NO2';
-        //   } else {
-        //     sensorName = description;
-        //   }          
-        // }
-        return sensorName.toUpperCase();
+        sensor.name = name.replace(":", " ");
+        return sensor.name.toUpperCase();
       }
 
       function getSensorUnit(sensorName) {
