@@ -36,7 +36,7 @@
       }
 
       function getSensorName(sensor) {
-        sensor.name = name.replace(":", " ");
+        sensor.name = sensor.name.replace(":", " ");
         return sensor.name.toUpperCase();
       }
 
