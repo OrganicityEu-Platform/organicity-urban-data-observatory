@@ -4,8 +4,8 @@
 	angular.module('app.components')
 	  .factory('device', device);
     
-    device.$inject = ['Restangular', '$window', 'timeUtils'];
-	  function device(Restangular, $window, timeUtils) {
+    device.$inject = ['Restangular', '$window', 'timeUtils', '$filter'];
+	  function device(Restangular, $window, timeUtils, $filter) {
       var genericKitData, worldMarkers;
 
       initialize();
@@ -49,15 +49,9 @@
       }
 
       function getDevice(id) {
-        return Restangular.all('entities').getList().then(function(response){
-
-        self.resources = response;
-        self.resources.resourceState.resourceTypes = $filter('castToArray')(response.resourceState.resourceTypes);
-
-        return self.resources;
+        return Restangular.all('entities').getList().then( function(devices) {
+          return $filter('filter')(devices, {id: id})[0];
         });
-
-        //return Restangular.one('entities', id).get();
       }
 
       function createDevice(data) {
