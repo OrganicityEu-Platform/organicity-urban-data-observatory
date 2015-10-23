@@ -38,12 +38,7 @@
         this.data = object.data.sensors;
         this.latitude = object.data.location.latitude;
         this.longitude = object.data.location.longitude;
-        /*jshint camelcase: false */
-        //this.macAddress = object.mac_address;
-        //this.elevation = object.data.location.elevation;
-        
 
-        console.log(this);
       }
 
       FullKit.prototype = Object.create(Kit.prototype);
