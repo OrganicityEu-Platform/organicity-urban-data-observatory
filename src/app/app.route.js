@@ -106,10 +106,11 @@
           },
           resolve: {
             sensorTypes: function(sensor) {
-              return sensor.callAPI()
-                .then(function(sensorTypes) {
-                  return sensorTypes.plain();
-                });
+              // return sensor.callAPI() //temp. disable for test
+              //   .then(function(sensorTypes) {
+              //     return sensorTypes.plain();
+                  return []; 
+                // });
             },
             markers: function($state, device, utils, Kit, Marker) {
               // It could be refactor to use HTTP caching instead of holding them in localstorage

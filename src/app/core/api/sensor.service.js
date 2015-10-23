@@ -6,10 +6,10 @@
 
     sensor.$inject = ['Restangular', 'utils', 'sensorUtils'];
     function sensor(Restangular, utils, sensorUtils) {
-      var sensorTypes;
-      callAPI().then(function(data) {
-        setTypes(data);
-      });
+      // var sensorTypes;
+      // callAPI().then(function(data) { //temp. disable for test
+        setTypes([]);
+      // });
 
       var service = {
         callAPI: callAPI,

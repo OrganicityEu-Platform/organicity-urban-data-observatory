@@ -10,10 +10,11 @@
 
       initialize();
 
-      callGenericKitData()
-        .then(function(data) {
-          genericKitData = _.indexBy(data, 'id');
-        });
+      // callGenericKitData()
+      //   .then(function(data) {
+          genericKitData = [];
+          // genericKitData = _.indexBy(data, 'id'); //temp. disable for test
+        // });
 
 	  	var service = {
         getDevices: getDevices,
