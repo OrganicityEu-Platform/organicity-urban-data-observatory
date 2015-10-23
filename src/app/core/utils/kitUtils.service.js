@@ -145,7 +145,7 @@
       }
 
       function parseAvatar() {
-        return './assets/images/sckit_avatar.jpg';
+        return './assets/images/organicity-avatar.jpg';
       }
 
       function parseSensorTime(sensor) {
