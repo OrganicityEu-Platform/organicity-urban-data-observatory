@@ -41,24 +41,31 @@
       function getDevices(location) {
       	var parameter = '';
       	parameter += location.lat + ',' + location.lng;
-      	return Restangular.all('devices').getList({near: parameter, 'per_page': '100'});
+      	return Restangular.all('entities').getList({near: parameter, 'per_page': '100'});
       }
 
       function getAllDevices() {
-        return Restangular.all('devices').getList(); 
+        return Restangular.all('entities').getList(); 
       }
 
       function getDevice(id) {
-        
-        return Restangular.one('devices', id).get();
+        return Restangular.all('entities').getList().then(function(response){
+
+        self.resources = response;
+        self.resources.resourceState.resourceTypes = $filter('castToArray')(response.resourceState.resourceTypes);
+
+        return self.resources;
+        });
+
+        //return Restangular.one('entities', id).get();
       }
 
       function createDevice(data) {
-        return Restangular.all('devices').post(data);
+        return Restangular.all('entities').post(data);
       }
 
       function updateDevice(id, data) {
-        return Restangular.one('devices', id).patch(data);
+        return Restangular.one('entities', id).patch(data);
       }
 
       function callGenericKitData() {

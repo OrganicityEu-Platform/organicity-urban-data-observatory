@@ -118,14 +118,14 @@
 
       function parseOwner(object) {
         return {
-          id: object.owner.id,
-          username: object.owner.username,
+          id: object.provider.id,
+          username: object.provider.username,
           /*jshint camelcase: false */
-          kits: object.owner.device_ids,
-          city: object.owner.location.city,
-          country: COUNTRY_CODES[object.owner.location.country_code],
-          url: object.owner.url,
-          avatar: object.owner.avatar
+          kits: object.provider.device_ids,
+          city: object.provider.location.city,
+          country: COUNTRY_CODES[object.provider.location.country_code],
+          url: object.provider.url,
+          avatar: object.provider.avatar
         };
       }
 

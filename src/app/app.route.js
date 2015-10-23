@@ -424,7 +424,9 @@
 
       // RestangularProvider.setBaseUrl('https://new-api.smartcitizen.me/v0');
       // RestangularProvider.setBaseUrl('http://150.140.92.203:8090');
-      RestangularProvider.setBaseUrl('http://localhost:3000');
+      RestangularProvider.setBaseUrl('http://explorer-api.organicity.smartcitizen.me:8090/v1');
+
+      //RestangularProvider.setBaseUrl('http://localhost:3000');
 
       /* Remove angular leaflet logs */
       $logProvider.debugEnabled(false);

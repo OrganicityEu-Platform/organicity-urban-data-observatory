@@ -37,8 +37,8 @@
 
         if(object.data.location.city && object.data.location.country) {
             locationSource = object.data.location;
-        } else if (object.owner.location.city && object.owner.location.country){
-            locationSource = object.owner.location;
+        } else if (object.provider && object.provider.location.city && object.provider.location.country){
+            locationSource = object.provider.location;
             locationSource.justOwnerLocation = true;
         }  
           
@@ -93,6 +93,7 @@
 
       function parseCoordinates(object) {
         var location = {};
+
         if(object.data.location.latitude && object.data.location.longitude && object.data.location.latitude != 0 && object.data.location.longitude != 0) {
             location.lat = object.data.location.latitude;
             location.lng = object.data.location.longitude;
@@ -126,10 +127,15 @@
 
       function parseName(object) {
         if(!object.uuid) {
-          object.name;
+          object.uuid = object.name; //tmp.
         }
+
+
         var startsIn = 4;
         var entityName = object.uuid.split(":");
+
+        if(entityName.length < 4) return object.name;  
+
         var name = entityName[startsIn];
 
         for (var i = startsIn+1; i < entityName.length; i++) {
