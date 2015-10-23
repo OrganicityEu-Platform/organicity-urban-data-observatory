@@ -33,6 +33,7 @@
 
       function initialize() {
         if(areMarkersOld()) {
+          console.log("Markers expired");
           removeMarkers();
         }
       }
@@ -87,8 +88,8 @@
       }
 
       function areMarkersOld() {
-        var markersDate = getTimeStamp();      
-        return !timeUtils.isWithin15min(markersDate);
+        var markersDate = getTimeStamp();  
+        return !timeUtils.isWithin(10, 'seconds', markersDate);
       }
 
       function removeMarkers() {
