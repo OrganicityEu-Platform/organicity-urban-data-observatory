@@ -170,7 +170,6 @@
                 return undefined;
               }
               var a = kitData.getSensors(sensorTypes, {type: 'main'});
-              console.warn(a);
               return a;
             },
             compareSensors: function(kitData, sensorTypes) {
