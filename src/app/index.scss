@@ -1079,7 +1079,7 @@ section .kit_menu {
     padding-bottom: 30px;
   }
   .kit_owner {
-    color: $background_blue_dark_navbar;
+    color: $font_color_blue_grey;
     background-color: #F5F5F5;
 
     .container {
@@ -1094,7 +1094,7 @@ section .kit_menu {
         line-height: 0.4em;
       }
       h3 {
-        color: #24454E;
+        color: $kit_owner_content;
         font-size: 18px;
       }
     }
@@ -1108,12 +1108,12 @@ section .kit_menu {
       margin: 5px 0 20px 0;
     }
     .kit_owner_location {
-      color: #065063;
+      color: $font_color_blue_grey;
       font-weight: bold;
     }
     .kit_owner_url a {
       text-decoration: none;
-      color: $background_blue_dark_navbar;
+      color: $font_color_blue_grey;
     }
     .kit_owner_kits_title {
       margin-bottom: 50px;
