@@ -48,9 +48,20 @@
 
       function parseLocation(object) {
         var location = '';
-        
-        var city = object.data.location.city;
-        var country = object.data.location.country;
+        var locationSource = {};
+
+        if(object.data && object.data.location && object.data.location.city && object.data.location.country) {
+            locationSource = object.data.location;
+        } else if (object.provider && object.provider.location && object.provider.location.city && object.provider.location.country){
+            locationSource = object.provider.location;
+            locationSource.justOwnerLocation = true;
+        }  
+          
+        /*jshint camelcase: false */
+        var city = locationSource.city;
+        var country_code = locationSource.country_code;
+        var country = COUNTRY_CODES[country_code];
+
 
         if(!!city) {
           location += city;
@@ -59,15 +70,22 @@
           location += ', ' + country;
         }
 
+        if(locationSource.justOwnerLocation) location += ' (provider location)';
+
         return location;
       }
 
       function parseLabels(object) {
         var system_tags = [];
 
+        if(!object.uuid) {
+          object.uuid = object.name || "no:name"; //tmp.
+        }
+
         system_tags.push((this.isOnline(object)) ? "online" : "offline");
 
         var entityName = object.uuid.split(":");
+
         var source = entityName[3];
         var origin = entityName[4];
 
@@ -117,6 +135,7 @@
       }
 
       function parseOwner(object) {
+        if (!object.provider) return;
         return {
           id: object.provider.id,
           username: object.provider.username,

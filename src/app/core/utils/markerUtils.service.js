@@ -73,9 +73,14 @@
       function parseLabels(object) {
         var system_tags = [];
 
+        if(!object.uuid) {
+          object.uuid = object.name || "no:name"; //tmp.
+        }
+
         system_tags.push((this.isOnline(object)) ? "online" : "offline");
 
         var entityName = object.uuid.split(":");
+
         var source = entityName[3];
         var origin = entityName[4];
 
