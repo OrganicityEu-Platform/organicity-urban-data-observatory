@@ -361,7 +361,7 @@ md-backdrop.md-opaque.md-default-theme {
 //Loading backdrop
 
 md-backdrop.md-mainBackdrop {
-  background-color: #2A4E62;
+  background-color: $background_blue_light;
   width: 100%;
   height: 100%;
 }
@@ -373,8 +373,7 @@ md-backdrop.md-mainBackdrop {
 
 .backdrop_icon {
   margin: 10px;
-  width: 40px;
-  height: 40px;
+  width: 120px;
 }
 
 // state change backdrop
