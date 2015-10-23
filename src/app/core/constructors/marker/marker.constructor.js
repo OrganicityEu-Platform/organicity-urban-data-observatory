@@ -17,7 +17,6 @@
        * @property {Object} myData - Marker id and labels 
        */
       function Marker(deviceData) {
-        console.warn(deviceData);
 
         this.lat = markerUtils.parseCoordinates(deviceData).lat;
         this.lng = markerUtils.parseCoordinates(deviceData).lng;
