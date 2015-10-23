@@ -33,11 +33,20 @@
 
       function parseLocation(object) {
         var location = '';
-        
+        var locationSource = {};
+
+        if(object.data.location.city && object.data.location.country) {
+            locationSource = object.data.location;
+        } else if (object.owner.location.city && object.owner.location.country){
+            locationSource = object.owner.location;
+            locationSource.justOwnerLocation = true;
+        }  
+          
         /*jshint camelcase: false */
-        var city = object.city;
-        var country_code = object.country_code;
+        var city = locationSource.city;
+        var country_code = locationSource.country_code;
         var country = COUNTRY_CODES[country_code];
+
 
         if(!!city) {
           location += city;
@@ -45,6 +54,8 @@
         if(!!country) {
           location += ', ' + country;
         }
+
+        if(locationSource.justOwnerLocation) location += ' (provider location)';
 
         return location;
       }
@@ -81,10 +92,15 @@
       }
 
       function parseCoordinates(object) {
-        return {
-          lat: object.latitude,
-          lng: object.longitude
-        };
+        var location = {};
+        if(object.data.location.latitude && object.data.location.longitude && object.data.location.latitude != 0 && object.data.location.longitude != 0) {
+            location.lat = object.data.location.latitude;
+            location.lng = object.data.location.longitude;
+        } else {
+            location.lat = 50.8500;
+            location.lng = 4.3500;
+        }
+        return location;
       }
 
       function parseId(object) {
