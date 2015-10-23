@@ -91,7 +91,7 @@
         Abstract state, it only activates when there's a child state activated
         */
         .state('layout.home', {
-          url: '/kits',
+          url: '/assets',
           abstract: true,
           views: {
             '': {
