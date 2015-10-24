@@ -27,9 +27,8 @@
         this.labels = kitUtils.parseLabels(object); //TODO: refactor name to systemTags
         this.state = kitUtils.parseState(object);
         /*jshint camelcase: false */
-        this.userTags = object.user_tags;
+        //this.userTags = object.user_tags; //tmp
       }
-
       return Kit;
     }]);
 })();
