@@ -165,18 +165,17 @@
                   return new FullKit(deviceData);
                 });
             },
-            mainSensors: function(kitData, sensorTypes) {
+            mainSensors: function(kitData) {
               if(!kitData) {
                 return undefined;
               }
-              var a = kitData.getSensors(sensorTypes, {type: 'main'});
-              return a;
+              return kitData.getSensors();;
             },
-            compareSensors: function(kitData, sensorTypes) {
+            compareSensors: function(kitData) {
               if(!kitData) {
                 return undefined;
               }
-              return kitData.getSensors(sensorTypes, {type: 'compare'});
+              return kitData.getSensors();
             },
             ownerKits: function(kitData, PreviewKit, $q, device) {
               if(!kitData) {

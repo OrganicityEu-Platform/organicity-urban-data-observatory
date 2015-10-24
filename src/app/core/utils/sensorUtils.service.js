@@ -40,37 +40,14 @@
         return sensor.name.toUpperCase();
       }
 
-      function getSensorUnit(sensorName) {
-        var sensorUnit;
-        
-        switch(sensorName) {
-          case 'TEMPERATURE':
-            sensorUnit = '°C';
-            break;
-          case 'LIGHT':
-            sensorUnit = 'LUX';
-            break;
-          case 'SOUND':
-            sensorUnit = 'DB';
-            break;
-          case 'HUMIDITY':
-          case 'BATTERY':
-            sensorUnit = '%';
-            break;
-          case 'CO': 
-          case 'NO2':
-            sensorUnit = 'KΩ';
-            break;
-          case 'NETWORKS': 
-            sensorUnit = '#';
-            break;
-          case 'SOLAR PANEL': 
-            sensorUnit = 'V';
-            break;
-          default: 
-            sensorUnit = 'N/A';
+      function getSensorUnit(sensor) {
+        if(sensor.unit) {
+          return sensor.unit;
+        } else if(sensor.name) {
+          return this.getSensorName(sensor);
+        } else {
+          return "No name";
         }
-        return sensorUnit;
       }
 
       function getSensorValue(sensor) {

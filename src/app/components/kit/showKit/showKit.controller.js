@@ -21,26 +21,24 @@
       var mainSensorID, compareSensorID;
       var picker = initializePicker();
 
-      
-
       if(kitData){
         animation.kitLoaded({lat: kitData.latitude ,lng: kitData.longitude, id: parseInt($stateParams.id) });
       }
-      
+      console.log(mainSensors);
 
       vm.kit = kitData;
       vm.ownerKits = ownerKits;
       vm.kitBelongsToUser = belongsToUser;
       vm.removeUser = removeUser;
 
-      vm.battery = mainSensors? mainSensors[1] : undefined;
-      vm.sensors = mainSensors? mainSensors[0] : undefined;
+      vm.battery = undefined;
+      vm.sensors = mainSensors ? mainSensors : undefined;
       vm.sensorsToCompare = compareSensors;
 
       vm.slide = slide;
 
 
-      vm.selectedSensor = vm.sensors ? vm.sensors[0].id : undefined;
+      vm.selectedSensor = (vm.sensors && vm.sensors.length > 0) ? vm.sensors[0].id : undefined;
       vm.selectedSensorData = {};
 
       vm.selectedSensorToCompare = undefined;

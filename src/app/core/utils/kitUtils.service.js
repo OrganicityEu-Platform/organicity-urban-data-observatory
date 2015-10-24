@@ -21,7 +21,8 @@
         belongsToUser: belongsToUser,
         parseSensorTime: parseSensorTime,
         isOnline: isOnline,
-        makeCase: makeCase
+        makeCase: makeCase,
+        parseStateName: parseStateName
       };
 
       return service;
@@ -148,10 +149,9 @@
         };
       }
 
-      function parseState(status) {
-        var name = parseStateName(status); 
+      function parseState(object) {
+        var name = this.parseStateName(object); 
         var className = classify(name); 
-        
         return {
           name: name,
           className: className
@@ -159,7 +159,9 @@
       }
 
       function parseStateName(object) {
-        object.state = "has_published"; //fixture
+        if (!object.state) {
+          object.state = (object.data.atttributes.length > 0) ? "has_published" : "never_published";
+        }
         return object.state.replace('_', ' ');
       }
 
