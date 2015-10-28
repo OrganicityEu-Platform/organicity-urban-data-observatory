@@ -1954,6 +1954,97 @@ section .stickMenu {
   z-index: 1;
 }
 
+// custom cluster colors
+
+// custom cluster colors
+
+.marker-cluster {
+  animation-duration: 2s;
+  animation-direction: alternate;
+  animation-iteration-count:infinite;
+  opacity: 0.9;
+  div {
+    margin-left: 3px;
+    margin-top: 3px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    opacity: 0.6;
+    font-family: 'Roboto Condensed';
+    font-size: 14px;
+    line-height: 34px;
+    font-weight: bold;
+    position: relative;
+  }
+}
+
+@keyframes cluster-basic {
+    from {
+      background-color: $organicity_pink_1;
+    }
+    to {
+      background-color: $organicity_pink_4;
+    }
+}
+
+@keyframes cluster-opacity {
+    from {
+      opacity: 0.4;
+    }
+    to {
+      opacity: 0.9;
+    }
+}
+
+@keyframes cluster-small {
+    from {
+      background-color: $organicity_pink_2;
+    }
+    to {
+      background-color: $organicity_pink_3;
+    }
+}
+
+@keyframes cluster-medium {
+    from {
+      background-color: $organicity_pink_3;
+    }
+    to {
+      background-color: $organicity_pink_5;
+    }
+}
+
+@keyframes cluster-large {
+    from {
+      background-color: $organicity_pink_4;
+    }
+    to {
+      background-color: $organicity_pink_5;
+    }
+}
+
+.marker-cluster-small {
+  animation-name: cluster-basic;
+  div {
+    background-color: $organicity_pink_1;
+  }
+}
+
+.marker-cluster-medium {
+  animation-name: cluster-basic;
+  div {
+    background-color: $organicity_pink_2;
+
+  }
+}
+
+.marker-cluster-large {
+  animation-name: cluster-basic;
+  div {
+    background-color: $organicity_pink_3;
+  }
+}
+
 /*
   PICKER COMPONENT
 */
