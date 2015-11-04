@@ -26,9 +26,7 @@
 
         Kit.call(this, object);
 
-        
-
-        this.version = "1.1";
+        this.version = "Organicity";
         this.time = kitUtils.parseTime(object);
         this.timeParsed = !this.time ? 'No time' : moment(this.time).format('MMMM DD, YYYY - HH:mm');
         this.timeAgo = !this.time ? 'No time' : moment(this.time).fromNow();
