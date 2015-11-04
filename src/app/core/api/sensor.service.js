@@ -38,7 +38,7 @@
         dateFrom = utils.convertTime(dateFrom);
         dateTo = utils.convertTime(dateTo);
 
-        return Restangular.one('devices', deviceID).customGET('readings', {'from': dateFrom, 'to': dateTo, 'rollup': rollup, 'sensor_id': sensorID, 'all_intervals': true});
+        return Restangular.one('devices', deviceID).customGET('readings', {'from': dateFrom, 'to': dateTo, 'rollup': rollup, 'attribute_id': sensorID, 'all_intervals': true, 'function': 'avg'});
       }
     }
 })();

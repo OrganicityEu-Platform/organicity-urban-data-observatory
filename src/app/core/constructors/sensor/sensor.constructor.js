@@ -29,7 +29,8 @@
         this.icon = sensorUtils.getSensorIcon(sensorData.id);
         this.arrow = sensorUtils.getSensorArrow(this.value, this.prevValue);
         this.color = sensorUtils.getSensorColor(sensorData.id);
-        
+        this.uuid = sensorData.metadata_id; //new document
+
 
         var description = false;//sensorUtils.getSensorDescription(this.id, sensorTypes);
         

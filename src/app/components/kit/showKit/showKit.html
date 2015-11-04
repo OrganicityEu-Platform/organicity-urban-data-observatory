@@ -111,7 +111,7 @@
               <md-select placeholder="Choose sensor" ng-model="vm.selectedSensor"
                 analytics-on="click" analytics-category="Kit Chart"
                 analytics-event="click" analytics-label="Metric">
-                <md-option ng-repeat="sensor in vm.sensors" ng-value="{{sensor.id}}" ng-selected="$first">
+                <md-option ng-repeat="sensor in vm.sensors" ng-value="{{sensor.uuid}}" ng-selected="$first">
                   <img class="select_image" ng-src="{{ sensor.icon }}">
                   <span>
                     {{ sensor.name }}

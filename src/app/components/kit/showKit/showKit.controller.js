@@ -37,8 +37,9 @@
 
       vm.slide = slide;
 
+      console.log(vm.sensors[0]);
 
-      vm.selectedSensor = (vm.sensors && vm.sensors.length > 0) ? vm.sensors[0].id : undefined;
+      vm.selectedSensor = (vm.sensors && vm.sensors.length > 0) ? vm.sensors[0].uuid : undefined;
       vm.selectedSensorData = {};
 
       vm.selectedSensorToCompare = undefined;
@@ -59,7 +60,7 @@
 
         if(vm.sensors){
           vm.sensors.forEach(function(sensor) {
-            if(sensor.id === newVal) {
+            if(sensor.uuid === newVal) {
               _.extend(vm.selectedSensorData, sensor);
             }
           });
@@ -164,7 +165,7 @@
 
       function getSensorsToCompare() {
         return vm.sensors ? vm.sensors.filter(function(sensor) {
-          return sensor.id !== vm.selectedSensor;
+          return sensor.uuid !== vm.selectedSensor;
         }) : [];
       }
 
@@ -186,7 +187,9 @@
         // it can be either 2 sensors or 1 sensor, so we use $q.all to wait for all
         $q.all(
           _.map(sensorsID, function(sensorID) {
-            return getChartData($stateParams.id, sensorID, options.from, options.to)
+            console.log(sensorsID);
+            var id = vm.kit.uuid;//$stateParams.id
+            return getChartData(id, sensorID, options.from, options.to)
               .then(function(data) {
                 return data;
               });
