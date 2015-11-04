@@ -33,7 +33,7 @@
         this.class = kitUtils.classify(kitUtils.parseType(object)); 
         this.description = "";
         this.owner = kitUtils.parseOwner(object);
-        this.data = object.data.atttributes;
+        this.data = object.data.attributes;
         this.latitude = object.data.location.latitude;
         this.longitude = object.data.location.longitude;
 

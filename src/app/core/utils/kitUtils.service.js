@@ -160,7 +160,7 @@
 
       function parseStateName(object) {
         if (!object.state) {
-          object.state = (object.data.atttributes.length > 0) ? "has_published" : "never_published";
+          object.state = (object.data.attributes.length > 0) ? "has_published" : "never_published";
         }
         return object.state.replace('_', ' ');
       }
