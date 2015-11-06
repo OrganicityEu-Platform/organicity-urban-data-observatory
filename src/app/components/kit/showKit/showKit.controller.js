@@ -80,7 +80,7 @@
       // event listener on change of value of compare sensor selector
       $scope.$watch('vm.selectedSensorToCompare', function(newVal, oldVal) {
         vm.sensorsToCompare.forEach(function(sensor) {
-          if(sensor.id === newVal) {
+          if(sensor.uuid === newVal) {
             _.extend(vm.selectedSensorToCompareData, sensor);
           }
         });
@@ -231,12 +231,12 @@
       }
 
       function parseSensorData(data, sensorID) {
-        if(data.length === 0) {
+        if(data[sensorID].length === 0) {
           return [];
         }
         return data[sensorID].map(function(dataPoint) {
-          var time = dataPoint[0];
-          var value = dataPoint[1];
+          var time = moment(dataPoint.datetime).toISOString(); //tmp. ensure validation
+          var value = Number(dataPoint.value);
           var count = value === null ? 0 : value;
 
           return {
@@ -256,6 +256,7 @@
           mainSensorID = sensorID;
         } else if(options.type === 'compare') {
           compareSensorID = sensorID;
+          console.log(sensorID);
         }
       }
 

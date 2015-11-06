@@ -35,10 +35,11 @@
 
       function getSensorsDataNew(deviceID, sensorID, dateFrom, dateTo) {
         var rollup = sensorUtils.getRollup(dateFrom, dateTo);
-        dateFrom = utils.convertTime(dateFrom);
-        dateTo = utils.convertTime(dateTo);
+        dateFrom = utils.convertTime(dateFrom, false);  //API wants time with no seconds
+        dateTo = utils.convertTime(dateTo, false);      //API wants time with no seconds
+        sensorID = sensorID.replace(/_/g, ":");
 
-        return HistoricalAPI.one('devices', deviceID).customGET('readings', {'from': dateFrom, 'to': dateTo, 'rollup': rollup, 'attribute_id': sensorID, 'all_intervals': true, 'function': 'avg'});
+        return HistoricalAPI.one('entities', deviceID).customGET('readings', {'from': dateFrom, 'to': dateTo, 'rollup': rollup, 'attribute_id': sensorID, 'all_intervals': true, 'function': 'avg'});
       }
     }
 })();

@@ -124,7 +124,7 @@
         yScale1 = d3.scale.linear().range([height, 0]);
         yAxisScale = d3.scale.linear().range([height, 0]); 
 
-        dateFormat = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ').parse;//d3.time.format('%Y-%m-%dT%X.%LZ').parse; //'YYYY-MM-DDTHH:mm:ssZ'
+        dateFormat = d3.time.format.utc('%Y-%m-%dT%H:%M:%S.%LZ').parse; //d3.time.format('%Y-%m-%dT%X.%LZ').parse; //'YYYY-MM-DDTHH:mm:ssZ'
 
         xAxis = d3.svg.axis()
           .scale(xScale)

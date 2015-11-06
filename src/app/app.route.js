@@ -169,7 +169,7 @@
               if(!kitData) {
                 return undefined;
               }
-              return kitData.getSensors();;
+              return kitData.getSensors();
             },
             compareSensors: function(kitData) {
               if(!kitData) {
