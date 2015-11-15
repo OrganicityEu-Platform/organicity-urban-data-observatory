@@ -36,13 +36,22 @@
       }
 
       function getSensorName(sensor) {
-        sensor.name = sensor.name.replace(":", " ");
-        return sensor.name.toUpperCase();
+        var nameParts = sensor.name.split(":");
+        var mainName = nameParts.length > 0 ? nameParts[0] : sensor.name;
+
+        sensor.name = mainName.replace(/([A-Z])/g, ' $1').toUpperCase();
+
+        if (nameParts.length > 1) { 
+          nameParts.shift();
+          sensor.name += (" (" + nameParts.join(" ").replace(/([A-Z])/g, ' $1').toLowerCase() + ")");
+        }
+
+        return sensor.name;
       }
 
       function getSensorUnit(sensor) {
         if(sensor.unit) {
-          return sensor.unit;
+          return sensor.unit.replace(/([A-Z])/g, ' $1').toLowerCase();
         } else if(sensor.name) {
           return this.getSensorName(sensor);
         } else {
