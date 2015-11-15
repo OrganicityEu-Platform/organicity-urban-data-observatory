@@ -139,35 +139,10 @@
         }
       }
 
-      function getSensorColor(sensorName) {
-        switch(sensorName) {
-          case 'TEMPERATURE':
-            return '#ffc107';            
-            
-          case 'HUMIDITY':
-            return '#4fc3f7';
-            
-          case 'LIGHT':
-            return '#ffee58';
-            
-          case 'SOUND': 
-            return '#f06292';
-            
-          case 'CO':
-            return '#4caf50';
-            
-          case 'NO2':
-            return '#8bc34a';
-          
-          case 'NETWORKS':
-            return '#9575cd';
-
-          case 'SOLAR PANEL': 
-            return '#fff9c4';
-
-          default: 
-            return 'black';                      
-        }
+      function getSensorColor(sensor, collectionID) {
+        var colors = ['#ffc107','#4fc3f7','#ffee58','#f06292','#4caf50','#8bc34a','#9575cd','#fff9c4'];
+        if(collectionID > colors.length) collectionID = 0;
+        return colors[collectionID];
       }
 
       function getSensorDescription(sensorID, sensorTypes) {

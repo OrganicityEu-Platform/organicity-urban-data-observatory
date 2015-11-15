@@ -45,8 +45,8 @@
       FullKit.prototype.getSensors = function() {
         var sensors = _(this.data)
             .chain()
-            .map(function(sensor) {
-              return new Sensor(sensor); 
+            .map(function(sensor, i) {
+              return new Sensor(sensor, i); 
             })
             .value();
             return sensors;
