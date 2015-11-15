@@ -132,7 +132,7 @@
                 <p class="sensor_description_full" hide-popup>{{ vm.selectedSensorData.fullDescription }}</p>
               </div>
             </div>
-            <div class="sensor_compare">
+            <div ng-show="vm.selectedSensorToCompare.length" class="sensor_compare">
               <p>
                 <span>Compare with</span>
                 <md-select placeholder="NONE" ng-model="vm.selectedSensorToCompare">

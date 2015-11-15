@@ -4,25 +4,19 @@
 	angular.module('app.components')
 	  .factory('device', device);
     
-    device.$inject = ['Restangular', '$window', 'timeUtils', '$filter'];
-	  function device(Restangular, $window, timeUtils, $filter) {
-      var genericKitData, worldMarkers;
+    device.$inject = ['Restangular', '$window', 'timeUtils', '$filter', '$q'];
+	  function device(Restangular, $window, timeUtils, $filter, $q) {
+      var worldMarkers, entities;
 
       initialize();
-
-      // callGenericKitData()
-      //   .then(function(data) {
-          genericKitData = [];
-          // genericKitData = _.indexBy(data, 'id'); //temp. disable for test
-        // });
 
 	  	var service = {
         getDevices: getDevices,
         getAllDevices: getAllDevices,
+        setAllDevices : setAllDevices,
         getDevice: getDevice,
         createDevice: createDevice,
         updateDevice: updateDevice,
-        getGenericKitData: getGenericKitData,
         getWorldMarkers: getWorldMarkers,
         setWorldMarkers: setWorldMarkers
 	  	};
@@ -44,13 +38,42 @@
       	return Restangular.all('entities').getList({near: parameter, 'per_page': '100'});
       }
 
+      function setAllDevices(data) {
+        var obj = {
+          timestamp: new Date(),
+          data: data
+        };
+
+        $window.localStorage.setItem('organicity.entities', JSON.stringify(obj));
+        entities = obj.data; 
+      }
+
+
       function getAllDevices() {
-        return Restangular.all('entities').getList(); 
+        if (!areEntitiesMarkersOld()) {
+          console.log("Data is cached: Entities are less than 30sec old.");
+          var deferred = $q.defer();
+          deferred.resolve(entities);
+          return deferred.promise;
+        } else {
+          console.log("Data expired: Refreshing entities");
+          return Restangular.all('entities').getList().then(function(data) {
+            setAllDevices(data)
+            return data;
+          });
+        }
       }
 
       function getDevice(id) {
-        return Restangular.all('entities').getList().then( function(devices) {
-          return $filter('filter')(devices, {id: id})[0];
+        console.log(id);
+        return getAllDevices().then(function(entities){
+          console.log(entities);
+          return _.find(entities, function(entity) {
+             console.log(entity);
+             return entity.id == id;
+          }); 
+        }, function(error){
+          console.log(error);
         });
       }
 
@@ -60,14 +83,6 @@
 
       function updateDevice(id, data) {
         return Restangular.one('entities', id).patch(data);
-      }
-
-      function callGenericKitData() {
-        return Restangular.all('kits').getList();
-      }
-
-      function getGenericKitData() {
-        return genericKitData;
       }
 
       function getWorldMarkers() {
@@ -82,6 +97,19 @@
 
         $window.localStorage.setItem('organicity.markers', JSON.stringify(obj) );
         worldMarkers = obj.data; 
+      }
+
+      function getEntitiesTimeStamp() {
+        return ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).timestamp); 
+      }
+
+      function areEntitiesMarkersOld() {
+        var markersDate = getEntitiesTimeStamp();  
+        return !timeUtils.isWithin(30, 'seconds', markersDate);
+      }
+
+      function removeEntitiesMarkers() {
+        $window.localStorage.removeItem('organicity.entities');
       }
 
       function getTimeStamp() {

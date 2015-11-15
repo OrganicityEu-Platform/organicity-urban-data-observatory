@@ -113,6 +113,9 @@
               }
               return device.getAllDevices().then(function(data) {
                 return _.chain(data)
+                  .tap(function(data) {
+                    device.setAllDevices(data);
+                  })
                   .map(function(device) {
                     return new Marker(device);
                   })
@@ -145,18 +148,16 @@
           resolve: {
             kitData: function($stateParams, device, FullKit) {
               
-
               var kitID = $stateParams.id;
 
               if(!kitID) {
                 return undefined;
               }
               
-              return device.getDevice(kitID)
-                .then(function(deviceData) {
-                  
-                  return new FullKit(deviceData);
-                });
+              return device.getDevice(kitID).then(function(deviceData) {
+                return new FullKit(deviceData);
+              });
+
             },
             mainSensors: function(kitData) {
               if(!kitData) {
@@ -231,6 +232,7 @@
             },
             kitsData: function($q, device, PreviewKit, userData) {
               var kitIDs = _.pluck(userData.kits, 'id');
+
               if(!kitIDs.length) {
                 return [];
               }
@@ -414,11 +416,8 @@
         requireBase: false
       }).hashPrefix('!');
 
-      // RestangularProvider.setBaseUrl('https://new-api.smartcitizen.me/v0');
-      // RestangularProvider.setBaseUrl('http://150.140.92.203:8090');
-      RestangularProvider.setBaseUrl('http://ec2-54-68-181-32.us-west-2.compute.amazonaws.com:8090/v1');
-
-      //RestangularProvider.setBaseUrl('http://localhost:3000');
+      RestangularProvider.setBaseUrl('http://127.0.0.1:3000'); //Dev fixtures
+      //RestangularProvider.setBaseUrl('http://ec2-54-68-181-32.us-west-2.compute.amazonaws.com:8090/v1');
 
       /* Remove angular leaflet logs */
       $logProvider.debugEnabled(false);
