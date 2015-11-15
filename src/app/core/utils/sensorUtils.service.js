@@ -39,21 +39,31 @@
         var nameParts = sensor.name.split(":");
         var mainName = nameParts.length > 0 ? nameParts[0] : sensor.name;
 
-        sensor.name = mainName.replace(/([A-Z])/g, ' $1').toUpperCase();
+        var sensorName = (mainName.toUpperCase() === mainName) ? mainName : mainName.replace(/([A-Z])/g, ' $1').toUpperCase();
 
         if (nameParts.length > 1) { 
           nameParts.shift();
-          sensor.name += (" (" + nameParts.join(" ").replace(/([A-Z])/g, ' $1').toLowerCase() + ")");
+          var sensorExtra = nameParts.join(" ");
+          sensorExtra = (sensorExtra.toUpperCase() === sensorExtra) ? sensorExtra : sensorExtra.replace(/([A-Z])/g, ' $1').toUpperCase();
+          sensorName += (" (" + sensorExtra + ")");
         }
 
-        return sensor.name;
+        return sensorName;
       }
 
       function getSensorUnit(sensor) {
         if(sensor.unit) {
           return sensor.unit.replace(/([A-Z])/g, ' $1').toLowerCase();
         } else if(sensor.name) {
-          return this.getSensorName(sensor);
+        /*          
+          var nameParts = sensor.name.split(":");
+          if (nameParts.length > 1) {
+            var sensorExtra = nameParts[nameParts.length-1]
+            sensorExtra = (sensorExtra.toUpperCase() === sensorExtra) ? sensorExtra : sensorExtra.replace(/([A-Z])/g, ' $1').toUpperCase();
+            return sensorExtra;
+          }
+        */
+          return "Units not defined";
         } else {
           return "No name";
         }
