@@ -6,15 +6,9 @@
 
     sensor.$inject = ['Restangular', 'HistoricalAPI', 'utils', 'sensorUtils'];
     function sensor(Restangular, HistoricalAPI, utils, sensorUtils) {
-      // var sensorTypes;
-      // callAPI().then(function(data) { //temp. disable for test
-        setTypes([]);
-      // });
 
       var service = {
         callAPI: callAPI,
-        setTypes: setTypes,
-        getTypes: getTypes,
         getSensorsDataNew: getSensorsDataNew
       };
       return service;
@@ -22,15 +16,7 @@
       ////////////////
 
       function callAPI() {
-        return Restangular.all('sensors').getList();
-      }
-
-      function setTypes(sensorTypes) {
-        sensorTypes = sensorTypes;
-      }
-
-      function getTypes() {
-        return sensorTypes;
+        return Restangular.all('attibutes').getList(); // Not implemented
       }
 
       function getSensorsDataNew(deviceID, sensorID, dateFrom, dateTo) {
