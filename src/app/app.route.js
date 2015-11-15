@@ -423,7 +423,7 @@
 
       // RestangularProvider.setBaseUrl('https://new-api.smartcitizen.me/v0');
       // RestangularProvider.setBaseUrl('http://150.140.92.203:8090');
-      RestangularProvider.setBaseUrl('http://explorer-api.organicity.smartcitizen.me:8090/v1');
+      RestangularProvider.setBaseUrl('http://ec2-54-68-181-32.us-west-2.compute.amazonaws.com:8090/v1');
 
       //RestangularProvider.setBaseUrl('http://localhost:3000');
 
