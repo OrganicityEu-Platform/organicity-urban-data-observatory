@@ -24,7 +24,6 @@
       if(kitData){
         animation.kitLoaded({lat: kitData.latitude ,lng: kitData.longitude, id: parseInt($stateParams.id) });
       }
-      console.log(mainSensors);
 
       vm.kit = kitData;
       vm.ownerKits = ownerKits;
@@ -36,8 +35,6 @@
       vm.sensorsToCompare = compareSensors;
 
       vm.slide = slide;
-
-      console.log(vm.sensors[0]);
 
       vm.selectedSensor = (vm.sensors && vm.sensors.length > 0) ? vm.sensors[0].uuid : undefined;
       vm.selectedSensorData = {};
@@ -65,6 +62,7 @@
             }
           });
         }
+        
         vm.sensorsToCompare = getSensorsToCompare();
 
         $timeout(function() {
@@ -96,7 +94,7 @@
         }, 100);
 
       });
-
+      
       $scope.$on('hideChartSpinner', function() {
         vm.loadingChart = false;
       });
@@ -187,7 +185,6 @@
         // it can be either 2 sensors or 1 sensor, so we use $q.all to wait for all
         $q.all(
           _.map(sensorsID, function(sensorID) {
-            console.log(sensorsID);
             var id = vm.kit.uuid;//$stateParams.id
             return getChartData(id, sensorID, options.from, options.to)
               .then(function(data) {
@@ -213,6 +210,7 @@
       function prepareChartData(sensorsID) {
         var compareSensor;
         var parsedDataMain = parseSensorData(sensorsData, sensorsID[0]);
+
         var mainSensor = {
           data: parsedDataMain,
           color: vm.selectedSensorData.color,
@@ -256,7 +254,6 @@
           mainSensorID = sensorID;
         } else if(options.type === 'compare') {
           compareSensorID = sensorID;
-          console.log(sensorID);
         }
       }
 
