@@ -25,6 +25,8 @@
         animation.kitLoaded({lat: kitData.latitude ,lng: kitData.longitude, id: parseInt($stateParams.id) });
       }
 
+      vm.hasHistorical = false;
+
       vm.kit = kitData;
       vm.ownerKits = ownerKits;
       vm.kitBelongsToUser = belongsToUser;
@@ -45,7 +47,7 @@
       vm.showSensorOnChart = showSensorOnChart;
       vm.moveChart = moveChart;
       vm.loadingChart = true;
-
+      
       vm.geolocate = geolocate;
 
       // event listener on change of value of main sensor selector
@@ -201,8 +203,10 @@
       function getChartData(deviceID, sensorID, dateFrom, dateTo, options) {
         return sensor.getSensorsDataNew(deviceID, sensorID, dateFrom, dateTo)
           .then(function(data) {
-            //save sensor data of this kit so that it can be reused
             sensorsData[sensorID] = data.readings;
+            return data;
+          }, function(data) {
+            sensorsData[sensorID] = [];
             return data;
           });
       }
@@ -210,6 +214,12 @@
       function prepareChartData(sensorsID) {
         var compareSensor;
         var parsedDataMain = parseSensorData(sensorsData, sensorsID[0]);
+
+        if(parsedDataMain.length === 0) { //tmp. quick fix
+          vm.hasHistorical = false;
+        } else {
+          vm.hasHistorical = true;
+        }
 
         var mainSensor = {
           data: parsedDataMain,
@@ -231,9 +241,9 @@
       function parseSensorData(data, sensorID) {
         if(data[sensorID].length === 0) {
           return [];
-        }
+        } 
         return data[sensorID].map(function(dataPoint) {
-          var time = moment(dataPoint.datetime).toISOString(); //tmp. ensure validation
+          var time = moment(dataPoint.datetime).format('YYYY-MM-DD[T]HH:mm:ss[Z]'); //tmp. ensure validation
           var value = Number(dataPoint.value);
           var count = value === null ? 0 : value;
 

@@ -176,6 +176,11 @@
             <!-- <div style="clear: both"></div> -->
 
             <md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner" md-mode="indeterminate"></md-progress-circular>
+
+            <div ng-show="!vm.hasHistorical" class="chart_nodata md-hue-3">
+              <h3>No historical data is available</h3>
+              <p><small>Historical data is not available on the selected time span. <br>Try selecting a different time range.</small></p>
+            </div>
             <div chart class="chart_container" chart-data="vm.chartDataMain">
             </div>
           </div>
