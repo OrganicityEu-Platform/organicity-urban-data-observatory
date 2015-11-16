@@ -71,7 +71,7 @@
     	vm.defaults = {
         dragging: true,
         touchZoom: true,
-        scrollWheelZoom: false,
+        scrollWheelZoom: true,
         doubleClickZoom: true,
         boxZoom: true
     	};

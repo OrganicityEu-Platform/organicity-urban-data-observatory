@@ -102,10 +102,34 @@
         if(object.data.location.latitude && object.data.location.longitude && object.data.location.latitude != 0 && object.data.location.longitude != 0) {
             location.lat = object.data.location.latitude;
             location.lng = object.data.location.longitude;
-        } else {
-            location.lat = 50.8500;
-            location.lng = 4.3500;
+        } else if (object.provider.location.city){ //tmp. for unlocated data
+
+            var providerFixture = [
+              {
+                city: "Santander",
+                lat: 43.4647222,
+                lng: -3.8044444
+              },
+              {
+                city: "London",
+                lat: 51.5072,
+                lng: -0.1275
+              },
+              {
+                city: "Aarhus",
+                lat: 56.1572,
+                lng: 10.2107
+              }
+            ];
+
+          var providerLocation = _.find(providerFixture, function(provider) {
+            return provider.city == object.provider.location.city
+          });
+
+          location.lat = providerLocation.lat;
+          location.lng = providerLocation.lng;  
         }
+
         return location;
       }
 

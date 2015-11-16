@@ -65,15 +65,10 @@
       }
 
       function getDevice(id) {
-        console.log(id);
         return getAllDevices().then(function(entities){
-          console.log(entities);
           return _.find(entities, function(entity) {
-             console.log(entity);
              return entity.id == id;
           }); 
-        }, function(error){
-          console.log(error);
         });
       }
 
