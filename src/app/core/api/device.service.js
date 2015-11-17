@@ -6,7 +6,7 @@
     
     device.$inject = ['Restangular', '$window', 'timeUtils', '$filter', '$q'];
 	  function device(Restangular, $window, timeUtils, $filter, $q) {
-      var worldMarkers, entities;
+      var worldMarkers, entities, entitiesPrevious;
 
       initialize();
 

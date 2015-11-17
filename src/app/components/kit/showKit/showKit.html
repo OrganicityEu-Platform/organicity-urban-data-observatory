@@ -90,7 +90,7 @@
             <div class="sensor_value" ng-class="{sensor_value_null: sensor.value === 'N/A'}">{{ sensor.value }}</div>
             <div class="sensor_right">
               <div class="sensor_unit">{{ sensor.unit }}</div>
-              <md-icon md-svg-src="{{ sensor.arrow }}" class="sensor_arrow">
+              <md-icon ng-if="sensor.arrow" md-svg-src="{{ sensor.arrow }}" class="sensor_arrow">
               </md-icon>
             </div>
           </div>
