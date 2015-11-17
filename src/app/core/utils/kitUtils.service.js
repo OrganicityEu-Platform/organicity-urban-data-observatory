@@ -34,15 +34,13 @@
         if(!object.name) {
           return;
         }
-        var startsIn = 4;
+
         var entityName = object.name.split(":");
-        var name = entityName[startsIn];
 
-        for (var i = startsIn+1; i < entityName.length; i++) {
-          name += " " + entityName[i];
-        };
+        entityName = entityName.slice(4, entityName.length);
+        entityName = _.map(entityName, makeCase);
 
-        object.name = this.makeCase(name);
+        object.name = entityName.join(" ");
 
         return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
       }
