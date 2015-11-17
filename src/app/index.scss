@@ -790,7 +790,9 @@ section .kit_menu {
 
         md-select.md-default-theme .md-select-label {
           border-bottom-color: #6B868D;
+          line-height: 1em !important;
         }
+
         .sensor_select {
           .sensor_icon_selected {
             margin-right: 8px;
@@ -803,13 +805,13 @@ section .kit_menu {
           font-size: 14px;
           font-weight: normal;
           color: $font_color_blue_light;
-          height: 80px;
+          height: 50px;
           margin-top: 25px; //30;
           position: relative;
 
           h6 {
             margin: 0;
-            line-height: 0;
+            //line-height: 0;
             color: #87CCDD;
           }
 
@@ -1203,8 +1205,8 @@ md-progress-linear.md-default-theme.md-hue-3 .md-bar {
 .chart_nodata {
   position: relative;
   text-align: center;
-  margin: 15% auto;
-  height: 50%;
+  margin: 63px;
+  height: 120px;
 }
 
 
