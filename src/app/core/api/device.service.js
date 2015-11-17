@@ -111,7 +111,7 @@
 
       function areEntitiesMarkersOld() {
         var markersDate = getEntitiesTimeStamp();  
-        return !timeUtils.isWithin(30, 'seconds', markersDate);
+        return !timeUtils.isWithin(60, 'seconds', markersDate);
       }
 
       function removeEntitiesMarkers() {
@@ -124,7 +124,7 @@
 
       function areMarkersOld() {
         var markersDate = getTimeStamp();  
-        return !timeUtils.isWithin(30, 'seconds', markersDate);
+        return !timeUtils.isWithin(60, 'seconds', markersDate);
       }
 
       function removeMarkers() {
