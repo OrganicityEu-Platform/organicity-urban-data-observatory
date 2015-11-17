@@ -91,7 +91,7 @@
         Abstract state, it only activates when there's a child state activated
         */
         .state('layout.home', {
-          url: '/assets',
+          url: '/resources',
           abstract: true,
           views: {
             '': {
@@ -347,7 +347,7 @@
               if(auth.isAuth()) {
                 return $location.path('/');
               }
-              $location.path('/assets');
+              $location.path('/resources');
               $location.search('login', 'true');
             }
           }
@@ -409,7 +409,7 @@
         });
 
       /* Default state */
-      $urlRouterProvider.otherwise('/assets');
+      $urlRouterProvider.otherwise('/resources');
 
       $locationProvider.html5Mode({
         enabled: true,
