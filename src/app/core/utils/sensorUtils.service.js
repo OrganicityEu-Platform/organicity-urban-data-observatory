@@ -141,7 +141,7 @@
       }
 
       function getSensorColor(sensor, collectionID) {
-        var colors = ['#ffc107','#4fc3f7','#ffee58','#f06292','#4caf50','#8bc34a','#9575cd','#fff9c4'];
+        var colors = ['#00FFA8','#4fc3f7','#ffee58','#f06292','#ef4070', '#ffc107','#8bc34a','#9575cd','#fff9c4'];
         if(collectionID > colors.length) collectionID = 0;
         return colors[collectionID];
       }

@@ -206,6 +206,7 @@
         svg.append('g')
           .attr('class', 'axis x')
           .attr('transform', 'translate(0,' + height + ')')
+          .style('fill', '#FFF')
           .call(xAxis);
 
         // Add the Y Axis

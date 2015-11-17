@@ -231,7 +231,7 @@ md-select-menu {
   text-transform: uppercase;
 }
 md-select.md-default-theme:not([disabled]):focus .md-select-label {
-  border-bottom-color: #6B868D;
+  border-bottom-color: $extra_color;
 }
 
 md-content.md-default-theme {
@@ -733,8 +733,9 @@ section .kit_menu {
       right: 5px;
     }
     .sensor_name {
-      font-size: 10px;
+      font-size: 14px;
       text-align: center;
+      font-weight: bold;
       color: $blue_light;
     }
   }
@@ -789,7 +790,7 @@ section .kit_menu {
         height: 100%;
 
         md-select.md-default-theme .md-select-label {
-          border-bottom-color: #6B868D;
+          border-bottom-color: $extra_color;
           line-height: 1em !important;
         }
 
@@ -845,7 +846,7 @@ section .kit_menu {
           display: inline-block;
 
           .sensor_value {
-            font-size: 22px;
+            font-size: 30px;
             font-weight: bold;
           }
           .sensor_unit {
@@ -915,13 +916,13 @@ section .kit_menu {
               width: 40px;
               height: 24px;
               display: inline-flex;
-              border: 1px solid #6B868D;
+              border: 1px solid $extra_color;
             }
             .chart_move_right {
               margin-left: 4px;
             }
             .chart_move_left {
-              background-color: #99AEB2;
+              background-color: $extra_color;
             }
             md-icon {
               width: 5.5px;
@@ -2067,8 +2068,8 @@ section .stickMenu {
 .date_picker {
   height: 24px;
   border-radius: 2px;
-  border: 1px solid #6B868D;
-  color: #A4B0B3;
+  border: 1px solid $extra_color;
+  color: $extra_color;
   background-color: transparent;
 }
 

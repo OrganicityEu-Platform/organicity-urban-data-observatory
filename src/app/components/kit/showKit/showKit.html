@@ -11,10 +11,6 @@
           <img ng-src="./assets/images/sensor_icon.svg" />
           <span>{{ vm.kit.name }}</span>
         </div>
-        <div class="kit_battery" layout="row" layout-align="start center">
-          <md-icon md-svg-src="{{ vm.battery.icon }}"> </md-icon>
-          <span>{{ vm.battery.value }} {{ vm.battery.unit }}</span>
-        </div>
       </div>
       <div class="kit_time" layout="row" layout-align="start center">
         <span>Last data received: {{ vm.kit.timeParsed }}</span>
@@ -84,8 +80,6 @@
         <div ng-repeat="sensor in vm.sensors" class="sensor_container" ng-click="vm.showSensorOnChart(sensor.uuid)">
           <div layout="row">
             <div>
-              <md-icon md-svg-src="{{ sensor.icon }}" class="sensor_icon" flex="20">
-              </md-icon>
             </div>
             <div class="sensor_value" ng-class="{sensor_value_null: sensor.value === 'N/A'}">{{ sensor.value }}</div>
             <div class="sensor_right">
@@ -111,20 +105,23 @@
                 analytics-on="click" analytics-category="Kit Chart"
                 analytics-event="click" analytics-label="Metric">
                 <md-option ng-repeat="sensor in vm.sensors" ng-value="sensor.uuid" ng-selected="$first">
-                  <span>
+                  <md-select-label style="color: {{ vm.selectedSensorData.color }}">
+                    {{ vm.selectedSensorData.name }}
+                  </md-select-label>
+                  <span class="sensor_name">
                     {{ sensor.name }}
                   </span>
                 </md-option>
               </md-select>
             </div>
-            <div class="sensor_data" show-popup-info>
+            <div style="color: {{ vm.selectedSensorData.color }};" class="sensor_data" show-popup-info>
               <span class="sensor_value">{{ vm.selectedSensorData.value }}</span>
               <span class="sensor_unit">{{ vm.selectedSensorData.unit }}</span>
 <!--                 <md-icon md-svg-src="./assets/images/alert_icon.svg" alt="Insert Drive Icon" class="sensor_data_icon" show-popup-info></md-icon> -->
             </div>
             <div class="sensor_data_description" hide-popup-info>This is the latest value received</div>
             <div class="sensor_description" >
-              <h6>{{ vm.selectedSensorData.name }}</h6>
+              <h6 style="color: {{ vm.selectedSensorData.color }};">{{ vm.selectedSensorData.name }}</h6>
               <div class="sensor_description_content" >
                 <p class="sensor_description_preview">{{ vm.selectedSensorData.previewDescription }}<a href="#" ng-show="vm.selectedSensorData.previewDescription.length > 140" show-popup>More info</a></p>
                 <p class="sensor_description_full" hide-popup>{{ vm.selectedSensorData.fullDescription }}</p>
@@ -137,7 +134,6 @@
                   <md-option ng-repeat="sensor in vm.sensorsToCompare" ng-value="sensor.uuid"
                     analytics-on="click" analytics-category="Kit Chart"
                     analytics-event="click" analytics-label="Compare">
-                    <img class="select_image" ng-src="{{ sensor.icon }}">
                     <span class="sensor_name">
                       {{ sensor.name }}
                     </span>
