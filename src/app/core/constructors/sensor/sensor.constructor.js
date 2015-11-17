@@ -31,10 +31,9 @@
         this.color = sensorUtils.getSensorColor(sensorData, collectionID);
         this.uuid = sensorData.attributes_id.replace(/:/g, '_');; //new must add parse and document
 
-
         var description = false;//sensorUtils.getSensorDescription(this.id, sensorTypes);
         
-        description = (description) ? description : "Not available";
+        description = (description) ? description : "Description not available";
         this.fullDescription = description;
         this.previewDescription = description.length > 140 ? description.slice(0, 140).concat(' ... ') : description;
       }

@@ -243,7 +243,7 @@
           return [];
         } 
         return data[sensorID].map(function(dataPoint) {
-          var time = moment(dataPoint.datetime).format('YYYY-MM-DD[T]HH:mm:ss[Z]'); //tmp. ensure validation
+          var time = moment(new Date(dataPoint.datetime)).format('YYYY-MM-DD[T]HH:mm:ss[Z]'); //tmp. ensure validation
           var value = Number(dataPoint.value);
           var count = value === null ? 0 : value;
 

@@ -69,7 +69,7 @@
       </p>
       <div class="hint">
         <p>
-          We can also take you to your nearest resorces by letting us know your location.
+          We can also take you to your nearest resources by letting us know your location.
         </p>
         <md-button class="call-to-action" ng-click="vm.geolocate()">Locate me</md-button>
       </div>
@@ -223,8 +223,8 @@
                   <span ng-repeat='tag in vm.kit.userTags'>{{ tag }}</span>
                 </p>
                 <div class="kit_details_description">
-                  <h4 class="kit_details_description_title">Kit Description:</h4>
-                  <p class="kit_details_description_content">{{ vm.kit.description || 'No data' }}</p>
+                  <h4 class="kit_details_description_title">Resource description:</h4>
+                  <p class="kit_details_description_content">{{ vm.kit.description || 'This is a resource provided by ' + vm.kit.owner.username + '.'}}</p>
                 </div>
               </div>
             </div>

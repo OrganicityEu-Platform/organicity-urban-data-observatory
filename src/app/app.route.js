@@ -347,7 +347,7 @@
               if(auth.isAuth()) {
                 return $location.path('/');
               }
-              $location.path('/kits/667');
+              $location.path('/assets');
               $location.search('login', 'true');
             }
           }
@@ -409,7 +409,7 @@
         });
 
       /* Default state */
-      $urlRouterProvider.otherwise('/');
+      $urlRouterProvider.otherwise('/assets');
 
       $locationProvider.html5Mode({
         enabled: true,

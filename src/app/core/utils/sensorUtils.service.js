@@ -128,7 +128,8 @@
 
       function getSensorArrow(currentValue, prevValue) {
         currentValue = parseInt(currentValue) || 0;
-        prevValue = parseInt(prevValue) || 0;
+
+        if (!parseInt(prevValue)) return null;
 
         if(currentValue > prevValue) {
           return './assets/images/arrow_up_icon.svg';          

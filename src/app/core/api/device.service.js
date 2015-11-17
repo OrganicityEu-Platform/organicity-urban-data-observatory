@@ -27,7 +27,7 @@
 
       function initialize() {
         if(areMarkersOld()) {
-          console.log("Markers expired");
+          console.log("Data expired: Refreshing markers");
           removeMarkers();
         }
       }
@@ -38,25 +38,35 @@
       	return Restangular.all('entities').getList({near: parameter, 'per_page': '100'});
       }
 
-      function setAllDevices(data) {
+      function setAllDevices(data) {        
         var obj = {
           timestamp: new Date(),
           data: data
         };
-
+        removeEntitiesMarkers();
         $window.localStorage.setItem('organicity.entities', JSON.stringify(obj));
         entities = obj.data; 
       }
 
+      function setPrevAllDevices() {
+        entitiesPrevious = entities; 
+      }
+
+      function getPrevAllDevices() {
+        var deferred = $q.defer();
+        deferred.resolve(entitiesPrevious);
+        return deferred.promise;
+      }
 
       function getAllDevices() {
         if (!areEntitiesMarkersOld()) {
           console.log("Data is cached: Entities are less than 30sec old.");
           var deferred = $q.defer();
-          deferred.resolve(entities);
+          deferred.resolve(entities || ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).data));
           return deferred.promise;
         } else {
           console.log("Data expired: Refreshing entities");
+          setPrevAllDevices();
           return Restangular.all('entities').getList().then(function(data) {
             setAllDevices(data)
             return data;
@@ -81,6 +91,7 @@
       }
 
       function getWorldMarkers() {
+        console.log("Data is cached: Markers are less than 30sec old.");
         return worldMarkers || ($window.localStorage.getItem('organicity.markers') && JSON.parse($window.localStorage.getItem('organicity.markers') ).data);
       }
 
