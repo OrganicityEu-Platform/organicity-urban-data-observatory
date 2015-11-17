@@ -16,12 +16,14 @@
        */
       
       function SearchResult(object) {
-        this.type = object.type;
+        this.type = searchUtils.parseType(object);
         this.id = object.id;
         this.name = searchUtils.parseName(object);
         this.location = searchUtils.parseLocation(object);
         this.icon = searchUtils.parseIcon(object, this.type);
         this.iconType = searchUtils.parseIconType(this.type);
+        this.lastUpdated = searchUtils.parseTime(object);
+        console.log(this.icon);
       }
       return SearchResult;
     }]);

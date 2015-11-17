@@ -88,9 +88,8 @@
         var source = entityName[3];
         var origin = entityName[4];
 
-        if(source) system_tags.push(source);
+        // if(source) system_tags.push(source);
         if(origin) system_tags.push(origin);
-
         /*jshint camelcase: false */
         return system_tags;
       }
