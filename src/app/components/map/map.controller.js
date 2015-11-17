@@ -180,8 +180,6 @@
       };
 
       vm.filterData = {
-        indoor: true,
-        outdoor: true,
         online: true,
         offline: true
       };
