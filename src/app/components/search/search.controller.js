@@ -4,8 +4,8 @@
   angular.module('app.components')
     .controller('SearchController', SearchController);
 
-    SearchController.$inject = ['$scope', 'search', 'SearchResult', '$location', 'animation', 'SearchResultLocation', 'device', 'kitUtils'];
-    function SearchController($scope, search, SearchResult, $location, animation, SearchResultLocation, device, kitUtils) {
+    SearchController.$inject = ['$scope', 'search', 'SearchResult', '$location', 'animation', 'SearchResultLocation', 'device', 'kitUtils', '$http', '$q'];
+    function SearchController($scope, search, SearchResult, $location, animation, SearchResultLocation, device, kitUtils, $http, $q) {
       var vm = this;
 
       vm.searchTextChange = searchTextChange;
@@ -39,15 +39,16 @@
           }
       }
 
+      // WARNING: All the code below is a temporary "quick code" for demo!
+
+
       function querySearch(query) {
 
         if(query.length < 3) {
           return [];
         }
 
-        // ga('send', 'event', 'Search Input', 'search', query);
-
-        return device.getAllDevices()
+        return $q.all([device.getAllDevices(), getPlacesMapzen(query)])
           .then(function(data) {
 
             if(data.length === 0) {
@@ -59,7 +60,56 @@
             //disable scrolling on body if dropdown is present
             angular.element(document.body).css('overflow', 'hidden');
 
-            return _.chain(data).filter(function(item){ 
+            return joinSearches(data, query); //tmp. limit 10 results
+
+          });
+      }
+
+     function getMapboxPlaces(location){
+          location = location.replace(" ", "+");
+          return $http.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+ location + '.json?access_token=pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImNpaDN5aXlzZDAwdG9ybGx5ajB4bjBob2gifQ.tG2iuCSdCelgkoSy6pEvaA');
+      }
+
+      function getPlacesMapzen(location){
+          location = location.replace(" ", "+");
+          return $http.get('http://search.mapzen.com/v1/autocomplete?api_key=search-h8Qe8fY&text='+ location);
+      }
+
+      function filterPlaces(places){
+        if (!places ||  !places.data || places.data.features.length === 0) return [];
+        places = places.data.features.slice(0, 3); //just first 5 results
+        return _.map(places, getMapzenPlaceReadyForModel);
+      }
+
+      function getMapboxPlaceReadyForModel(place){
+        var searchResult = {}
+        searchResult.type = "location";
+        searchResult.name = place.place_name;
+        searchResult.data = {
+          location: {
+            longitude: place.geometry.coordinates[0],
+            latitude: place.geometry.coordinates[1]
+          } 
+        };
+        return new SearchResultLocation(searchResult);
+      }
+
+      function getMapzenPlaceReadyForModel(place){
+        var searchResult = {
+          type: "location",
+          name: place.properties.label,
+          data: {
+            location: {
+              longitude: place.geometry.coordinates[0],
+              latitude: place.geometry.coordinates[1]
+            } 
+        }
+        }
+        return new SearchResultLocation(searchResult);
+      }
+
+      function filterEntities(query, entities){
+        return _.chain(entities).filter(function(item){ 
 
                 item.searchMatches = [];
 
@@ -78,16 +128,7 @@
                   category: "name",
                   scope: item.data.attributes,
                   match: "name"
-                },
-                {
-                  category: "location",
-                  match: item.provider.location.city
-                },
-                {
-                  category: "location",
-                  match: item.provider.location.country
-                }
-                ];
+                }];
 
                 _.each(keysToSearch, function(keyToSearch){
                   if (keyToSearch.scope && _.isArray(keyToSearch.scope)) {
@@ -112,6 +153,7 @@
                 return (matches.length > 0) ? true : false ;
 
               }).map(function(object) {
+                  object.type = "name"; //tmp hack!
                   return new SearchResultLocation(object);
               }).sortBy(function(result){
                 var d = new Date(result.lastUpdated);
@@ -120,10 +162,14 @@
                 if(data.length === 0) {
                   angular.element(document.body).css('overflow', 'auto');
                 }
-              }).slice(0, 15).value(); //tmp. limit 10 results
-
-
-          });
+              }).slice(0, 10).value() //tmp. reduce to 10 results.
       }
+
+      function joinSearches(data, query){
+        var e = filterEntities(query, data[0]);
+        var p = filterPlaces(data[1]);
+        return p.concat(e);;
+      }
+
     }
 })();

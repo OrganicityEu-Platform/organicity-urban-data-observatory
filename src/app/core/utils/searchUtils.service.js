@@ -19,7 +19,8 @@
 
       /////////////////
 
-      function parseType(object) {        
+      function parseType(object) {  
+        if (object.type) return object.type;      
         return object.searchMatches[0]; // tmp. single Type
       }
 
@@ -42,6 +43,10 @@
       function parseName(object) {
         if(!object.name) {
           return;
+        }
+
+        if(object.type == "location") {
+          return object.name;
         }
 
         var entityName = object.name.split(":");
