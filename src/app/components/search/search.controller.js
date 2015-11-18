@@ -128,28 +128,31 @@
                   category: "name",
                   scope: item.data.attributes,
                   match: "name"
+                },
+                {
+                  category: "name",
+                  scope: item.data.attributes,
+                  match: "unit"
                 }];
 
                 _.each(keysToSearch, function(keyToSearch){
                   if (keyToSearch.scope && _.isArray(keyToSearch.scope)) {
                      _.each(keyToSearch.scope, function(elementToSearch){
                         if(elementToSearch[keyToSearch.match]){
-                          var keyMatches = elementToSearch[keyToSearch.match].match(query);
-                          if(keyMatches && keyMatches.length > 0) {
-                            matches.push(keyMatches);
+                          if(elementToSearch[keyToSearch.match].toLowerCase().indexOf(query.toLowerCase()) > -1) {
+                            matches.push(elementToSearch);
                             item.searchMatches.push(keyToSearch.category);
                           } 
                         }
                      });
                   } else {
-                    var keyMatches = keyToSearch.match.match(query);
-                    if(keyMatches && keyMatches.length > 0) {
-                      matches.push(keyMatches);
+                    if(keyToSearch.match.toLowerCase().indexOf(query.toLowerCase()) > -1) {
+                      matches.push(keysToSearch);
                       item.searchMatches.push(keyToSearch.category);
                     } 
                   }
                 });
-                return (matches.length > 0) ? true : false ;
+                return (matches.length > 0) ? true : false;
 
               }).map(function(object) {
                   object.type = "name"; //tmp hack!
