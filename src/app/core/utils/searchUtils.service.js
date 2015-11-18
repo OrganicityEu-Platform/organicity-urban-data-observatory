@@ -21,7 +21,7 @@
 
       function parseType(object) {  
         if (object.type) return object.type;      
-        return object.searchMatches[0]; // tmp. single Type
+        //return object.searchMatches[0]; // tmp. single Type
       }
 
       function parseLocation(object) {

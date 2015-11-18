@@ -149,7 +149,6 @@
                     } 
                   }
                 });
-                if (matches.length > 0) console.log(matches); //debug
                 return (matches.length > 0) ? true : false ;
 
               }).map(function(object) {

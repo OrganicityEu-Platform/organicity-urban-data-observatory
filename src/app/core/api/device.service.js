@@ -60,7 +60,7 @@
 
       function getAllDevices() {
         if (!areEntitiesMarkersOld()) {
-          console.log("Data is cached: Entities are less than 30sec old.");
+          console.log("Data is cached: Entities are less than 60sec old.");
           var deferred = $q.defer();
           deferred.resolve(entities || ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).data));
           return deferred.promise;
@@ -91,7 +91,7 @@
       }
 
       function getWorldMarkers() {
-        console.log("Data is cached: Markers are less than 30sec old.");
+        console.log("Data is cached: Markers are less than 60sec old.");
         return worldMarkers || ($window.localStorage.getItem('organicity.markers') && JSON.parse($window.localStorage.getItem('organicity.markers') ).data);
       }
 

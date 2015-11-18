@@ -23,7 +23,6 @@
         this.icon = searchUtils.parseIcon(object, this.type);
         this.iconType = searchUtils.parseIconType(this.type);
         this.lastUpdated = searchUtils.parseTime(object);
-        console.log(this.icon);
       }
       return SearchResult;
     }]);
