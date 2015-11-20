@@ -182,7 +182,7 @@
       function isOnline(object) {
         var time = this.parseTime(object);
         var timeDifference =  (new Date() - new Date(time))/1000;
-        if(!time || timeDifference > 24*60*60) {
+        if(!time || timeDifference > 7*24*60*60) { //a week
           return false;
         } else {
           return true;
