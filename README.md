@@ -1,6 +1,9 @@
-# SmartCitizen
+# Urban Data Observatory
 
-The new SmartCitizen front-end. Working together with the new [SmartCitizen API](https://github.com/fablabbcn/smartcitizen).
+This is the Urban Data Observatory front-end. A tool for exploring data and imagine future experiments using the Organicity EaaS platform. This works together with the [Organicity APIs](http://organicityeu.github.io/api/).
+
+This tool is based on the [SmartCitizen](http://smartcitizen.me) front-end framework.
+
 
 ### Prerequisites
 
@@ -53,7 +56,7 @@ Visit https://github.com/ajoslin/conventional-changelog/blob/master/CONVENTIONS.
 ### Naming conventions for files
 Same for all types of components:
 <Name of component camelcased>.<Type of module>.js
-Ex: kit.controller.js, sensor.service.js, profileTools.constant.js
+Ex: resources.controller.js, sensor.service.js, profileTools.constant.js
 
 
 ### Naming conventions for components
@@ -66,5 +69,5 @@ For data that has been resolved from the router, I've normally appended 'Data' t
 
 ### Deployment
 
-* **Staging:** Change base tag on index.html to `base` url for staging: http://fablabbcn.github.io/smartcitizen-web/ and do `gulp deploy`. 
+* **Staging:** Change base tag on index.html to `base` url for staging: http://organicityeu.github.io/UrbanDataObservatory/ and do `gulp deploy`. 
 * **Production:** Change base tag back to `/`. Do `cap production deploy` and select the branch you want to deploy.
