@@ -20,8 +20,8 @@ Also gulp: `npm install -g gulp` (with `sudo` if you are using Mac).
 Clone the repository using:
 
 ```
-git clone https://github.com/fablabbcn/smartcitizen-web.git
-cd smartcitizen-web
+git clone https://github.com/OrganicityEu/UrbanDataObservatory.git
+cd UrbanDataObservatory
 ```
 
 ### Install dependencies
@@ -70,4 +70,4 @@ For data that has been resolved from the router, I've normally appended 'Data' t
 ### Deployment
 
 * **Staging:** Change base tag on index.html to `base` url for staging: http://organicityeu.github.io/UrbanDataObservatory/ and do `gulp deploy`. 
-* **Production:** Change base tag back to `/`. Do `cap production deploy` and select the branch you want to deploy.
+* **Production:** Change base tag back to `/`. Do `cap production deploy` and select the branch you want to deploy at http://organicity.smartcitizen.me/
