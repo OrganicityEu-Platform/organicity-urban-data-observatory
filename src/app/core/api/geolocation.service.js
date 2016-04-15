@@ -44,7 +44,7 @@
       }
 
 			function grantHTML5Geolocation(){
-				$window.localStorage.setItem('smartcitizen.geolocation_granted', true);
+				$window.localStorage.setItem('organicity.geolocation_granted', true);
 			}
 
 			function isHTML5GeolocationGranted(){

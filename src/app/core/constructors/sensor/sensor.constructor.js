@@ -19,21 +19,24 @@
        * @property {string} fullDescription - Full Description for popup
        * @property {string} previewDescription - Short Description for dashboard. Max 140 chars
        */
-      function Sensor(sensorData, sensorTypes) {
+      function Sensor(sensorData, collectionID) {
+        
         this.name = sensorUtils.getSensorName(sensorData);
         this.id = sensorData.id;
-        this.unit = sensorUtils.getSensorUnit(this.name);
+        this.unit = sensorUtils.getSensorUnit(sensorData);
         this.value = sensorUtils.getSensorValue(sensorData);
         this.prevValue = sensorUtils.getSensorPrevValue(sensorData);
-        this.icon = sensorUtils.getSensorIcon(this.name);
+        this.icon = sensorUtils.getSensorIcon(sensorData.id);
         this.arrow = sensorUtils.getSensorArrow(this.value, this.prevValue);
-        this.color = sensorUtils.getSensorColor(this.name);
+        this.color = sensorUtils.getSensorColor(sensorData, collectionID);
+        this.uuid = sensorData.attributes_id.replace(/:/g, '_');; //new must add parse and document
 
-        var description = sensorUtils.getSensorDescription(this.id, sensorTypes);
+        var description = false;//sensorUtils.getSensorDescription(this.id, sensorTypes);
+        
+        description = (description) ? description : "Description not available";
         this.fullDescription = description;
         this.previewDescription = description.length > 140 ? description.slice(0, 140).concat(' ... ') : description;
       }
-
       return Sensor; 
     }]);
 })();

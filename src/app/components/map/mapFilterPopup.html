@@ -9,18 +9,6 @@
       <div class="modal_message">
         <p class="message">You can apply some filters to get more accurate results on the map.</p>
       </div>
-      <div class="input_filter">
-        <h3>Location filter</h3>
-        <small>now showing <span ng-show="form.indoor">Indoor</span><span ng-show="form.indoor && form.outdoor">, </span><span ng-show="form.outdoor">Outdoor</span></small>
-        <div class="modal_mapFilter_input">
-          <md-checkbox ng-change="applyFilterRules()" ng-model="form.indoor" aria-label></md-checkbox>
-          <span>Indoor</span>
-        </div>
-        <div class="modal_mapFilter_input">
-          <md-checkbox ng-change="applyFilterRules()" ng-model="form.outdoor" aria-label></md-checkbox>
-          <span>Outdoor</span>
-        </div>
-      </div>
       <md-divider></md-divider>
       <div class="input_filter">
         <h3>Status filter</h3>

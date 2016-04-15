@@ -23,7 +23,7 @@
       vm.markers = markersByIndex;
 
       vm.tiles = {
-        url: 'https://api.tiles.mapbox.com/v4/mapbox.streets-basic/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg'
+        url: 'https://api.tiles.mapbox.com/v4/tomasdiez.ed7899f5/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg'
       };
       //previous tile -->'https://a.tiles.mapbox.com/v4/tomasdiez.jnbhcnb2/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg'
 
@@ -32,7 +32,7 @@
           osm: {
             name: 'OpenStreetMap',
             type: 'xyz',
-            url: 'https://api.tiles.mapbox.com/v4/mapbox.streets-basic/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg'
+            url: 'https://api.tiles.mapbox.com/v4/tomasdiez.ed7899f5/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg'
           }
         },
         overlays: {
@@ -41,24 +41,39 @@
             type: 'markercluster',
             visible: true,
             layerOptions: {
-              showCoverageOnHover: false
+              showCoverageOnHover: false,
+              iconCreateFunction: function (cluster) {
+                  var childCount = cluster.getChildCount();
+                  var c = ' marker-cluster-';
+                  if (childCount < 5) {
+                      c += 'small';
+                  } else if (childCount < 40) {
+                      c += 'medium';
+                  } else {
+                      c += 'large';
+                  }
+                  return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+              }
+              //disableClusteringAtZoom: 15,
+              //iconCreateFunction: customMarkerCluster
             }
           }
         }
       };
 
       vm.center = {
-        lat: 13.14950321154457,
-        lng: -1.58203125,
-        zoom: 2
+        lat: 48,
+        lng: 18.5,
+        zoom: 3
       };
 
 
     	vm.defaults = {
         dragging: true,
         touchZoom: true,
-        scrollWheelZoom: false,
-        doubleClickZoom: true
+        scrollWheelZoom: true,
+        doubleClickZoom: true,
+        boxZoom: true
     	};
 
     	vm.events = {
@@ -88,6 +103,7 @@
         var id = data.leafletEvent.target.options.myData.id;
 
         var availability = data.leafletEvent.target.options.myData.labels[0];
+        
         ga('send', 'event', 'Kit Marker', 'click', availability);
 
         $state.go('layout.home.kit', {id: id});
@@ -143,7 +159,7 @@
       $scope.$on('goToLocation', function(event, data) {
         vm.center.lat = data.lat;
         vm.center.lng = data.lng;
-        vm.center.zoom = data.type === 'City' ? 8 : 5;
+        vm.center.zoom = data.type === 'City' ? 8 : 8;
       });
 
       $scope.$on('leafletDirectiveMap.moveend', function(){
@@ -164,8 +180,6 @@
       };
 
       vm.filterData = {
-        indoor: true,
-        outdoor: true,
         online: true,
         offline: true
       };

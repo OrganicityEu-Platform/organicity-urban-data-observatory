@@ -25,19 +25,20 @@
         animation.kitLoaded({lat: kitData.latitude ,lng: kitData.longitude, id: parseInt($stateParams.id) });
       }
 
+      vm.hasHistorical = false;
+
       vm.kit = kitData;
       vm.ownerKits = ownerKits;
       vm.kitBelongsToUser = belongsToUser;
       vm.removeUser = removeUser;
 
-      vm.battery = mainSensors? mainSensors[1] : undefined;
-      vm.sensors = mainSensors? mainSensors[0] : undefined;
+      vm.battery = undefined;
+      vm.sensors = mainSensors ? mainSensors : undefined;
       vm.sensorsToCompare = compareSensors;
 
       vm.slide = slide;
 
-
-      vm.selectedSensor = vm.sensors ? vm.sensors[0].id : undefined;
+      vm.selectedSensor = (vm.sensors && vm.sensors.length > 0) ? vm.sensors[0].uuid : undefined;
       vm.selectedSensorData = {};
 
       vm.selectedSensorToCompare = undefined;
@@ -46,7 +47,7 @@
       vm.showSensorOnChart = showSensorOnChart;
       vm.moveChart = moveChart;
       vm.loadingChart = true;
-
+      
       vm.geolocate = geolocate;
 
       // event listener on change of value of main sensor selector
@@ -58,11 +59,12 @@
 
         if(vm.sensors){
           vm.sensors.forEach(function(sensor) {
-            if(sensor.id === newVal) {
+            if(sensor.uuid === newVal) {
               _.extend(vm.selectedSensorData, sensor);
             }
           });
         }
+        
         vm.sensorsToCompare = getSensorsToCompare();
 
         $timeout(function() {
@@ -78,7 +80,7 @@
       // event listener on change of value of compare sensor selector
       $scope.$watch('vm.selectedSensorToCompare', function(newVal, oldVal) {
         vm.sensorsToCompare.forEach(function(sensor) {
-          if(sensor.id === newVal) {
+          if(sensor.uuid === newVal) {
             _.extend(vm.selectedSensorToCompareData, sensor);
           }
         });
@@ -94,7 +96,7 @@
         }, 100);
 
       });
-
+      
       $scope.$on('hideChartSpinner', function() {
         vm.loadingChart = false;
       });
@@ -163,7 +165,7 @@
 
       function getSensorsToCompare() {
         return vm.sensors ? vm.sensors.filter(function(sensor) {
-          return sensor.id !== vm.selectedSensor;
+          return sensor.uuid !== vm.selectedSensor;
         }) : [];
       }
 
@@ -185,7 +187,8 @@
         // it can be either 2 sensors or 1 sensor, so we use $q.all to wait for all
         $q.all(
           _.map(sensorsID, function(sensorID) {
-            return getChartData($stateParams.id, sensorID, options.from, options.to)
+            var id = vm.kit.uuid;//$stateParams.id
+            return getChartData(id, sensorID, options.from, options.to)
               .then(function(data) {
                 return data;
               });
@@ -200,8 +203,10 @@
       function getChartData(deviceID, sensorID, dateFrom, dateTo, options) {
         return sensor.getSensorsDataNew(deviceID, sensorID, dateFrom, dateTo)
           .then(function(data) {
-            //save sensor data of this kit so that it can be reused
             sensorsData[sensorID] = data.readings;
+            return data;
+          }, function(data) {
+            sensorsData[sensorID] = [];
             return data;
           });
       }
@@ -209,6 +214,13 @@
       function prepareChartData(sensorsID) {
         var compareSensor;
         var parsedDataMain = parseSensorData(sensorsData, sensorsID[0]);
+
+        if(parsedDataMain.length === 0) { //tmp. quick fix
+          vm.hasHistorical = false;
+        } else {
+          vm.hasHistorical = true;
+        }
+
         var mainSensor = {
           data: parsedDataMain,
           color: vm.selectedSensorData.color,
@@ -227,12 +239,12 @@
       }
 
       function parseSensorData(data, sensorID) {
-        if(data.length === 0) {
+        if(data[sensorID].length === 0) {
           return [];
-        }
+        } 
         return data[sensorID].map(function(dataPoint) {
-          var time = dataPoint[0];
-          var value = dataPoint[1];
+          var time = moment(new Date(dataPoint.datetime)).format('YYYY-MM-DD[T]HH:mm:ss[Z]'); //tmp. ensure validation
+          var value = Number(dataPoint.value);
           var count = value === null ? 0 : value;
 
           return {

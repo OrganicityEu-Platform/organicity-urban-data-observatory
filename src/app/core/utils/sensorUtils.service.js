@@ -36,61 +36,37 @@
       }
 
       function getSensorName(sensor) {
-        var name = sensor.name;
-        var description = sensor.description;
-        var sensorName;
+        var nameParts = sensor.name.split(":");
+        var mainName = nameParts.length > 0 ? nameParts[0] : sensor.name;
 
-        if( new RegExp('custom circuit', 'i').test(description) ) {
-          sensorName = name;
-        } else {
-          if(new RegExp('noise', 'i').test(description) ) {
-            sensorName = 'SOUND';
-          } else if(new RegExp('light', 'i').test(description) ) {
-            sensorName = 'LIGHT';
-          } else if(new RegExp('wifi', 'i').test(description) ) {  
-            sensorName = 'NETWORKS';
-          } else if(new RegExp('co', 'i').test(description) ) {
-            sensorName = 'CO';
-          } else if(new RegExp('no2', 'i').test(description) ) {
-            sensorName = 'NO2';
-          } else {
-            sensorName = description;
-          }          
+        var sensorName = (mainName.toUpperCase() === mainName) ? mainName : mainName.replace(/([A-Z])/g, ' $1').toUpperCase();
+
+        if (nameParts.length > 1) { 
+          nameParts.shift();
+          var sensorExtra = nameParts.join(" ");
+          sensorExtra = (sensorExtra.toUpperCase() === sensorExtra) ? sensorExtra : sensorExtra.replace(/([A-Z])/g, ' $1').toUpperCase();
+          sensorName += (" (" + sensorExtra + ")");
         }
-        return sensorName.toUpperCase();
+
+        return sensorName;
       }
 
-      function getSensorUnit(sensorName) {
-        var sensorUnit;
-        
-        switch(sensorName) {
-          case 'TEMPERATURE':
-            sensorUnit = '°C';
-            break;
-          case 'LIGHT':
-            sensorUnit = 'LUX';
-            break;
-          case 'SOUND':
-            sensorUnit = 'DB';
-            break;
-          case 'HUMIDITY':
-          case 'BATTERY':
-            sensorUnit = '%';
-            break;
-          case 'CO': 
-          case 'NO2':
-            sensorUnit = 'KΩ';
-            break;
-          case 'NETWORKS': 
-            sensorUnit = '#';
-            break;
-          case 'SOLAR PANEL': 
-            sensorUnit = 'V';
-            break;
-          default: 
-            sensorUnit = 'N/A';
+      function getSensorUnit(sensor) {
+        if(sensor.unit) {
+          return sensor.unit.replace(/([A-Z])/g, ' $1').toLowerCase();
+        } else if(sensor.name) {
+        /*          
+          var nameParts = sensor.name.split(":");
+          if (nameParts.length > 1) {
+            var sensorExtra = nameParts[nameParts.length-1]
+            sensorExtra = (sensorExtra.toUpperCase() === sensorExtra) ? sensorExtra : sensorExtra.replace(/([A-Z])/g, ' $1').toUpperCase();
+            return sensorExtra;
+          }
+        */
+          return "Units not defined";
+        } else {
+          return "No name";
         }
-        return sensorUnit;
       }
 
       function getSensorValue(sensor) {
@@ -152,7 +128,8 @@
 
       function getSensorArrow(currentValue, prevValue) {
         currentValue = parseInt(currentValue) || 0;
-        prevValue = parseInt(prevValue) || 0;
+
+        if (!parseInt(prevValue)) return null;
 
         if(currentValue > prevValue) {
           return './assets/images/arrow_up_icon.svg';          
@@ -163,35 +140,10 @@
         }
       }
 
-      function getSensorColor(sensorName) {
-        switch(sensorName) {
-          case 'TEMPERATURE':
-            return '#ffc107';            
-            
-          case 'HUMIDITY':
-            return '#4fc3f7';
-            
-          case 'LIGHT':
-            return '#ffee58';
-            
-          case 'SOUND': 
-            return '#f06292';
-            
-          case 'CO':
-            return '#4caf50';
-            
-          case 'NO2':
-            return '#8bc34a';
-          
-          case 'NETWORKS':
-            return '#9575cd';
-
-          case 'SOLAR PANEL': 
-            return '#fff9c4';
-
-          default: 
-            return 'black';                      
-        }
+      function getSensorColor(sensor, collectionID) {
+        var colors = ['#00FFA8','#4fc3f7','#ffee58','#f06292','#ef4070', '#ffc107','#8bc34a','#9575cd','#fff9c4'];
+        if(collectionID > colors.length) collectionID = 0;
+        return colors[collectionID];
       }
 
       function getSensorDescription(sensorID, sensorTypes) {
@@ -201,7 +153,7 @@
             return sensorType.id === sensorID;
           })
           .value()
-          .measurement.description;
+          .description;
       }
     }
 })();

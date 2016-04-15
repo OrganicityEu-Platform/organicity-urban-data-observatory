@@ -11,11 +11,18 @@
         parseLocation: parseLocation,
         parseName: parseName,
         parseIcon: parseIcon,
-        parseIconType: parseIconType
+        parseIconType: parseIconType,
+        parseType: parseType,
+        parseTime: parseTime
       };
       return service;
 
       /////////////////
+
+      function parseType(object) {  
+        if (object.type) return object.type;      
+        //return object.searchMatches[0]; // tmp. single Type
+      }
 
       function parseLocation(object) {
         var location = '';
@@ -34,18 +41,30 @@
       }
 
       function parseName(object) {
-        var name = object.type === 'User' ? object.username : object.name;
-        return name;
+        if(!object.name) {
+          return;
+        }
+
+        if(object.type == "location") {
+          return object.name;
+        }
+
+        var entityName = object.name.split(":");
+
+        entityName = entityName.slice(4, entityName.length);
+        entityName = _.map(entityName, makeCase);
+
+        var name = entityName.join(" ");
+
+        return name.length <= 41 ? name : name.slice(0, 35).concat(' ... ');
       }
+      
 
       function parseIcon(object, type) {
         switch(type) {
-          case 'User':
-            return object.avatar;
-          case 'Device':
+          case 'name':
             return 'assets/images/kit.svg';
-          case 'Country':
-          case 'City':
+          case 'location':
             return 'assets/images/location_icon_normal.svg';
         }
       }
@@ -58,5 +77,16 @@
             return 'img';
         }
       }
+
+      function parseTime(object) {
+        /*jshint camelcase: false */
+        return object.last_reading_at;
+      }
+
+
+      function makeCase(str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+      }
+
     }
 })();

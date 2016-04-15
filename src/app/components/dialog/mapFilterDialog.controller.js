@@ -12,8 +12,6 @@
       };
 
       $scope.form = {
-        indoor: false,
-        outdoor: false,
         online: false,
         offline: false
       };

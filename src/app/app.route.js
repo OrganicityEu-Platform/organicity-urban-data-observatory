@@ -54,7 +54,7 @@
                 return;
               }
               var kitID = parseInt($stateParams.id);
-              var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('smartcitizen.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('smartcitizen.data') )));
+              var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('organicity.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('organicity.data') )));
               var belongsToUser = kitUtils.belongsToUser(userData.kits, kitID);
               var isAdmin = userUtils.isAdmin(userData);
 
@@ -91,7 +91,7 @@
         Abstract state, it only activates when there's a child state activated
         */
         .state('layout.home', {
-          url: '/kits',
+          url: '/resources',
           abstract: true,
           views: {
             '': {
@@ -105,12 +105,6 @@
             }
           },
           resolve: {
-            sensorTypes: function(sensor) {
-              return sensor.callAPI()
-                .then(function(sensorTypes) {
-                  return sensorTypes.plain();
-                });
-            },
             markers: function($state, device, utils, Kit, Marker) {
               // It could be refactor to use HTTP caching instead of holding them in localstorage
               var worldMarkers = device.getWorldMarkers();
@@ -119,6 +113,9 @@
               }
               return device.getAllDevices().then(function(data) {
                 return _.chain(data)
+                  .tap(function(data) {
+                    device.setAllDevices(data);
+                  })
                   .map(function(device) {
                     return new Marker(device);
                   })
@@ -150,28 +147,29 @@
 
           resolve: {
             kitData: function($stateParams, device, FullKit) {
+              
               var kitID = $stateParams.id;
 
               if(!kitID) {
                 return undefined;
               }
+              
+              return device.getDevice(kitID).then(function(deviceData) {
+                return new FullKit(deviceData);
+              });
 
-              return device.getDevice(kitID)
-                .then(function(deviceData) {
-                  return new FullKit(deviceData);
-                });
             },
-            mainSensors: function(kitData, sensorTypes) {
+            mainSensors: function(kitData) {
               if(!kitData) {
                 return undefined;
               }
-              return kitData.getSensors(sensorTypes, {type: 'main'});
+              return kitData.getSensors();
             },
-            compareSensors: function(kitData, sensorTypes) {
+            compareSensors: function(kitData) {
               if(!kitData) {
                 return undefined;
               }
-              return kitData.getSensors(sensorTypes, {type: 'compare'});
+              return kitData.getSensors();
             },
             ownerKits: function(kitData, PreviewKit, $q, device) {
               if(!kitData) {
@@ -189,15 +187,16 @@
               );
             },
             belongsToUser: function($window, $stateParams, auth, AuthUser, kitUtils, userUtils) {
-              if(!auth.isAuth() || !$stateParams.id) {
-                return false;
-              }
-              var kitID = parseInt($stateParams.id);
-              var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('smartcitizen.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('smartcitizen.data') )));
-              var belongsToUser = kitUtils.belongsToUser(userData.kits, kitID);
-              var isAdmin = userUtils.isAdmin(userData);
+              return false;
+              // if(!auth.isAuth() || !$stateParams.id) {
+              //   return false;
+              // }
+              // var kitID = parseInt($stateParams.id);
+              // var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('organicity.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('organicity.data') )));
+              // var belongsToUser = kitUtils.belongsToUser(userData.kits, kitID);
+              // var isAdmin = userUtils.isAdmin(userData);
 
-              return isAdmin || belongsToUser;
+              // return isAdmin || belongsToUser;
             }
           }
         })
@@ -233,6 +232,7 @@
             },
             kitsData: function($q, device, PreviewKit, userData) {
               var kitIDs = _.pluck(userData.kits, 'id');
+
               if(!kitIDs.length) {
                 return [];
               }
@@ -247,7 +247,7 @@
               );
             },
             isAdmin: function($window, $location, $stateParams, auth, AuthUser) {
-              var userRole = (auth.getCurrentUser().data && auth.getCurrentUser().data.role) || ($window.localStorage.getItem('smartcitizen.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('smartcitizen.data') )).role);
+              var userRole = (auth.getCurrentUser().data && auth.getCurrentUser().data.role) || ($window.localStorage.getItem('organicity.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('organicity.data') )).role);
               if(userRole === 'admin') {
                 var userID = $stateParams.id;
                 $location.path('/profile/' + userID);
@@ -269,7 +269,7 @@
           controllerAs: 'vm',
           resolve: {
             userData: function($location, $window, user, auth, AuthUser) {
-              var userData = (auth.getCurrentUser().data) || ( $window.localStorage.getItem('smartcitizen.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('smartcitizen.data') )));
+              var userData = (auth.getCurrentUser().data) || ( $window.localStorage.getItem('organicity.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('organicity.data') )));
               if(!userData) {
                 return;
               }
@@ -304,7 +304,7 @@
           controllerAs: 'vm',
           resolve: {
             isAdmin: function($window, auth, $location, AuthUser) {
-              var userRole = (auth.getCurrentUser().data && auth.getCurrentUser().data.role) || ( $window.localStorage.getItem('smartcitizen.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('smartcitizen.data') )).role );
+              var userRole = (auth.getCurrentUser().data && auth.getCurrentUser().data.role) || ( $window.localStorage.getItem('organicity.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('organicity.data') )).role );
               if(userRole !== 'admin') {
                 $location.path('/');
               } else {
@@ -347,7 +347,7 @@
               if(auth.isAuth()) {
                 return $location.path('/');
               }
-              $location.path('/kits/667');
+              $location.path('/resources');
               $location.search('login', 'true');
             }
           }
@@ -409,14 +409,15 @@
         });
 
       /* Default state */
-      $urlRouterProvider.otherwise('/');
+      $urlRouterProvider.otherwise('/resources');
 
       $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
       }).hashPrefix('!');
 
-      RestangularProvider.setBaseUrl('https://new-api.smartcitizen.me/v0');
+      //RestangularProvider.setBaseUrl('http://127.0.0.1:3000'); //Dev fixtures
+      RestangularProvider.setBaseUrl('http://ec2-54-68-181-32.us-west-2.compute.amazonaws.com:8090/v1');
 
       /* Remove angular leaflet logs */
       $logProvider.debugEnabled(false);

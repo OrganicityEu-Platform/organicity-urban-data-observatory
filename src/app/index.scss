@@ -84,8 +84,8 @@ body {
 
     .logo_icon {
       margin-left: 15px;
-      height: 32px;
-      width: 32px;
+      height: 39px;
+      width: 80px;
     }
   }
 
@@ -189,7 +189,7 @@ search {
 
   input {
 
-    background-color: #377382;
+    background-color: $inputs;
     color: black;
     height: 36px;
     line-height: 36px;
@@ -219,6 +219,9 @@ search {
  * ANGULAR MATERIAL OVERRIDING
  */
 
+md-toolbar.md-default-theme .md-button{
+  color: $font_color_blue_dark;
+}
 
 md-select-menu {
   background-color: white;
@@ -228,7 +231,7 @@ md-select-menu {
   text-transform: uppercase;
 }
 md-select.md-default-theme:not([disabled]):focus .md-select-label {
-  border-bottom-color: #6B868D;
+  border-bottom-color: $extra_color;
 }
 
 md-content.md-default-theme {
@@ -245,17 +248,17 @@ md-toolbar.md-default-theme {
 
 .md-button.md-default-theme.md-flat.md-primary {
   background-color: $terciary_color;
-  color: white;
+  color: $font_color_white;
 }
 
 .md-button.md-default-theme.md-primary.md-flat:not([disabled]):hover {
   background-color: $terciary_color;
-  color: white;
+  color: $font_color_white;
 }
 
 .md-button.md-default-theme.md-primary.md-flat:not([disabled]):focus {
   background-color: $terciary_color;
-  color: white;
+  color: $font_color_white;
 }
 
 md-dialog.md-primary-theme {
@@ -358,7 +361,7 @@ md-backdrop.md-opaque.md-default-theme {
 //Loading backdrop
 
 md-backdrop.md-mainBackdrop {
-  background-color: #2A4E62;
+  background-color: $background_blue_light;
   width: 100%;
   height: 100%;
 }
@@ -370,8 +373,7 @@ md-backdrop.md-mainBackdrop {
 
 .backdrop_icon {
   margin: 10px;
-  width: 40px;
-  height: 40px;
+  width: 120px;
 }
 
 // state change backdrop
@@ -535,7 +537,7 @@ section.map {
     width:100%;
     height:100%;
     position:absolute;
-    background-color:#032933;
+    background-color: $background_blue_dark_overview;
     z-index: 3;
     color: white;
     text-align:center;
@@ -731,8 +733,10 @@ section .kit_menu {
       right: 5px;
     }
     .sensor_name {
-      font-size: 10px;
+      font-size: 14px;
       text-align: center;
+      font-weight: bold;
+      color: $blue_light;
     }
   }
 }
@@ -786,8 +790,10 @@ section .kit_menu {
         height: 100%;
 
         md-select.md-default-theme .md-select-label {
-          border-bottom-color: #6B868D;
+          border-bottom-color: $extra_color;
+          line-height: 1em !important;
         }
+
         .sensor_select {
           .sensor_icon_selected {
             margin-right: 8px;
@@ -799,14 +805,14 @@ section .kit_menu {
         .sensor_description {
           font-size: 14px;
           font-weight: normal;
-          color: #DDE7EA;
-          height: 80px;
+          color: $font_color_blue_light;
+          height: 50px;
           margin-top: 25px; //30;
           position: relative;
 
           h6 {
             margin: 0;
-            line-height: 0;
+            //line-height: 0;
             color: #87CCDD;
           }
 
@@ -840,7 +846,7 @@ section .kit_menu {
           display: inline-block;
 
           .sensor_value {
-            font-size: 22px;
+            font-size: 30px;
             font-weight: bold;
           }
           .sensor_unit {
@@ -910,13 +916,13 @@ section .kit_menu {
               width: 40px;
               height: 24px;
               display: inline-flex;
-              border: 1px solid #6B868D;
+              border: 1px solid $extra_color;
             }
             .chart_move_right {
               margin-left: 4px;
             }
             .chart_move_left {
-              background-color: #99AEB2;
+              background-color: $extra_color;
             }
             md-icon {
               width: 5.5px;
@@ -931,7 +937,7 @@ section .kit_menu {
   }
   .kit_details {
     height: 348px;
-    color: $background_blue_dark_navbar;
+    color: $font_color_blue_grey;
   }
   .kit_details_content {
     float: left;
@@ -953,14 +959,22 @@ section .kit_menu {
   }
   .kit_details_version {
     span {
-      color: #4F8390;
-      font-weight: bold;
+      color: $font_color_blue_grey;
+      font-weight: normal;
+      font-size: 12px; 
+    }
+    .kit_details_uuid {
+        font-size: 12px;   
     }
   }
   .kit_details_id {
     span {
-      color: #4F8390;
+      color: $font_color_blue_grey;
       font-weight: bold;
+      font-size: 13px;
+    }
+    .kit_details_uuid {
+      font-weight: normal;
     }
   }
   .kit_details_labels {
@@ -968,7 +982,7 @@ section .kit_menu {
     color: white;
     font-size: 13px;
     span {
-      background-color: #4F8390;
+      background-color: $font_color_blue_grey;
       margin-right: 16px;
       padding: 3px 8px;
       border-radius: 20px;
@@ -1068,7 +1082,7 @@ section .kit_menu {
     padding-bottom: 30px;
   }
   .kit_owner {
-    color: $background_blue_dark_navbar;
+    color: $font_color_blue_grey;
     background-color: #F5F5F5;
 
     .container {
@@ -1083,7 +1097,7 @@ section .kit_menu {
         line-height: 0.4em;
       }
       h3 {
-        color: #24454E;
+        color: $font_color_blue_grey;
         font-size: 18px;
       }
     }
@@ -1097,18 +1111,18 @@ section .kit_menu {
       margin: 5px 0 20px 0;
     }
     .kit_owner_location {
-      color: #065063;
+      color: $font_color_blue_grey;
       font-weight: bold;
     }
     .kit_owner_url a {
       text-decoration: none;
-      color: $background_blue_dark_navbar;
+      color: $font_color_blue_grey;
     }
     .kit_owner_kits_title {
       margin-bottom: 50px;
     }
     .kit_owner_kits_list {
-      color: #4F8390;
+      color: $font_color_blue_grey;
       border: 1px solid #EAECF1;
       height: 82px;
       background-color: white;
@@ -1188,6 +1202,14 @@ md-progress-linear.md-default-theme.md-hue-3 .md-bar {
   top: 9%;
   left: 57%;
 }
+
+.chart_nodata {
+  position: relative;
+  text-align: center;
+  margin: 63px;
+  height: 120px;
+}
+
 
 /*
   CHART COMPONENT
@@ -1429,14 +1451,14 @@ section .stickMenu {
     margin: 15px 0px 15px 0;
   }
   md-checkbox.md-checked .md-icon {
-    background-color: #35C2E5;
+    background-color: $organicity_pink;
   }
   h3 {
     margin-bottom: 2px;
   }
   .message {
     font-size: 14px;
-    color: #4F8390;
+    color: $font_color_blue_grey;
     line-height: 1em;
     margin-bottom: 26px;
   }
@@ -1807,6 +1829,26 @@ section .stickMenu {
   background-color: rgba(0,0,0,0.2);
 }
 
+.markerOrganicityNormal {
+  border: 1px solid $organicity_pink;
+  border-radius: 20px;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.30);
+}
+
+.markerOrganicityOnline {
+  border: 2px solid $organicity_pink;
+  border-radius: 20px;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.30);
+  background-color: $organicity_pink;
+}
+
+.markerOrganicityOffline {
+  border: 2px solid rgba(0,0,0, 0.2);
+  border-radius: 20px;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.30);
+  background-color: rgba(0,0,0,0.2);
+}
+
 /* .marker_blink {
   -webkit-animation: pulse 2s linear infinite;
   -moz-animation: pulse 2s linear infinite;
@@ -1883,6 +1925,9 @@ section .stickMenu {
 .unknown_kit {
   background-color: grey;
 }
+.organicity {
+  background-color: $organicity_pink;
+}
 
 /**
  * OVERRIDE LEAFLET
@@ -1920,6 +1965,97 @@ section .stickMenu {
   z-index: 1;
 }
 
+// custom cluster colors
+
+// custom cluster colors
+
+.marker-cluster {
+  animation-duration: 2s;
+  animation-direction: alternate;
+  animation-iteration-count:infinite;
+  opacity: 0.9;
+  div {
+    margin-left: 3px;
+    margin-top: 3px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    opacity: 0.6;
+    font-family: 'Roboto Condensed';
+    font-size: 14px;
+    line-height: 34px;
+    font-weight: bold;
+    position: relative;
+  }
+}
+
+@keyframes cluster-basic {
+    from {
+      background-color: $organicity_pink_1;
+    }
+    to {
+      background-color: $organicity_pink_4;
+    }
+}
+
+@keyframes cluster-opacity {
+    from {
+      opacity: 0.4;
+    }
+    to {
+      opacity: 0.9;
+    }
+}
+
+@keyframes cluster-small {
+    from {
+      background-color: $organicity_pink_2;
+    }
+    to {
+      background-color: $organicity_pink_3;
+    }
+}
+
+@keyframes cluster-medium {
+    from {
+      background-color: $organicity_pink_3;
+    }
+    to {
+      background-color: $organicity_pink_5;
+    }
+}
+
+@keyframes cluster-large {
+    from {
+      background-color: $organicity_pink_4;
+    }
+    to {
+      background-color: $organicity_pink_5;
+    }
+}
+
+.marker-cluster-small {
+  animation-name: cluster-basic;
+  div {
+    background-color: $organicity_pink_1;
+  }
+}
+
+.marker-cluster-medium {
+  animation-name: cluster-basic;
+  div {
+    background-color: $organicity_pink_2;
+
+  }
+}
+
+.marker-cluster-large {
+  animation-name: cluster-basic;
+  div {
+    background-color: $organicity_pink_3;
+  }
+}
+
 /*
   PICKER COMPONENT
 */
@@ -1932,8 +2068,8 @@ section .stickMenu {
 .date_picker {
   height: 24px;
   border-radius: 2px;
-  border: 1px solid #6B868D;
-  color: #A4B0B3;
+  border: 1px solid $extra_color;
+  color: $extra_color;
   background-color: transparent;
 }
 
@@ -2065,7 +2201,7 @@ section .stickMenu {
 }
 
 .kitList {
-  color: #4F8390;
+  color: $font_color_blue_grey;
   border-top: 1px solid #EAECF1;
   border-right: 1px solid #EAECF1;
   border-left: 1px solid #EAECF1;
@@ -2444,7 +2580,7 @@ section .stickMenu {
 .footer {
   width: 100%;
   height: 64px;
-  background-color: #032933;
+  background-color: $background_blue_dark_overview;
 }
 
 .footer_icon {

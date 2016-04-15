@@ -19,16 +19,16 @@
        */
       function Kit(object) {
         this.id = object.id;
-        this.name = object.name;
+        this.name = kitUtils.parseName(object);
+        this.uuid = object.uuid;
         this.type = kitUtils.parseType(object);
         this.location = kitUtils.parseLocation(object);
         this.avatar = kitUtils.parseAvatar(object, this.type);
         this.labels = kitUtils.parseLabels(object); //TODO: refactor name to systemTags
         this.state = kitUtils.parseState(object);
         /*jshint camelcase: false */
-        this.userTags = object.user_tags;
+        //this.userTags = object.user_tags; //tmp
       }
-
       return Kit;
     }]);
 })();

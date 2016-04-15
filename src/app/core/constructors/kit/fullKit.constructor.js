@@ -23,58 +23,34 @@
        * @property {number} elevation
        */
       function FullKit(object) {
+
         Kit.call(this, object);
 
-        this.version = kitUtils.parseVersion(object);
+        this.version = "Organicity";
         this.time = kitUtils.parseTime(object);
         this.timeParsed = !this.time ? 'No time' : moment(this.time).format('MMMM DD, YYYY - HH:mm');
         this.timeAgo = !this.time ? 'No time' : moment(this.time).fromNow();
         this.class = kitUtils.classify(kitUtils.parseType(object)); 
-        this.description = object.description;
+        this.description = "";
         this.owner = kitUtils.parseOwner(object);
-        this.data = object.data.sensors;
+        this.data = object.data.attributes;
         this.latitude = object.data.location.latitude;
         this.longitude = object.data.location.longitude;
-        /*jshint camelcase: false */
-        this.macAddress = object.mac_address;
-        this.elevation = object.data.location.elevation;
+
       }
 
       FullKit.prototype = Object.create(Kit.prototype);
       FullKit.prototype.constructor = FullKit;
 
-      FullKit.prototype.getSensors = function(sensorTypes, options) {
+      FullKit.prototype.getSensors = function() {
         var sensors = _(this.data)
-          .chain()
-          .map(function(sensor) {
-            return new Sensor(sensor, sensorTypes); 
-          })
-          .tap(function(sensors) {
-            if(options.type === 'compare') {
-              sensors.unshift({
-                name: 'NONE',
-                color: 'white',
-                id: -1
-              });
-            }
-          })
-          .value();
-          
-          return sensors.reduce(function(acc, sensor, index, arr) {
-            if(sensor.name === 'BATTERY') {
-              arr.splice(index, 1);
-              
-              if(options.type === 'main') {
-                acc[0] = arr;              
-                acc[1] = sensor;
-              } else if(options.type === 'compare') {
-                acc = arr;
-              }
-            }
-            return acc;
-          }, []);
+            .chain()
+            .map(function(sensor, i) {
+              return new Sensor(sensor, i); 
+            })
+            .value();
+            return sensors;
       };
-
       return FullKit;
     }]); 
 })();

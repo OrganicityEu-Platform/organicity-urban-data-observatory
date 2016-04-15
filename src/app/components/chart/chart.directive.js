@@ -119,13 +119,16 @@
         width = elem.clientWidth - margin.left - margin.right;
         height = elem.clientHeight - margin.top - margin.bottom;
 
+        width = (width < 0) ? elem.clientWidth : width;
+        height = (height < 0) ? elem.clientHeight : height;
+
         xScale = d3.time.scale.utc().range([0, width]);
         yScale0 = d3.scale.linear().range([height, 0]);
         yScale1 = d3.scale.linear().range([height, 0]);
         yAxisScale = d3.scale.linear().range([height, 0]); 
 
-        dateFormat = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ').parse;//d3.time.format('%Y-%m-%dT%X.%LZ').parse; //'YYYY-MM-DDTHH:mm:ssZ'
-
+        dateFormat = d3.time.format('%Y-%m-%dT%H:%M:%SZ').parse; //'YYYY-MM-DDTHH:mm:ssZ'
+        //d3.time.format.utc('%Y-%m-%dT%H:%M:%S.%LZ').parse; 
         xAxis = d3.svg.axis()
           .scale(xScale)
           .orient('bottom')
@@ -203,6 +206,7 @@
         svg.append('g')
           .attr('class', 'axis x')
           .attr('transform', 'translate(0,' + height + ')')
+          .style('fill', '#FFF')
           .call(xAxis);
 
         // Add the Y Axis

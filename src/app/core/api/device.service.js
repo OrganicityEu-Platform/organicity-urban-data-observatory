@@ -4,24 +4,19 @@
 	angular.module('app.components')
 	  .factory('device', device);
     
-    device.$inject = ['Restangular', '$window', 'timeUtils'];
-	  function device(Restangular, $window, timeUtils) {
-      var genericKitData, worldMarkers;
+    device.$inject = ['Restangular', '$window', 'timeUtils', '$filter', '$q'];
+	  function device(Restangular, $window, timeUtils, $filter, $q) {
+      var worldMarkers, entities, entitiesPrevious;
 
       initialize();
-
-      callGenericKitData()
-        .then(function(data) {
-          genericKitData = _.indexBy(data, 'id');
-        });
 
 	  	var service = {
         getDevices: getDevices,
         getAllDevices: getAllDevices,
+        setAllDevices : setAllDevices,
         getDevice: getDevice,
         createDevice: createDevice,
         updateDevice: updateDevice,
-        getGenericKitData: getGenericKitData,
         getWorldMarkers: getWorldMarkers,
         setWorldMarkers: setWorldMarkers
 	  	};
@@ -32,6 +27,7 @@
 
       function initialize() {
         if(areMarkersOld()) {
+          console.log("Data expired: Refreshing markers");
           removeMarkers();
         }
       }
@@ -39,35 +35,64 @@
       function getDevices(location) {
       	var parameter = '';
       	parameter += location.lat + ',' + location.lng;
-      	return Restangular.all('devices').getList({near: parameter, 'per_page': '100'});
+      	return Restangular.all('entities').getList({near: parameter, 'per_page': '100'});
+      }
+
+      function setAllDevices(data) {        
+        var obj = {
+          timestamp: new Date(),
+          data: data
+        };
+        removeEntitiesMarkers();
+        $window.localStorage.setItem('organicity.entities', JSON.stringify(obj));
+        entities = obj.data; 
+      }
+
+      function setPrevAllDevices() {
+        entitiesPrevious = entities; 
+      }
+
+      function getPrevAllDevices() {
+        var deferred = $q.defer();
+        deferred.resolve(entitiesPrevious);
+        return deferred.promise;
       }
 
       function getAllDevices() {
-        return Restangular.all('devices/world_map').getList();
+        if (!areEntitiesMarkersOld()) {
+          console.log("Data is cached: Entities are less than 60sec old.");
+          var deferred = $q.defer();
+          deferred.resolve(entities || ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).data));
+          return deferred.promise;
+        } else {
+          console.log("Data expired: Refreshing entities");
+          setPrevAllDevices();
+          return Restangular.all('entities').getList().then(function(data) {
+            setAllDevices(data)
+            return data;
+          });
+        }
       }
 
       function getDevice(id) {
-        return Restangular.one('devices', id).get();
+        return getAllDevices().then(function(entities){
+          return _.find(entities, function(entity) {
+             return entity.id == id;
+          }); 
+        });
       }
 
       function createDevice(data) {
-        return Restangular.all('devices').post(data);
+        return Restangular.all('entities').post(data);
       }
 
       function updateDevice(id, data) {
-        return Restangular.one('devices', id).patch(data);
-      }
-
-      function callGenericKitData() {
-        return Restangular.all('kits').getList();
-      }
-
-      function getGenericKitData() {
-        return genericKitData;
+        return Restangular.one('entities', id).patch(data);
       }
 
       function getWorldMarkers() {
-        return worldMarkers || ($window.localStorage.getItem('smartcitizen.markers') && JSON.parse($window.localStorage.getItem('smartcitizen.markers') ).data);
+        console.log("Data is cached: Markers are less than 60sec old.");
+        return worldMarkers || ($window.localStorage.getItem('organicity.markers') && JSON.parse($window.localStorage.getItem('organicity.markers') ).data);
       }
 
       function setWorldMarkers(data) {
@@ -76,21 +101,34 @@
           data: data
         };
 
-        $window.localStorage.setItem('smartcitizen.markers', JSON.stringify(obj) );
+        $window.localStorage.setItem('organicity.markers', JSON.stringify(obj) );
         worldMarkers = obj.data; 
       }
 
+      function getEntitiesTimeStamp() {
+        return ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).timestamp); 
+      }
+
+      function areEntitiesMarkersOld() {
+        var markersDate = getEntitiesTimeStamp();  
+        return !timeUtils.isWithin(60, 'seconds', markersDate);
+      }
+
+      function removeEntitiesMarkers() {
+        $window.localStorage.removeItem('organicity.entities');
+      }
+
       function getTimeStamp() {
-        return ($window.localStorage.getItem('smartcitizen.markers') && JSON.parse($window.localStorage.getItem('smartcitizen.markers') ).timestamp); 
+        return ($window.localStorage.getItem('organicity.markers') && JSON.parse($window.localStorage.getItem('organicity.markers') ).timestamp); 
       }
 
       function areMarkersOld() {
-        var markersDate = getTimeStamp();      
-        return !timeUtils.isWithin15min(markersDate);
+        var markersDate = getTimeStamp();  
+        return !timeUtils.isWithin(60, 'seconds', markersDate);
       }
 
       function removeMarkers() {
-        $window.localStorage.removeItem('smartcitizen.markers');
+        $window.localStorage.removeItem('organicity.markers');
       }
 	  }
 })();

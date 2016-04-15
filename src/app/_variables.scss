@@ -1,21 +1,34 @@
-$secondary_color: #01637C;
-$terciary_color: #38CEF3;
+$secondary_color: #BBB;
+$terciary_color: #EF4070;
 
-$blue_light: #4FC9E8;
+$extra_color: #FFF;
+
+
+$blue_light: #EF4070;
+$organicity_pink: #EF4070;
+
+// organicity-pinks-palette http://paletton.com/#uid=15r0u0knrFCd7RZiNLBsmA9xrsn
+$organicity_pink_1: #F892AE; // lighter
+$organicity_pink_2: #F3658B; //    |
+$organicity_pink_3: #EF406F; //    |
+$organicity_pink_4: #EB1B53; //    |
+$organicity_pink_5: #CD0037; // intense
 
 $alert_red: #E74C3C;
 $alert_green: #35E67E;
 
-$font_color_white: white;
-$font_color_blue_grey: #82A7B0;
-$font_color_blue_dark: #124B50;
-$font_color_blue_light: #9BE6F8;
+$font_color_white: #FFF;
+$font_color_blue_grey: #333;
+$font_color_blue_dark: #111;
+$font_color_blue_light: #DDE7EA;
 
-$background_blue_dark_menu: #043846;
-$background_blue_dark_overview: #042F3B;
-$background_blue_dark_navbar: #065063;
-$background_blue_dark_chart: #03252D;
-$background_blue_light: #DDE7EA;
+$background_blue_dark_menu: #FFF;
+$background_blue_dark_overview: #BBB;
+$background_blue_dark_navbar: #FFF;
+$background_blue_dark_chart: #555;
+$background_blue_light: #EFEFEF;
+
+$inputs: #BBB;
 
 $large_priority: 10;
 $more_priority: 5;

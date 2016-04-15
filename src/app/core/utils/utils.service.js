@@ -82,8 +82,12 @@
         return moment(sensor.recorded_at).format('');
       }
 
-      function convertTime(time) {
-        return moment(time).format('YYYY-MM-DDThh:mm:ss') + 'Z';
+      function convertTime(time, withSeconds) {
+        if(withSeconds) {
+          return moment(time).format('YYYY-MM-DDThh:mm:ss') + 'Z';
+        } else {
+          return moment(time).format('YYYY-MM-DDThh:mm') + 'Z';
+        }
       }
 
       function getOwnerKits(ids) {

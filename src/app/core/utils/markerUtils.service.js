@@ -7,6 +7,7 @@
     markerUtils.$inject = ['device', 'kitUtils', 'COUNTRY_CODES', 'MARKER_ICONS'];
     function markerUtils(device, kitUtils, COUNTRY_CODES, MARKER_ICONS) {
       var service = {
+        parseName: parseName,
         parseType: parseType,
         parseLocation: parseLocation,
         parseLabels: parseLabels,
@@ -14,9 +15,10 @@
         parseCoordinates: parseCoordinates,
         parseId: parseId,
         getIcon: getIcon,
-        parseName: parseName,
         parseTime: parseTime,
-        getMarkerIcon: getMarkerIcon
+        getMarkerIcon: getMarkerIcon,
+        isOnline: isOnline,
+        makeCase: makeCase
       };
       _.defaults(service, kitUtils);
       return service;
@@ -25,27 +27,26 @@
 
       function parseType(object) {
         var kitType; 
-
-        var genericKitData = device.getGenericKitData();
-        /*jshint camelcase: false */
-        var kit = genericKitData[object.kit_id];
-        var kitName = !kit ? 'No name': kit.name;
-
-        if((new RegExp('sck', 'i')).test(kitName)) { 
-          kitType = 'SmartCitizen Kit';
-        } else {
-          kitType = 'Unknown Kit';
-        }
+        kitType = 'Organicity'; //tmp
         return kitType; 
       }
 
       function parseLocation(object) {
         var location = '';
-        
+        var locationSource = {};
+
+        if(object.data.location.city && object.data.location.country) {
+            locationSource = object.data.location;
+        } else if (object.provider && object.provider.location.city && object.provider.location.country){
+            locationSource = object.provider.location;
+            locationSource.justOwnerLocation = true;
+        }  
+          
         /*jshint camelcase: false */
-        var city = object.city;
-        var country_code = object.country_code;
+        var city = locationSource.city;
+        var country_code = locationSource.country_code;
         var country = COUNTRY_CODES[country_code];
+
 
         if(!!city) {
           location += city;
@@ -54,23 +55,82 @@
           location += ', ' + country;
         }
 
+        if(locationSource.justOwnerLocation) location += ' (provider location)';
+
         return location;
       }
 
+      function isOnline(object) {
+        var time = object['last_reading_at'];
+        var timeDifference =  (new Date() - new Date(time))/1000;
+        if(!time || timeDifference > 7*24*60*60) { //a week
+          return false;
+        } else {
+          return true;
+        }
+      }
+
       function parseLabels(object) {
+        var system_tags = [];
+
+        if(!object.uuid) {
+          object.uuid = object.name || "no:name"; //tmp.
+        }
+
+        system_tags.push((this.isOnline(object)) ? "online" : "offline");
+
+        var entityName = object.uuid.split(":");
+
+        var source = entityName[3];
+        var origin = entityName[4];
+
+        if(source) system_tags.push(source);
+        if(origin) system_tags.push(origin);
+
         /*jshint camelcase: false */
-        return object.system_tags;
+        return system_tags;
       }
 
       function parseUserTags(object) {
-        return object.user_tags;
+        var user_tags = ["organicity"]; //temp
+        return user_tags;
       }
 
       function parseCoordinates(object) {
-        return {
-          lat: object.latitude,
-          lng: object.longitude
-        };
+        var location = {};
+
+        if(object.data.location.latitude && object.data.location.longitude && object.data.location.latitude != 0 && object.data.location.longitude != 0) {
+            location.lat = object.data.location.latitude;
+            location.lng = object.data.location.longitude;
+        } else if (object.provider.location.city){ //tmp. for unlocated data
+
+            var providerFixture = [
+              {
+                city: "Santander",
+                lat: 43.4647222,
+                lng: -3.8044444
+              },
+              {
+                city: "London",
+                lat: 51.5072,
+                lng: -0.1275
+              },
+              {
+                city: "Aarhus",
+                lat: 56.1572,
+                lng: 10.2107
+              }
+            ];
+
+          var providerLocation = _.find(providerFixture, function(provider) {
+            return provider.city == object.provider.location.city
+          });
+
+          location.lat = providerLocation.lat;
+          location.lng = providerLocation.lng;  
+        }
+
+        return location;
       }
 
       function parseId(object) {
@@ -81,9 +141,9 @@
         var icon;
 
         if(hasLabel(labels, 'offline')) {
-          icon = MARKER_ICONS.markerSmartCitizenOffline;
+          icon = MARKER_ICONS.markerOrganicityOffline;
         } else {
-          icon = MARKER_ICONS.markerSmartCitizenOnline;
+          icon = MARKER_ICONS.markerOrganicityOnline;
         }  
         return icon;
       }
@@ -95,14 +155,26 @@
       }
 
       function parseName(object) {
-        if(!object.name) {
-          return;
+        if(!object.uuid) {
+          object.uuid = object.name; //tmp.
         }
+
+        if(!object.name) {
+        return;
+        }
+
+        var entityName = object.name.split(":");
+
+        entityName = entityName.slice(4, entityName.length);
+        entityName = _.map(entityName, makeCase);
+
+        object.name = entityName.join(" ");
+
         return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
       }
 
       function parseTime(object) {
-        var time = object.data && object.data[''];
+        var time = object['last_reading_at'];
         if(!time) {
           return 'No time';
         }
@@ -120,6 +192,10 @@
           marker.icon = MARKER_ICONS[targetClass];
         }
         return marker;
+      }
+
+      function makeCase(str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
       }
     }
 })();
