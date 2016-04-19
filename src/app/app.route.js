@@ -18,7 +18,7 @@
         .state('landing', {
           url: '/',
           controller: function($state){
-            $state.go('layout.home.kit');
+            $state.go('layout.home.entity');
           }
         })
         /*
@@ -64,7 +64,7 @@
             }
           },
           resolve: {
-            markers: function($state, device, utils, Kit, Marker) {
+            markers: function($state, device, utils, entity, Marker) {
               // It could be refactor to use HTTP caching instead of holding them in localstorage
               var worldMarkers = device.getWorldMarkers();
               if(worldMarkers && worldMarkers.length) {
@@ -90,69 +90,69 @@
           }
         })
         /*
-        -- Show Kit state --
+        -- Show entity state --
         Nested inside layout and home state
-        It's the state that displays all the data related to a kit below the map
+        It's the state that displays all the data related to a entity below the map
         */
-        .state('layout.home.kit', {
+        .state('layout.home.entity', {
           url: '/:id',
           views: {
             'container@layout.home': {
-              templateUrl: 'app/components/kit/showKit/showKit.html',
-              controller: 'KitController',
+              templateUrl: 'app/components/entity/showentity/showentity.html',
+              controller: 'entityController',
               controllerAs: 'vm'
             }
           },
 
           resolve: {
-            kitData: function($stateParams, device, FullKit) {
+            entityData: function($stateParams, device, Fullentity) {
               
-              var kitID = $stateParams.id;
+              var entityID = $stateParams.id;
 
-              if(!kitID) {
+              if(!entityID) {
                 return undefined;
               }
               
-              return device.getDevice(kitID).then(function(deviceData) {
-                return new FullKit(deviceData);
+              return device.getDevice(entityID).then(function(deviceData) {
+                return new Fullentity(deviceData);
               });
 
             },
-            mainSensors: function(kitData) {
-              if(!kitData) {
+            mainSensors: function(entityData) {
+              if(!entityData) {
                 return undefined;
               }
-              return kitData.getSensors();
+              return entityData.getSensors();
             },
-            compareSensors: function(kitData) {
-              if(!kitData) {
+            compareSensors: function(entityData) {
+              if(!entityData) {
                 return undefined;
               }
-              return kitData.getSensors();
+              return entityData.getSensors();
             },
-            ownerKits: function(kitData, PreviewKit, $q, device) {
-              if(!kitData) {
+            ownerentitites: function(entityData, Previewentity, $q, device) {
+              if(!entityData) {
                 return undefined;
               }
-              var kitIDs = kitData.owner.kits;
+              var entityIDs = entityData.owner.entitites;
 
               return $q.all(
-                kitIDs.map(function(id) {
+                entityIDs.map(function(id) {
                   return device.getDevice(id)
                     .then(function(data) {
-                      return new PreviewKit(data);
+                      return new Previewentity(data);
                     });
                 })
               );
             },
-            belongsToUser: function($window, $stateParams, auth, AuthUser, kitUtils, userUtils) {
+            belongsToUser: function($window, $stateParams, auth, AuthUser, entityUtils, userUtils) {
               return false;
               // if(!auth.isAuth() || !$stateParams.id) {
               //   return false;
               // }
-              // var kitID = parseInt($stateParams.id);
+              // var entityID = parseInt($stateParams.id);
               // var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('organicity.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('organicity.data') )));
-              // var belongsToUser = kitUtils.belongsToUser(userData.kits, kitID);
+              // var belongsToUser = entityUtils.belongsToUser(userData.entitites, entityID);
               // var isAdmin = userUtils.isAdmin(userData);
 
               // return isAdmin || belongsToUser;
@@ -189,18 +189,18 @@
                   return new NonAuthUser(user);
                 });
             },
-            kitsData: function($q, device, PreviewKit, userData) {
-              var kitIDs = _.pluck(userData.kits, 'id');
+            entititesData: function($q, device, Previewentity, userData) {
+              var entityIDs = _.pluck(userData.entitites, 'id');
 
-              if(!kitIDs.length) {
+              if(!entityIDs.length) {
                 return [];
               }
 
               return $q.all(
-                kitIDs.map(function(id) {
+                entityIDs.map(function(id) {
                   return device.getDevice(id)
                     .then(function(data) {
-                      return new PreviewKit(data);
+                      return new Previewentity(data);
                     });
                 })
               );
@@ -234,17 +234,17 @@
               }
               return userData;
             },
-            kitsData: function($q, device, PreviewKit, userData) {
-              var kitIDs = _.pluck(userData.kits, 'id');
-              if(!kitIDs.length) {
+            entititesData: function($q, device, Previewentity, userData) {
+              var entityIDs = _.pluck(userData.entitites, 'id');
+              if(!entityIDs.length) {
                 return [];
               }
 
               return $q.all(
-                kitIDs.map(function(id) {
+                entityIDs.map(function(id) {
                   return device.getDevice(id)
                     .then(function(data) {
-                      return new PreviewKit(data);
+                      return new Previewentity(data);
                     });
                 })
               );
@@ -277,17 +277,17 @@
                   return new AuthUser(user);
                 });
             },
-            kitsData: function($q, device, PreviewKit, userData) {
-              var kitIDs = _.pluck(userData.kits, 'id');
-              if(!kitIDs.length) {
+            entititesData: function($q, device, Previewentity, userData) {
+              var entityIDs = _.pluck(userData.entitites, 'id');
+              if(!entityIDs.length) {
                 return [];
               }
 
               return $q.all(
-                kitIDs.map(function(id) {
+                entityIDs.map(function(id) {
                   return device.getDevice(id)
                     .then(function(data) {
-                      return new PreviewKit(data);
+                      return new Previewentity(data);
                     });
                 })
               );
@@ -296,7 +296,7 @@
         })
         /*
         -- Login --
-        It redirects to a certain kit state and opens the login dialog automatically
+        It redirects to a certain entity state and opens the login dialog automatically
         */
         .state('layout.login', {
           url: '/login',
@@ -313,7 +313,7 @@
         })
         /*
         -- Signup --
-        It redirects to a certain kit state and opens the signup dialog automatically
+        It redirects to a certain entity state and opens the signup dialog automatically
         */
         .state('layout.signup', {
           url: '/signup',
@@ -323,7 +323,7 @@
               if(auth.isAuth()) {
                 return $location.path('/');
               }
-              $location.path('/kits/667');
+              $location.path('/entitites/667');
               $location.search('signup', 'true');
             }
           }

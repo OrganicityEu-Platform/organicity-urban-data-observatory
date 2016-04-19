@@ -5,7 +5,7 @@
     .directive('activeButton', activeButton);
 
     /**
-     * Used to highlight and unhighlight buttons on kit menu
+     * Used to highlight and unhighlight buttons on entity menu
      *
      * It attaches click handlers dynamically
      */
@@ -26,43 +26,43 @@
 
         $timeout(function() {
           var navbar = angular.element('.stickNav');
-          var kitMenu = angular.element('.kit_menu');
-          var kitOverview = angular.element('.kit_overview');
-          var kitDashboard = angular.element('.kit_chart');
-          var kitDetails = angular.element('.kit_details');
-          var kitOwner = angular.element('.kit_owner');
-          var kitComments = angular.element('.kit_comments');
+          var entityMenu = angular.element('.entity_menu');
+          var entityOverview = angular.element('.entity_overview');
+          var entityDashboard = angular.element('.entity_chart');
+          var entityDetails = angular.element('.entity_details');
+          var entityOwner = angular.element('.entity_owner');
+          var entityComments = angular.element('.entity_comments');
 
           container = {
             navbar: {
               height: navbar.height()
             },
-            kitMenu: {
-              height: kitMenu.height()
+            entityMenu: {
+              height: entityMenu.height()
             },
-            kitOverview: {
-              height: kitOverview.height(),
-              offset: kitOverview.offset().top,
+            entityOverview: {
+              height: entityOverview.height(),
+              offset: entityOverview.offset().top,
               buttonOrder: 0
             },
-            kitDashboard: {
-              height: kitDashboard.height(),
-              offset: kitDashboard.offset().top,
+            entityDashboard: {
+              height: entityDashboard.height(),
+              offset: entityDashboard.offset().top,
               buttonOrder: 40
             },
-            kitDetails: {
-              height: kitDetails.height(),
-              offset: kitDetails.offset() ? kitDetails.offset().top : 0,
+            entityDetails: {
+              height: entityDetails.height(),
+              offset: entityDetails.offset() ? entityDetails.offset().top : 0,
               buttonOrder: 1
             },
-            kitOwner: {
-              height: kitOwner.height(),
-              offset: kitOwner.offset() ? kitOwner.offset().top : 0,
+            entityOwner: {
+              height: entityOwner.height(),
+              offset: entityOwner.offset() ? entityOwner.offset().top : 0,
               buttonOrder: 2
             },
-            kitComments: {
-              height: kitComments.height(),
-              offset: kitComments.offset() ? kitComments.offset().top : 0,
+            entityComments: {
+              height: entityComments.height(),
+              offset: entityComments.offset() ? entityComments.offset().top : 0,
               buttonOrder: 3
             }
           };
@@ -72,7 +72,7 @@
           if(!container) {
             return;
           }
-          angular.element($window).scrollTop(offset - container.navbar.height - container.kitMenu.height);
+          angular.element($window).scrollTop(offset - container.navbar.height - container.entityMenu.height);
         }
 
         function getButton(buttonOrder) {
@@ -128,29 +128,29 @@
           if(!container) return;
 
           var windowPosition = document.body.scrollTop;
-          var appPosition = windowPosition + container.navbar.height + container.kitMenu.height;
+          var appPosition = windowPosition + container.navbar.height + container.entityMenu.height;
           var button;
-          if(currentSection !== 'none' && appPosition <= container.kitOverview.offset) {
-            button = getButton(container.kitOverview.buttonOrder);
+          if(currentSection !== 'none' && appPosition <= container.entityOverview.offset) {
+            button = getButton(container.entityOverview.buttonOrder);
             unHighlightButtons();
             currentSection = 'none';
-          } else if(currentSection !== 'overview' && appPosition >= container.kitOverview.offset && appPosition <= container.kitOverview.offset + container.kitOverview.height) {
-            button = getButton(container.kitOverview.buttonOrder);
+          } else if(currentSection !== 'overview' && appPosition >= container.entityOverview.offset && appPosition <= container.entityOverview.offset + container.entityOverview.height) {
+            button = getButton(container.entityOverview.buttonOrder);
             unHighlightButtons();
             highlightButton(button);
             currentSection = 'overview';
-          } else if(currentSection !== 'details' && appPosition >= container.kitDetails.offset && appPosition <= container.kitDetails.offset + container.kitDetails.height) {
-            button = getButton(container.kitDetails.buttonOrder);
+          } else if(currentSection !== 'details' && appPosition >= container.entityDetails.offset && appPosition <= container.entityDetails.offset + container.entityDetails.height) {
+            button = getButton(container.entityDetails.buttonOrder);
             unHighlightButtons();
             highlightButton(button);
             currentSection = 'details';
-          } else if(currentSection !== 'owner' && appPosition >= container.kitOwner.offset && appPosition <= container.kitOwner.offset + container.kitOwner.height) {
-            button = getButton(container.kitOwner.buttonOrder);
+          } else if(currentSection !== 'owner' && appPosition >= container.entityOwner.offset && appPosition <= container.entityOwner.offset + container.entityOwner.height) {
+            button = getButton(container.entityOwner.buttonOrder);
             unHighlightButtons();
             highlightButton(button);
             currentSection = 'owner';
-          } else if(currentSection !== 'comments' && appPosition >= container.kitComments.offset && appPosition <= container.kitComments.offset + container.kitOwner.height) {
-            button = getButton(container.kitComments.buttonOrder);
+          } else if(currentSection !== 'comments' && appPosition >= container.entityComments.offset && appPosition <= container.entityComments.offset + container.entityOwner.height) {
+            button = getButton(container.entityComments.buttonOrder);
             unHighlightButtons();
             highlightButton(button);
             currentSection = 'comments';

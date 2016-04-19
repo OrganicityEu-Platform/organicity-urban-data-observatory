@@ -193,7 +193,7 @@
       'RW': 'Rwanda',
       'BL': 'Saint Barthelemy',
       'SH': 'Saint Helena',
-      'KN': 'Saint Kitts And Nevis',
+      'KN': 'Saint entityts And Nevis',
       'LC': 'Saint Lucia',
       'MF': 'Saint Martin',
       'PM': 'Saint Pierre And Miquelon',

@@ -41,7 +41,7 @@ describe('Router', function() {
 
   });
 
-  describe('Kit state', function() {
+  describe('entity state', function() {
 
   });
 

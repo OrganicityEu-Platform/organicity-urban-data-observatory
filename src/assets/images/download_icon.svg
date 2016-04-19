@@ -6,7 +6,7 @@
     <defs></defs>
     <g id="Owner-detail" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
         <g id="my-owner-detail" sketch:type="MSArtboardGroup" transform="translate(-632.000000, -988.000000)" fill="#BBB">
-            <g id="Kit-Details" sketch:type="MSLayerGroup" transform="translate(0.000000, 768.000000)">
+            <g id="entity-Details" sketch:type="MSLayerGroup" transform="translate(0.000000, 768.000000)">
                 <g id="Download-data" transform="translate(632.500000, 183.000000)" sketch:type="MSShapeGroup">
                     <path d="M13,42.7857143 L9.28571429,42.7857143 L9.28571429,37.2142857 L3.71428571,37.2142857 L3.71428571,42.7857143 L0,42.7857143 L6.5,49.2857143 L13,42.7857143 L13,42.7857143 Z M0,51.1428571 L0,53 L13,53 L13,51.1428571 L0,51.1428571 L0,51.1428571 Z" id="Shape"></path>
                 </g>

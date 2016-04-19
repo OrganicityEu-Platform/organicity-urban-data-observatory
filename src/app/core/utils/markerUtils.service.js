@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('markerUtils', markerUtils);
 
-    markerUtils.$inject = ['device', 'kitUtils', 'COUNTRY_CODES', 'MARKER_ICONS'];
-    function markerUtils(device, kitUtils, COUNTRY_CODES, MARKER_ICONS) {
+    markerUtils.$inject = ['device', 'entityUtils', 'COUNTRY_CODES', 'MARKER_ICONS'];
+    function markerUtils(device, entityUtils, COUNTRY_CODES, MARKER_ICONS) {
       var service = {
         parseName: parseName,
         parseType: parseType,
@@ -20,15 +20,15 @@
         isOnline: isOnline,
         makeCase: makeCase
       };
-      _.defaults(service, kitUtils);
+      _.defaults(service, entityUtils);
       return service;
 
       ///////////////
 
       function parseType(object) {
-        var kitType; 
-        kitType = 'Organicity'; //tmp
-        return kitType; 
+        var entityType; 
+        entityType = 'Organicity'; //tmp
+        return entityType; 
       }
 
       function parseLocation(object) {

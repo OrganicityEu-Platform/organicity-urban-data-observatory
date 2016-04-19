@@ -2,20 +2,20 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('HasSensorKit', ['Kit', function(Kit) {
+    .factory('HasSensorentity', ['entity', function(entity) {
 
-      function HasSensorKit(object) {
-        Kit.call(this, object);
+      function HasSensorentity(object) {
+        entity.call(this, object);
 
         this.data = object.data.attributes;
         this.longitude = object.data.location.longitude;
         this.latitude = object.data.location.latitude;
       }
 
-      HasSensorKit.prototype = Object.create(Kit.prototype);
-      HasSensorKit.prototype.constructor = Kit;
+      HasSensorentity.prototype = Object.create(entity.prototype);
+      HasSensorentity.prototype.constructor = entity;
 
-      HasSensorKit.prototype.sensorsHasData = function() {
+      HasSensorentity.prototype.sensorsHasData = function() {
         var parsedSensors = this.data.map(function(sensor) {
           return sensor.value;
         });
@@ -25,6 +25,6 @@
         });
       };
 
-      return HasSensorKit;
+      return HasSensorentity;
     }]);
 })();

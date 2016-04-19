@@ -17,7 +17,7 @@
       function link(scope, elem) {
         var chartHeight;
         $timeout(function() {
-          chartHeight = angular.element('.kit_chart').height();          
+          chartHeight = angular.element('.entity_chart').height();          
         }, 1000);
 
         angular.element($window).on('scroll', function() {

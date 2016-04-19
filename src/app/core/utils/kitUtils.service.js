@@ -2,10 +2,10 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('kitUtils', kitUtils);
+    .factory('entityUtils', entityUtils);
 
-    kitUtils.$inject = ['COUNTRY_CODES', 'device'];
-    function kitUtils(COUNTRY_CODES, device) {
+    entityUtils.$inject = ['COUNTRY_CODES', 'device'];
+    function entityUtils(COUNTRY_CODES, device) {
       var service = {
         parseName: parseName,
         parseLocation: parseLocation,
@@ -101,18 +101,18 @@
       }
 
       function parseType(object) {
-        var kitType;
+        var entityType;
 
-        kitType = 'Organicity';
+        entityType = 'Organicity';
 
-        return kitType; 
+        return entityType; 
       }
 
-      function classify(kitType) {
-        if(!kitType) {
+      function classify(entityType) {
+        if(!entityType) {
           return '';
         }
-        return kitType.toLowerCase().split(' ').join('_');
+        return entityType.toLowerCase().split(' ').join('_');
       }
 
       function parseTime(object) {
@@ -121,10 +121,10 @@
       }
 
       function parseVersion(object) {
-        if(!object.kit) {
+        if(!object.entity) {
           return;
         }
-        return object.kit.name.match(/[0-9]+.?[0-9]*/)[0];
+        return object.entity.name.match(/[0-9]+.?[0-9]*/)[0];
       }
 
       function parseOwner(object) {
@@ -133,7 +133,7 @@
           id: object.provider.id,
           username: object.provider.username,
           /*jshint camelcase: false */
-          kits: object.provider.device_ids,
+          entitites: object.provider.device_ids,
           city: object.provider.location.city,
           country: COUNTRY_CODES[object.provider.location.country_code],
           url: object.provider.url,
@@ -166,11 +166,11 @@
         return moment(sensor.recorded_at).format('');
       }
 
-      function belongsToUser(kitsArray, kitID) {
+      function belongsToUser(entititesArray, entityID) {
         
-        return kitsArray;
-        // return _.some(kitsArray, function(kit) {
-        //   return kit.id === kitID;
+        return entititesArray;
+        // return _.some(entititesArray, function(entity) {
+        //   return entity.id === entityID;
         // });
       }
 

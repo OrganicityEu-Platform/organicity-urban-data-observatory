@@ -10,7 +10,7 @@ describe('Service: Device', function() {
     device = _device_;
     httpBackend = $httpBackend;
 
-    httpBackend.whenGET('/kits').respond([]);
+    httpBackend.whenGET('/entitites').respond([]);
   }));
 
 
@@ -19,20 +19,20 @@ describe('Service: Device', function() {
   });
 
   it('should have certain properties', function() {
-    expect(Object.keys(device)).toContain('getDevice', 'getDevices', 'getAllDevices', 'getGenericKitData');
+    expect(Object.keys(device)).toContain('getDevice', 'getDevices', 'getAllDevices', 'getGenericentityData');
   });
 
   describe('Initialization', function() {
-    it('should call #callGenericKitData', function() {
+    it('should call #callGenericentityData', function() {
       httpBackend.flush();
-      expect(device.getGenericKitData()).toEqual({});        
+      expect(device.getGenericentityData()).toEqual({});        
     });
   })
 
   describe('#getDevice', function() {
     it('should call for a single device', function() {
       httpBackend.whenGET('/devices/12').respond({
-        name: 'Kit name',
+        name: 'entity name',
         id: 12
       });
 
@@ -47,7 +47,7 @@ describe('Service: Device', function() {
   describe('#getDevices', function() {
     it('should get devices closed to a location', function() {
       httpBackend.whenGET('/devices?near=1,1').respond([
-        {name: 'Kit name'},
+        {name: 'entity name'},
         {name: 'dmed'}
       ]);
 
@@ -63,7 +63,7 @@ describe('Service: Device', function() {
   describe('getAllDevices', function() {
     it('should call for all world devices', function() {
       httpBackend.whenGET('/devices/world_map').respond([
-        {name: 'Kit name'},
+        {name: 'entity name'},
         {name: 'dmed'}
       ]);
 

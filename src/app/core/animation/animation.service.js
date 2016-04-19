@@ -20,7 +20,7 @@
         addNav: addNav,
         showChartSpinner: showChartSpinner,
         hideChartSpinner: hideChartSpinner,
-        kitLoaded: kitLoaded,
+        entityLoaded: entityLoaded,
         showPasswordRecovery: showPasswordRecovery,
         showLogin: showLogin,
         showSignup: showSignup,
@@ -28,7 +28,7 @@
         hideAlert: hideAlert,
         viewLoading: viewLoading,
         viewLoaded: viewLoaded,
-        kitWithoutData: kitWithoutData,
+        entityWithoutData: entityWithoutData,
         goToLocation: goToLocation,
         mapStateLoading: mapStateLoading,
         mapStateLoaded: mapStateLoaded
@@ -55,8 +55,8 @@
       function hideChartSpinner() {
         $rootScope.$broadcast('hideChartSpinner');
       }
-      function kitLoaded(data) {
-        $rootScope.$broadcast('kitLoaded', data);
+      function entityLoaded(data) {
+        $rootScope.$broadcast('entityLoaded', data);
       }
       function showPasswordRecovery() {
         $rootScope.$broadcast('showPasswordRecovery');
@@ -79,8 +79,8 @@
       function viewLoaded() {
         $rootScope.$broadcast('viewLoaded');
       }
-      function kitWithoutData(data) {
-        $rootScope.$broadcast('kitWithoutData', data);
+      function entityWithoutData(data) {
+        $rootScope.$broadcast('entityWithoutData', data);
       }
       function goToLocation(data) {
         $rootScope.$broadcast('goToLocation', data);

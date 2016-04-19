@@ -4,15 +4,15 @@ describe('Service: User Constructor', function() {
 
   beforeEach(module('app.components'));
 
-  var Kit;
+  var entity;
 
-  beforeEach(inject(function(_Kit_) {    
-    Kit = _Kit_;
+  beforeEach(inject(function(_entity_) {    
+    entity = _entity_;
   }));
 
   describe('', function() {
     it('should exist', function() {
-      expect(Kit).toEqual(jasmine.any(Function));
+      expect(entity).toEqual(jasmine.any(Function));
     });
   });
 

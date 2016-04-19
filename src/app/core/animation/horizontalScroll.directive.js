@@ -5,7 +5,7 @@
     .directive('horizontalScroll', horizontalScroll);
 
   /**
-   * Used to highlight and unhighlight buttons on the kit dashboard when scrolling horizontally
+   * Used to highlight and unhighlight buttons on the entity dashboard when scrolling horizontally
    * 
    */
   horizontalScroll.$inject = ['$window', '$timeout'];

@@ -5,7 +5,7 @@
     .directive('showPopup', showPopup);
 
     /**
-     * Used on kit dashboard to open full sensor description
+     * Used on entity dashboard to open full sensor description
      */
 
     showPopup.$inject = [];

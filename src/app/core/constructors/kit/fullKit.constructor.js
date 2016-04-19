@@ -2,47 +2,47 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('FullKit', ['Kit', 'Sensor', 'kitUtils', function(Kit, Sensor, kitUtils) {
+    .factory('Fullentity', ['entity', 'Sensor', 'entityUtils', function(entity, Sensor, entityUtils) {
 
       /**
-       * Full Kit constructor.
+       * Full entity constructor.
        * @constructor
-       * @extends Kit
-       * @param {Object} object - Object with all the data about the kit from the API
-       * @property {string} version - Kit version. Ex: 1.0
-       * @property {string} time - Last time kit sent data in UTC format
-       * @property {string} timeParsed - Last time kit sent data in readable format
-       * @property {string} timeAgo - Last time kit sent data in 'ago' format. Ex: 'a few seconds ago'
-       * @property {string} class - CSS class for kit
-       * @property {string} description - Kit description
-       * @property {Object} owner - Kit owner data
-       * @property {Array} data - Kit sensor's data
-       * @property {number} latitude - Kit latitude
-       * @property {number} longitude - Kit longitude
-       * @property {string} macAddress - Kit mac address
+       * @extends entity
+       * @param {Object} object - Object with all the data about the entity from the API
+       * @property {string} version - entity version. Ex: 1.0
+       * @property {string} time - Last time entity sent data in UTC format
+       * @property {string} timeParsed - Last time entity sent data in readable format
+       * @property {string} timeAgo - Last time entity sent data in 'ago' format. Ex: 'a few seconds ago'
+       * @property {string} class - CSS class for entity
+       * @property {string} description - entity description
+       * @property {Object} owner - entity owner data
+       * @property {Array} data - entity sensor's data
+       * @property {number} latitude - entity latitude
+       * @property {number} longitude - entity longitude
+       * @property {string} macAddress - entity mac address
        * @property {number} elevation
        */
-      function FullKit(object) {
+      function Fullentity(object) {
 
-        Kit.call(this, object);
+        entity.call(this, object);
 
         this.version = "Organicity";
-        this.time = kitUtils.parseTime(object);
+        this.time = entityUtils.parseTime(object);
         this.timeParsed = !this.time ? 'No time' : moment(this.time).format('MMMM DD, YYYY - HH:mm');
         this.timeAgo = !this.time ? 'No time' : moment(this.time).fromNow();
-        this.class = kitUtils.classify(kitUtils.parseType(object)); 
+        this.class = entityUtils.classify(entityUtils.parseType(object)); 
         this.description = "";
-        this.owner = kitUtils.parseOwner(object);
+        this.owner = entityUtils.parseOwner(object);
         this.data = object.data.attributes;
         this.latitude = object.data.location.latitude;
         this.longitude = object.data.location.longitude;
 
       }
 
-      FullKit.prototype = Object.create(Kit.prototype);
-      FullKit.prototype.constructor = FullKit;
+      Fullentity.prototype = Object.create(entity.prototype);
+      Fullentity.prototype.constructor = Fullentity;
 
-      FullKit.prototype.getSensors = function() {
+      Fullentity.prototype.getSensors = function() {
         var sensors = _(this.data)
             .chain()
             .map(function(sensor, i) {
@@ -51,6 +51,6 @@
             .value();
             return sensors;
       };
-      return FullKit;
+      return Fullentity;
     }]); 
 })();

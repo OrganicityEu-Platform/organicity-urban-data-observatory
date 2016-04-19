@@ -5,7 +5,7 @@
     .directive('noDataBackdrop', noDataBackdrop);
 
     /**
-     * Backdrop for chart section when kit has no data
+     * Backdrop for chart section when entity has no data
      * 
      */
     noDataBackdrop.$inject = [];
@@ -17,10 +17,10 @@
         controller: function($scope) {
           var vm = this;  
 
-          vm.kitWithoutData = false;
+          vm.entityWithoutData = false;
 
-          $scope.$on('kitWithoutData', function(ev, data) {
-            vm.kitWithoutData = true;
+          $scope.$on('entityWithoutData', function(ev, data) {
+            vm.entityWithoutData = true;
 
             if(data.belongsToUser) {
               vm.user = 'owner';

@@ -32,18 +32,18 @@
     }
 
     function infoNoDataVisitor() {
-      info('Woha! This kit has still not published any data yet. Leave a ' +
+      info('Woha! This entity has still not published any data yet. Leave a ' +
         'comment to its owner to make him/ her know',
       10000,
       {
         button: 'Leave comment',
         buttonAttributes: 'analytics-on="click" analytics-event="click" ' +
-          'analytics-category="Offline Kit Comment Link"',
+          'analytics-category="Offline entity Comment Link"',
         href: '#disqus_thread'
       });
     }
-    function infoNoDataOwner(kitID) {
-      info('Woha! This kit has still not published any data yet. Please, check its settings or reach the support team', 10000, {button: 'Kit settings', href: '/kits/edit/' + kitID});
+    function infoNoDataOwner(entityID) {
+      info('Woha! This entity has still not published any data yet. Please, check its settings or reach the support team', 10000, {button: 'entity settings', href: '/entitites/edit/' + entityID});
     }
 
     function infoLongTime() {

@@ -15,7 +15,7 @@
       .directive('focusInput', focusInput);
 
     /**
-     * It moves down kit section to ease the transition after the kit menu is sticked to the top
+     * It moves down entity section to ease the transition after the entity menu is sticked to the top
      * 
      */
     moveDown.$inject = [];
@@ -39,7 +39,7 @@
     }
 
     /**
-     * It sticks kit menu when kit menu touchs navbar on scrolling
+     * It sticks entity menu when entity menu touchs navbar on scrolling
      * 
      */
     stick.$inject = ['$window', '$timeout'];
@@ -148,19 +148,19 @@
         var screenHeight = $document[0].body.clientHeight;
         var navbarHeight = angular.element('.stickNav').height();
         
-        // var overviewHeight = angular.element('.kit_overview').height(); 
-        // var menuHeight = angular.element('.kit_menu').height();
-        // var chartHeight = angular.element('.kit_chart').height();
+        // var overviewHeight = angular.element('.entity_overview').height(); 
+        // var menuHeight = angular.element('.entity_menu').height();
+        // var chartHeight = angular.element('.entity_chart').height();
 
         $timeout(function() {
-          var overviewHeight = angular.element('.kit_overview').height(); 
-          var menuHeight = angular.element('.kit_menu').height();
-          var chartHeight = angular.element('.kit_chart').height();
+          var overviewHeight = angular.element('.entity_overview').height(); 
+          var menuHeight = angular.element('.entity_menu').height();
+          var chartHeight = angular.element('.entity_chart').height();
           
           var mapHeight = screenHeight - navbarHeight - menuHeight - overviewHeight; // screen height - navbar height - menu height - overview height - charts height
           element.css('height', mapHeight + 'px');
           
-          //layout.setKit(position);
+          //layout.setentity(position);
           //var position = mapHeight + navbarHeight // map height + navbar height;
         });
         
@@ -174,7 +174,7 @@
     }
 
     /**
-     * Changes margin on kit section based on above-the-fold space left after map section is resize
+     * Changes margin on entity section based on above-the-fold space left after map section is resize
      */
     
     changeContentMargin.$inject = ['layout', '$timeout', '$document'];
@@ -183,7 +183,7 @@
 /*        $timeout(function() {
           var mapHeight = angular.element('.angular-leaflet-map').height();
           var navbarHeight = angular.element('.stickNav').height();
-          var chartHeight = angular.element('.kit_chart').height();
+          var chartHeight = angular.element('.entity_chart').height();
 
           element.css('margin-top', mapHeight + navbarHeight + 'px');
         });
@@ -191,13 +191,13 @@
           var screenHeight = $document[0].body.clientHeight;
           // var navbarHeight = angular.element('.stickNav').height();
           
-          var overviewHeight = angular.element('.kit_overview').height(); 
-          var menuHeight = angular.element('.kit_menu').height();
-          var chartHeight = angular.element('.kit_chart').height();
+          var overviewHeight = angular.element('.entity_overview').height(); 
+          var menuHeight = angular.element('.entity_menu').height();
+          var chartHeight = angular.element('.entity_chart').height();
 
-            // var overviewHeight = angular.element('.kit_overview').height(); 
-            // var menuHeight = angular.element('.kit_menu').height();
-            // var chartHeight = angular.element('.kit_chart').height();
+            // var overviewHeight = angular.element('.entity_overview').height(); 
+            // var menuHeight = angular.element('.entity_menu').height();
+            // var chartHeight = angular.element('.entity_chart').height();
             
             var aboveTheFoldHeight = screenHeight - menuHeight - overviewHeight; // screen height - navbar height - menu height - overview height - charts height
             element.css('margin-top', aboveTheFoldHeight + 'px');  

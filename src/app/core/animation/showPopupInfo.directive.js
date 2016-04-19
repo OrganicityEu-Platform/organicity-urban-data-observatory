@@ -5,7 +5,7 @@
     .directive('showPopupInfo', showPopupInfo);
 
     /**
-     * Used to show/hide explanation of sensor value at kit dashboard
+     * Used to show/hide explanation of sensor value at entity dashboard
      * 
      */
     showPopupInfo.$inject = [];

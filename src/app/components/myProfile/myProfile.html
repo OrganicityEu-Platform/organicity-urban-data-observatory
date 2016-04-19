@@ -145,81 +145,81 @@
         </md-tab-body>
       </md-tab>
       <md-tab label md-on-select="vm.highlightIcon(1)" analytics-on="click"
-        analytics-event="Profile" analytics-action="kits">
+        analytics-event="Profile" analytics-action="entitites">
         <md-tab-label>
-          <md-icon md-svg-src="./assets/images/kit_details_icon_light.svg" class="myProfile_tab_icon"></md-icon>
-          <span>KITS</span>
+          <md-icon md-svg-src="./assets/images/entity_details_icon_light.svg" class="myProfile_tab_icon"></md-icon>
+          <span>entitites</span>
         </md-tab-label>
         <md-tab-body>
           <div class="profile_content" layout="row">
             <div class="profile_sidebar">
-              <p class="profile_sidebar_title">FILTER KITS BY</p>
+              <p class="profile_sidebar_title">FILTER entitites BY</p>
               <div class="profile_sidebar_options">
-                <md-button ng-click="vm.filterKits('all')" 
+                <md-button ng-click="vm.filterentitites('all')" 
                 class="profile_sidebar_button" analytics-on="click"
-                analytics-event="Profile" analytics-action="kit filter">
+                analytics-event="Profile" analytics-action="entity filter">
                   ALL
                 </md-button>
-                <md-button ng-click="vm.filterKits('online')"
+                <md-button ng-click="vm.filterentitites('online')"
                   class="profile_sidebar_button" analytics-on="click"
-                  analytics-event="Profile" analytics-action="kit filter">
+                  analytics-event="Profile" analytics-action="entity filter">
                   ONLINE
                 </md-button>
-                <md-button ng-click="vm.filterKits('offline')"
+                <md-button ng-click="vm.filterentitites('offline')"
                 class="profile_sidebar_button" analytics-on="click"
-                analytics-event="Profile" analytics-action="kit filter">
+                analytics-event="Profile" analytics-action="entity filter">
                   OFFLINE
                 </md-button>
               </div>
             </div>
             <div class="profile_content_main" flex>
               <div class="profile_content_main_top">
-                <md-button class="myProfile_addKitButton" href="/kits/new">ADD A NEW KIT</md-button>
-                <span class="myProfile_content_main_title">{{ vm.filteredKits.length || 0 }} kits filtering by {{ vm.kitStatus.toUpperCase() || 'ALL' }}</span>
+                <md-button class="myProfile_addentityButton" href="/entitites/new">ADD A NEW entity</md-button>
+                <span class="myProfile_content_main_title">{{ vm.filteredentitites.length || 0 }} entitites filtering by {{ vm.entititestatus.toUpperCase() || 'ALL' }}</span>
               </div>
-              <div class="kitList_parent" ng-repeat="kit in (vm.filteredKits = (vm.kits | filterLabel:vm.kitStatus ))" layout="row" layout-align="start center">  <!-- filter: { labels: { status: vm.kitStatus } }  -->
-                <md-button ng-href="./kits/{{kit.id}}" class="kitList kitList_secondary" ng-class="{kitList_borderBottom: $last}" layout="row" layout-align="start center">
-                  <div class="kitList_container" layout="row" layout-align="start center">
+              <div class="entityList_parent" ng-repeat="entity in (vm.filteredentitites = (vm.entitites | filterLabel:vm.entititestatus ))" layout="row" layout-align="start center">  <!-- filter: { labels: { status: vm.entititestatus } }  -->
+                <md-button ng-href="./entitites/{{entity.id}}" class="entityList entityList_secondary" ng-class="{entityList_borderBottom: $last}" layout="row" layout-align="start center">
+                  <div class="entityList_container" layout="row" layout-align="start center">
                     <div class="">
-                      <img class="kitList_avatar" ng-src="{{ kit.avatar || './assets/images/avatar.svg' }}" />
+                      <img class="entityList_avatar" ng-src="{{ entity.avatar || './assets/images/avatar.svg' }}" />
                     </div>
-                    <div class="kitList_content">
-                      <div class="kitList_name">{{ kit.name || 'No name' }}</div>
-                      <div class="kitList_data">
-                        <md-icon class="kitList_icon" md-svg-src="./assets/images/location_icon_light.svg">
+                    <div class="entityList_content">
+                      <div class="entityList_name">{{ entity.name || 'No name' }}</div>
+                      <div class="entityList_data">
+                        <md-icon class="entityList_icon" md-svg-src="./assets/images/location_icon_light.svg">
                         </md-icon>
-                        <span>{{ kit.location || 'No location' }}</span>
-                        <md-icon class="kitList_icon" md-svg-src="./assets/images/sensor_icon.svg">
+                        <span>{{ entity.location || 'No location' }}</span>
+                        <md-icon class="entityList_icon" md-svg-src="./assets/images/sensor_icon.svg">
                         </md-icon>
-                        <span>{{ kit.type }}</span>
+                        <span>{{ entity.type }}</span>
                       </div>
                     </div>
-                    <div class="kitList_right" layout="row" layout-align="end center">
+                    <div class="entityList_right" layout="row" layout-align="end center">
                       <div class="chips" layout="row" layout-align="start center">
-                        <div class="chip kit_tag" ng-repeat="tag in kit.labels">
+                        <div class="chip entity_tag" ng-repeat="tag in entity.labels">
                           <span class="chip_name">{{ tag }}</span>
                         </div>
-                        <div class="chip kit_tag" ng-repeat="userTag in kit.userTags">
+                        <div class="chip entity_tag" ng-repeat="userTag in entity.userTags">
                           <span class="chip_name">{{ userTag }}</span>
                         </div>
                       </div>
-                      <div class="kitList_state kitList_state_{{ kit.state.className }}" ng-if="kit.state.name === 'never published' || kit.state.name === 'not configured'"><span>{{ kit.state.name }}</span></div>
+                      <div class="entityList_state entityList_state_{{ entity.state.className }}" ng-if="entity.state.name === 'never published' || entity.state.name === 'not configured'"><span>{{ entity.state.name }}</span></div>
                     </div>
                   </div>
                 </md-button>
-                <div class="kitList_config" layout="row" layout="center center">
-                  <md-button class="kitList_dropdownButton" aria-label
-                    dropdown-menu="kit.dropdownOptions"
+                <div class="entityList_config" layout="row" layout="center center">
+                  <md-button class="entityList_dropdownButton" aria-label
+                    dropdown-menu="entity.dropdownOptions"
                     dropdown-model="vm.dropdownSelected"
                     dropdown-item-label="text">
                       <img src="./assets/images/config_icon.svg" />
                   </md-button>
                 </div>
               </div>
-              <div class="kitList kitList_primary kitList_borderBottom" class="kitList_borderBottom" ng-show="!vm.kits.length">
-                <div class="kitList_container">
-                  <div class="kitList_noKits">
-                    <span>There are not kits yet</span>
+              <div class="entityList entityList_primary entityList_borderBottom" class="entityList_borderBottom" ng-show="!vm.entitites.length">
+                <div class="entityList_container">
+                  <div class="entityList_noentitites">
+                    <span>There are not entitites yet</span>
                   </div>
                 </div>
               </div>
@@ -246,19 +246,19 @@
             </div>
             <div class="profile_content_main" flex>
               <div class="profile_content_main_top">
-                <span class="profile_content_main_title">{{ vm.filteredTools.length || 0 }} kits filtering by {{ vm.toolType.toUpperCase() || 'ALL' }}</span>
+                <span class="profile_content_main_title">{{ vm.filteredTools.length || 0 }} entitites filtering by {{ vm.toolType.toUpperCase() || 'ALL' }}</span>
               </div>
-              <div class="profile_content_main_kits">
-                <div ng-repeat="tool in (vm.filteredTools = (vm.tools | filter: { type: vm.toolType } ))" ng-class="{kitList_borderBottom: $last}">
-                  <md-button ng-href="{{tool.href}}" class="kitList kitList_primary" layout="row" layout-align="start center">
-                    <div class="kitList_container" layout="row" layout-align="start center">
+              <div class="profile_content_main_entitites">
+                <div ng-repeat="tool in (vm.filteredTools = (vm.tools | filter: { type: vm.toolType } ))" ng-class="{entityList_borderBottom: $last}">
+                  <md-button ng-href="{{tool.href}}" class="entityList entityList_primary" layout="row" layout-align="start center">
+                    <div class="entityList_container" layout="row" layout-align="start center">
                       <div class="">
-                        <md-icon class="kitList_avatar" md-svg-src="{{ tool.avatar || './assets/images/user_details_icon.svg'}}">
+                        <md-icon class="entityList_avatar" md-svg-src="{{ tool.avatar || './assets/images/user_details_icon.svg'}}">
                         </md-icon>
                       </div>
-                      <div class="kitList_content">
-                        <div class="kitList_name">{{ tool.title }}</div>
-                        <div class="kitList_data">
+                      <div class="entityList_content">
+                        <div class="entityList_name">{{ tool.title }}</div>
+                        <div class="entityList_data">
                           <span>{{ tool.description }}</span>
                         </div>
                       </div>

@@ -7,20 +7,20 @@
 
     function layout() {
 
-      var kitHeight;
+      var entityHeight;
 
       var service = {
-        setKit: setKit,
-        getKit: getKit
+        setentity: setentity,
+        getentity: getentity
       };
       return service;
 
-      function setKit(height) {
-        kitHeight = height;
+      function setentity(height) {
+        entityHeight = height;
       }
 
-      function getKit() {
-        return kitHeight;
+      function getentity() {
+        return entityHeight;
       }
     }
 })();

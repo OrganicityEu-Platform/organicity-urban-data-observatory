@@ -4,8 +4,8 @@
   angular.module('app.components')
     .controller('MyProfileController', MyProfileController);
 
-    MyProfileController.$inject = ['$scope', '$location', '$q', '$interval', 'userData', 'kitsData', 'AuthUser', 'user', 'auth', 'utils', 'alert', 'COUNTRY_CODES', '$timeout', 'file', 'PROFILE_TOOLS', 'animation', 'DROPDOWN_OPTIONS_KIT', '$mdDialog', 'PreviewKit', 'device'];
-    function MyProfileController($scope, $location, $q, $interval, userData, kitsData, AuthUser, user, auth, utils, alert, COUNTRY_CODES, $timeout, file, PROFILE_TOOLS, animation, DROPDOWN_OPTIONS_KIT, $mdDialog, PreviewKit, device) {
+    MyProfileController.$inject = ['$scope', '$location', '$q', '$interval', 'userData', 'entititesData', 'AuthUser', 'user', 'auth', 'utils', 'alert', 'COUNTRY_CODES', '$timeout', 'file', 'PROFILE_TOOLS', 'animation', 'DROPDOWN_OPTIONS_entity', '$mdDialog', 'Previewentity', 'device'];
+    function MyProfileController($scope, $location, $q, $interval, userData, entititesData, AuthUser, user, auth, utils, alert, COUNTRY_CODES, $timeout, file, PROFILE_TOOLS, animation, DROPDOWN_OPTIONS_entity, $mdDialog, Previewentity, device) {
       var vm = this;
 
       vm.highlightIcon = highlightIcon;
@@ -23,13 +23,13 @@
       vm.removeUser = removeUser;
       vm.uploadAvatar = uploadAvatar;
 
-      //KITS TAB
-      vm.kits = kitsData;
-      vm.kitStatus = undefined;
-      vm.filteredKits = [];
+      //entitites TAB
+      vm.entitites = entititesData;
+      vm.entititestatus = undefined;
+      vm.filteredentitites = [];
 
       vm.dropdownSelected = undefined;
-      vm.dropdownOptions = DROPDOWN_OPTIONS_KIT;
+      vm.dropdownOptions = DROPDOWN_OPTIONS_entity;
 
       //TOOLS TAB
       vm.tools = PROFILE_TOOLS;
@@ -37,17 +37,17 @@
       vm.filteredTools = [];
 
       //SIDEBAR
-      vm.filterKits = filterKits;
+      vm.filterentitites = filterentitites;
       vm.filterTools = filterTools;
 
-      var updateKitsTimer = undefined;
+      var updateentititesTimer = undefined;
 
       $scope.$on('loggedOut', function() {
         $location.path('/');
       });
       $scope.$on("$destroy", function() {
-        if (updateKitsTimer) {
-            $interval.cancel(updateKitsTimer);
+        if (updateentititesTimer) {
+            $interval.cancel(updateentititesTimer);
         }
     });
 
@@ -62,14 +62,14 @@
           animation.viewLoaded();
         }, 500);
 
-        updateKitsTimer = $interval(updateKits, 4000);
+        updateentititesTimer = $interval(updateentitites, 4000);
       }
 
-      function filterKits(status) {
+      function filterentitites(status) {
         if(status === 'all') {
           status = undefined;
         }
-        vm.kitStatus = status;
+        vm.entititestatus = status;
       }
 
       function filterTools(type) {
@@ -169,22 +169,22 @@
         }
       }
 
-      function updateKits() {
-        var kitIDs = _.pluck(vm.user.kits, 'id');
-        if(!kitIDs.length) {
+      function updateentitites() {
+        var entityIDs = _.pluck(vm.user.entitites, 'id');
+        if(!entityIDs.length) {
           return [];
         }
 
         $q.all(
-          kitIDs.map(function(id) {
+          entityIDs.map(function(id) {
             return device.getDevice(id)
               .then(function(data) {
-                return new PreviewKit(data);
+                return new Previewentity(data);
               });
           })
         )
         .then(function(data){
-          vm.kits = data;
+          vm.entitites = data;
         });
       }
     }

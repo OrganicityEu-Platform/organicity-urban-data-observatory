@@ -39,7 +39,7 @@
             // if there's data for 2 sensors
             if(newData[0] && newData[1]) {
               var sensorDataMain = newData[0].data;
-              // we could get some performance from saving the map in the showKit controller on line 218 and putting that logic in here
+              // we could get some performance from saving the map in the showentity controller on line 218 and putting that logic in here
               var dataMain = sensorDataMain.map(function(dataPoint) {
                 return {
                   date: dateFormat(dataPoint.time),

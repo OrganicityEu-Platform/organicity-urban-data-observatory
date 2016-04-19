@@ -20,53 +20,53 @@
   </div>
   <div class="profile_content" layout="row">
     <div class="profile_sidebar">
-      <p class="profile_sidebar_title">FILTER KITS BY</p>
+      <p class="profile_sidebar_title">FILTER entitites BY</p>
       <div class="profile_sidebar_options">
-        <md-button ng-click="vm.filterKits('all')"
+        <md-button ng-click="vm.filterentitites('all')"
         class="profile_sidebar_button" analytics-on="click"
-        analytics-event="Profile" analytics-action="kit filter">
+        analytics-event="Profile" analytics-action="entity filter">
           ALL
         </md-button>
-        <md-button ng-click="vm.filterKits('online')"
+        <md-button ng-click="vm.filterentitites('online')"
           class="profile_sidebar_button" analytics-on="click"
-          analytics-event="Profile" analytics-action="kit filter">
+          analytics-event="Profile" analytics-action="entity filter">
           ONLINE
         </md-button>
-        <md-button ng-click="vm.filterKits('offline')"
+        <md-button ng-click="vm.filterentitites('offline')"
         class="profile_sidebar_button" analytics-on="click"
-        analytics-event="Profile" analytics-action="kit filter">
+        analytics-event="Profile" analytics-action="entity filter">
           OFFLINE
         </md-button>
       </div>
     </div>
     <div class="profile_content_main" flex>
       <div class="profile_content_main_top">
-        <span class="profile_content_main_title">{{ vm.filteredKits.length || 0 }} kits filtering by {{ vm.status.toUpperCase() || 'ALL' }}</span>
+        <span class="profile_content_main_title">{{ vm.filteredentitites.length || 0 }} entitites filtering by {{ vm.status.toUpperCase() || 'ALL' }}</span>
       </div>
-      <div class="profile_content_main_kits">
-        <div class="kitList_parent" ng-repeat="kit in (vm.filteredKits = (vm.kits | filterLabel: vm.status))" layout="row" layout-align="start center">
-          <md-button class="kitList kitList_primary" ng-href="./kits/{{kit.id}}" layout="row" layout-align="start center" ng-class="{kitList_borderBottom: $last}">
-            <div class="kitList_container" layout="row" layout-align="start center">
+      <div class="profile_content_main_entitites">
+        <div class="entityList_parent" ng-repeat="entity in (vm.filteredentitites = (vm.entitites | filterLabel: vm.status))" layout="row" layout-align="start center">
+          <md-button class="entityList entityList_primary" ng-href="./entitites/{{entity.id}}" layout="row" layout-align="start center" ng-class="{entityList_borderBottom: $last}">
+            <div class="entityList_container" layout="row" layout-align="start center">
               <div>
-                <img class="kitList_avatar" ng-src="{{ kit.avatar || './assets/images/avatar.svg' }}" />
+                <img class="entityList_avatar" ng-src="{{ entity.avatar || './assets/images/avatar.svg' }}" />
               </div>
-              <div class="kitList_content">
-                <div class="kitList_name">{{ kit.name || 'No name'}}</div>
-                <div class="kitList_data">
-                  <md-icon class="kitList_icon" md-svg-src="./assets/images/location_icon_light.svg">
+              <div class="entityList_content">
+                <div class="entityList_name">{{ entity.name || 'No name'}}</div>
+                <div class="entityList_data">
+                  <md-icon class="entityList_icon" md-svg-src="./assets/images/location_icon_light.svg">
                   </md-icon>
-                  <span>{{ kit.location || 'No location'}}</span>
-                  <md-icon class="kitList_icon" md-svg-src="./assets/images/sensor_icon.svg">
+                  <span>{{ entity.location || 'No location'}}</span>
+                  <md-icon class="entityList_icon" md-svg-src="./assets/images/sensor_icon.svg">
                   </md-icon>
-                  <span>{{ kit.type }}</span>
+                  <span>{{ entity.type }}</span>
                 </div>
               </div>
-              <div class="kitList_right" layout="row" layout-align="end center">
+              <div class="entityList_right" layout="row" layout-align="end center">
                 <div class="chips">
-                  <div class="chip kit_tag" ng-repeat="tag in kit.labels">
+                  <div class="chip entity_tag" ng-repeat="tag in entity.labels">
                     <span class="chip_name">{{ tag }}</span>
                   </div>
-                  <div class="chip kit_tag" ng-repeat="userTag in kit.userTags">
+                  <div class="chip entity_tag" ng-repeat="userTag in entity.userTags">
                     <span class="chip_name">{{ userTag }}</span>
                   </div>
                 </div>
@@ -74,10 +74,10 @@
             </div>
           </md-button>
         </div>
-        <div class="kitList kitList_primary kitList_borderBottom" ng-show="!vm.kits.length">
-          <div class="kitList_container">
-            <div class="kitList_noKits">
-              <span>There are not kits yet</span>
+        <div class="entityList entityList_primary entityList_borderBottom" ng-show="!vm.entitites.length">
+          <div class="entityList_container">
+            <div class="entityList_noentitites">
+              <span>There are not entitites yet</span>
             </div>
           </div>
         </div>

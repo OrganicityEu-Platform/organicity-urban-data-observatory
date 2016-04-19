@@ -7,7 +7,7 @@ describe('Controller: User Profile', function() {
   var MyProfileController,
       scope,
       mockUserData,
-      mockKitsData,
+      mockentititesData,
       mockAlertService,
       deferred;
 
@@ -19,9 +19,9 @@ describe('Controller: User Profile', function() {
       username: 'Ruben'
     };
 
-    mockKitsData = [
-      {name: 'Kit 1', id: 1},
-      {name: 'Kit 2', id: 2}
+    mockentititesData = [
+      {name: 'entity 1', id: 1},
+      {name: 'entity 2', id: 2}
     ];
 
     mockAlertService = {
@@ -34,7 +34,7 @@ describe('Controller: User Profile', function() {
     //spyOn(mockAnimationService, 'blur'); 
 
     MyProfileController = $controller('MyProfileController', {
-      $scope: scope, userData: mockUserData, kitsData: mockKitsData, alert: mockAlertService
+      $scope: scope, userData: mockUserData, entititesData: mockentititesData, alert: mockAlertService
     });    
   }));
 
@@ -44,13 +44,13 @@ describe('Controller: User Profile', function() {
         expect(MyProfileController.user).toEqual(jasmine.any(Object));
         expect(Object.keys(MyProfileController.user)).toEqual(['username']);
       });
-      it('should expose kit instances of the user', function() {
-        expect(MyProfileController.kits).toBeDefined();
-        expect(Array.isArray(MyProfileController.kits)).toBe(true);
-        expect(_.pluck(MyProfileController.kits, 'id')).toEqual([1,2]);
+      it('should expose entity instances of the user', function() {
+        expect(MyProfileController.entitites).toBeDefined();
+        expect(Array.isArray(MyProfileController.entitites)).toBe(true);
+        expect(_.pluck(MyProfileController.entitites, 'id')).toEqual([1,2]);
       });
-      it('should expose filterKits function', function() {
-        expect(MyProfileController.filterKits).toBeDefined();
+      it('should expose filterentitites function', function() {
+        expect(MyProfileController.filterentitites).toBeDefined();
       });
       xit('should expose updateUser function', function() {
 

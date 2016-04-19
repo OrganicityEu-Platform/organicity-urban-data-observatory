@@ -9,7 +9,7 @@
     	var vm = this;
       var updateType;
       var mapMoved = false;
-      var kitLoaded = false;
+      var entityLoaded = false;
       var mapClicked = false;
 
       var initialLocation = markers[0];
@@ -86,13 +86,13 @@
       $scope.$on('leafletDirectiveMarker.click', function(event, data) {
         var id = data.leafletEvent.target.options.myData.id;
 
-        vm.kitLoading = true;
+        vm.entityLoading = true;
         vm.center.lat = data.leafletEvent.latlng.lat;
         vm.center.lng = data.leafletEvent.latlng.lng;
 
         if(id === parseInt($state.params.id)) {
           $timeout(function() {
-            vm.kitLoading = false;
+            vm.entityLoading = false;
           }, 0);
           return;
         }
@@ -104,9 +104,9 @@
 
         var availability = data.leafletEvent.target.options.myData.labels[0];
         
-        ga('send', 'event', 'Kit Marker', 'click', availability);
+        ga('send', 'event', 'entity Marker', 'click', availability);
 
-        $state.go('layout.home.kit', {id: id});
+        $state.go('layout.home.entity', {id: id});
       });
 
       $scope.$on('leafletDirectiveMarker.popupclose', function(event, data) {
@@ -118,8 +118,8 @@
         }
       });
 
-      $scope.$on('kitLoaded', function(event, data) {
-        vm.kitLoading = false;
+      $scope.$on('entityLoaded', function(event, data) {
+        vm.entityLoading = false;
         if(updateType === 'map') {
           updateType = undefined;
           return;
@@ -149,7 +149,7 @@
                       $scope.$digest();
                     }
 
-                    kitLoaded = true;
+                    entityLoaded = true;
                   });
                 });
             });
@@ -320,7 +320,7 @@
       }
 
       function reportMapMove(){
-        if(kitLoaded && !mapMoved && mapClicked){
+        if(entityLoaded && !mapMoved && mapClicked){
           ga('send', 'event', 'Map', 'moved');
           mapMoved = true;
         }

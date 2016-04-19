@@ -4,17 +4,17 @@
   angular.module('app.components')
     .controller('UserProfileController', UserProfileController);
 
-    UserProfileController.$inject = ['$scope', '$stateParams', '$location', 'utils', 'userData', 'kitsData', 'auth', 'userUtils', '$timeout', 'animation'];
-    function UserProfileController($scope, $stateParams, $location, utils, userData, kitsData, auth, userUtils, $timeout, animation) {
+    UserProfileController.$inject = ['$scope', '$stateParams', '$location', 'utils', 'userData', 'entititesData', 'auth', 'userUtils', '$timeout', 'animation'];
+    function UserProfileController($scope, $stateParams, $location, utils, userData, entititesData, auth, userUtils, $timeout, animation) {
       var vm = this;
       var user = userData;
-      var kits = kitsData;
+      var entitites = entititesData;
 
       vm.status = undefined;
       vm.user = user;
-      vm.kits = kits;
-      vm.filteredKits = [];
-      vm.filterKits = filterKits;
+      vm.entitites = entitites;
+      vm.filteredentitites = [];
+      vm.filterentitites = filterentitites;
 
       $scope.$on('loggedIn', function() {
         var userID = parseInt($stateParams.id);
@@ -35,7 +35,7 @@
         }, 500);
       }
 
-      function filterKits(status) {
+      function filterentitites(status) {
         if(status === 'all') {
           status = undefined;
         }

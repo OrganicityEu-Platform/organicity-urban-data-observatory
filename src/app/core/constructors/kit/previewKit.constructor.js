@@ -2,27 +2,27 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('PreviewKit', ['Kit', function(Kit) {
+    .factory('Previewentity', ['entity', function(entity) {
 
       /** 
-       * Preview Kit constructor.
-       * Used for kits stacked in a list, like in User Profile or Kit states
-       * @extends Kit
+       * Preview entity constructor.
+       * Used for entitites stacked in a list, like in User Profile or entity states
+       * @extends entity
        * @constructor
-       * @param {Object} object - Object with all the data about the kit from the API
+       * @param {Object} object - Object with all the data about the entity from the API
        */
-      function PreviewKit(object) {
-        Kit.call(this, object);
+      function Previewentity(object) {
+        entity.call(this, object);
 
         this.dropdownOptions = [
-          {text: 'SET UP', value: '1', href: 'kits/edit/' + this.id + '?step=2'},
-          {text: 'EDIT', value: '2', href: 'kits/edit/' + this.id}
+          {text: 'SET UP', value: '1', href: 'entitites/edit/' + this.id + '?step=2'},
+          {text: 'EDIT', value: '2', href: 'entitites/edit/' + this.id}
         ];
       }
-      PreviewKit.prototype = Object.create(Kit.prototype);
-      PreviewKit.prototype.constructor = Kit;
+      Previewentity.prototype = Object.create(entity.prototype);
+      Previewentity.prototype.constructor = entity;
 
-      return PreviewKit;
+      return Previewentity;
 
     }]);
 })();

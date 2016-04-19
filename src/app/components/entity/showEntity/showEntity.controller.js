@@ -2,18 +2,18 @@
   'use strict';
 
   angular.module('app.components')
-    .controller('KitController', KitController);
+    .controller('entityController', entityController);
 
-    KitController.$inject = ['$state','$scope', '$stateParams', 'kitData',
-      'ownerKits', 'utils', 'sensor', 'FullKit', '$mdDialog', 'belongsToUser',
-      'timeUtils', 'animation', '$location', 'auth', 'kitUtils', 'userUtils',
+    entityController.$inject = ['$state','$scope', '$stateParams', 'entityData',
+      'ownerentitites', 'utils', 'sensor', 'Fullentity', '$mdDialog', 'belongsToUser',
+      'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
       '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'device',
-      'HasSensorKit', 'geolocation'];
-    function KitController($state, $scope, $stateParams, kitData,
-      ownerKits, utils, sensor, FullKit, $mdDialog, belongsToUser,
-      timeUtils, animation, $location, auth, kitUtils, userUtils,
+      'HasSensorentity', 'geolocation'];
+    function entityController($state, $scope, $stateParams, entityData,
+      ownerentitites, utils, sensor, Fullentity, $mdDialog, belongsToUser,
+      timeUtils, animation, $location, auth, entityUtils, userUtils,
       $timeout, mainSensors, compareSensors, alert, $q, device,
-      HasSensorKit, geolocation) {
+      HasSensorentity, geolocation) {
 
       var vm = this;
       var sensorsData = [];
@@ -21,15 +21,15 @@
       var mainSensorID, compareSensorID;
       var picker = initializePicker();
 
-      if(kitData){
-        animation.kitLoaded({lat: kitData.latitude ,lng: kitData.longitude, id: parseInt($stateParams.id) });
+      if(entityData){
+        animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: parseInt($stateParams.id) });
       }
 
       vm.hasHistorical = false;
 
-      vm.kit = kitData;
-      vm.ownerKits = ownerKits;
-      vm.kitBelongsToUser = belongsToUser;
+      vm.entity = entityData;
+      vm.ownerentitites = ownerentitites;
+      vm.entityBelongsToUser = belongsToUser;
       vm.removeUser = removeUser;
 
       vm.battery = undefined;
@@ -115,17 +115,17 @@
           animation.mapStateLoaded();
         }, 1000);
 
-        if(vm.kit){
-          if(vm.kit.state.name === 'never published' || vm.kit.state.name === 'not configured') {
-            if(vm.kitBelongsToUser) {
+        if(vm.entity){
+          if(vm.entity.state.name === 'never published' || vm.entity.state.name === 'not configured') {
+            if(vm.entityBelongsToUser) {
               alert.info.noData.owner($stateParams.id);
             } else {
               alert.info.noData.visitor();
             }
             $timeout(function() {
-              animation.kitWithoutData({belongsToUser: vm.kitBelongsToUser});
+              animation.entityWithoutData({belongsToUser: vm.entityBelongsToUser});
             }, 1000);
-          } else if(!timeUtils.isWithin(1, 'months', vm.kit.time)) {
+          } else if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
             alert.info.longTime();
           }else{
             if(geolocation.isHTML5GeolocationGranted()){
@@ -178,7 +178,7 @@
         // it can be either 2 sensors or 1 sensor, so we use $q.all to wait for all
         $q.all(
           _.map(sensorsID, function(sensorID) {
-            var id = vm.kit.uuid;//$stateParams.id
+            var id = vm.entity.uuid;//$stateParams.id
             return getChartData(id, sensorID, options.from, options.to)
               .then(function(data) {
                 return data;
@@ -282,7 +282,7 @@
       }
 
       function colorClock() {
-        var svgContainer = angular.element('.kit_time_icon');
+        var svgContainer = angular.element('.entity_time_icon');
         svgContainer.find('.stroke_container').css({'stroke-width': '0.5px', 'stroke':'#A4B0B3'});
         svgContainer.find('.fill_container').css('fill', '#A4B0B3');
       }
@@ -326,7 +326,7 @@
         /*jshint camelcase: false*/
         var from_$input = angular.element('#picker_from').pickadate({
           onOpen: function(){
-            ga('send', 'event', 'Kit Chart', 'click', 'Date Picker');
+            ga('send', 'event', 'entity Chart', 'click', 'Date Picker');
           },
           onClose: function(){
             angular.element(document.activeElement).blur();
@@ -340,7 +340,7 @@
 
         var to_$input = angular.element('#picker_to').pickadate({
           onOpen: function(){
-            ga('send', 'event', 'Kit Chart', 'click', 'Date Picker');
+            ga('send', 'event', 'entity Chart', 'click', 'Date Picker');
           },
           onClose: function(){
             angular.element(document.activeElement).blur();
@@ -408,15 +408,15 @@
 
         function getDateToHaveDataInChart() {
           var today = moment();
-          var lastTime = moment(kitData.time);
+          var lastTime = moment(entityData.time);
           var difference = today.diff(lastTime, 'days');
           var result = difference * 3;
 
           return lastTime.subtract(result, 'days').valueOf();
         }
 
-        if(kitData){
-          if(timeUtils.isWithin(7, 'days', kitData.time) || !kitData.time) {
+        if(entityData){
+          if(timeUtils.isWithin(7, 'days', entityData.time) || !entityData.time) {
             //set from-picker to seven days ago
             from_picker.set('select', getSevenDaysAgo());
           } else {
@@ -459,7 +459,7 @@
           navigator.geolocation.getCurrentPosition(function(position){
             if(!position){
               alert.error('Please, allow Organicity to geolocate your' +
-                'position so we can find a kit near you.');
+                'position so we can find a entity near you.');
               return;
             }
 
@@ -476,19 +476,19 @@
                 _(data)
                   .chain()
                   .map(function(device) {
-                    return new HasSensorKit(device);
+                    return new HasSensorentity(device);
                   })
-                  .filter(function(kit) {
-                    return !!kit.longitude && !!kit.latitude;
+                  .filter(function(entity) {
+                    return !!entity.longitude && !!entity.latitude;
                   })
-                  .find(function(kit) {
-                    return _.contains(kit.labels, 'online');
+                  .find(function(entity) {
+                    return _.contains(entity.labels, 'online');
                   })
-                  .tap(function(closestKit) {
-                    if(closestKit) {
-                      $state.go('layout.home.kit', {id: closestKit.id});
+                  .tap(function(closestentity) {
+                    if(closestentity) {
+                      $state.go('layout.home.entity', {id: closestentity.id});
                     } else {
-                      $state.go('layout.home.kit', {id: data[0].id});
+                      $state.go('layout.home.entity', {id: data[0].id});
                     }
                   })
                   .value();

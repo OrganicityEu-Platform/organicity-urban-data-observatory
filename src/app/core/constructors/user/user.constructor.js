@@ -10,7 +10,7 @@
        * @property {number} id - User ID
        * @property {string} username - Username
        * @property {string} avatar - Avatar URL of user
-       * @property {Array} kits - Kits that belongs to this user
+       * @property {Array} entitites - entitites that belongs to this user
        * @property {string} url - URL 
        * @property {string} city - User city
        * @property {string} country - User country
@@ -20,7 +20,7 @@
         this.id = userData.id;
         this.username = userData.username;
         this.avatar = userData.avatar;
-        this.kits = userData.devices;
+        this.entitites = userData.devices;
         this.url = userData.url;
         this.city = userData.location.city;
         /*jshint camelcase: false */

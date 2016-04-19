@@ -10,7 +10,7 @@ describe('Controller: User Profile', function() {
       mockUserConstructor,
       mockUserInstance,
       stateParams,
-      mockKitsData,
+      mockentititesData,
       mockAuthService;
 
   beforeEach(inject(function($controller, $rootScope) {
@@ -24,7 +24,7 @@ describe('Controller: User Profile', function() {
       id: 4
     };
 
-    mockKitsData = {
+    mockentititesData = {
       
     };
 
@@ -34,7 +34,7 @@ describe('Controller: User Profile', function() {
     
     UserProfileController = $controller('UserProfileController', {
       $scope: scope, User: mockUserConstructor, userData: mockUserInstance, $stateParams: stateParams,
-       kitsData: mockKitsData, auth: mockAuthService
+       entititesData: mockentititesData, auth: mockAuthService
     });
     
     //spyOn(mockUserService, 'post').and.returnValue($q.when({}));
@@ -46,13 +46,13 @@ describe('Controller: User Profile', function() {
       expect(UserProfileController.user).toEqual(jasmine.any(Object));
       expect(Object.keys(UserProfileController.user)).toEqual(['username']);
     });
-    it('should expose a kit instance', function() {
-      expect(UserProfileController.kits).toBeDefined();
+    it('should expose a entity instance', function() {
+      expect(UserProfileController.entitites).toBeDefined();
     });
-    it('should expose filterKits function', function() {
-      expect(UserProfileController.filterKits).toEqual(jasmine.any(Function));
+    it('should expose filterentitites function', function() {
+      expect(UserProfileController.filterentitites).toEqual(jasmine.any(Function));
     });
-    it('should expose kits filtered', function() {
+    it('should expose entitites filtered', function() {
       
     });
     it('should expose the status of the filter with value undefined by default', function() {

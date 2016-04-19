@@ -1,4 +1,4 @@
-<md-backdrop ng-if="vm.kitWithoutData" class="md-noDataBackdrop">
+<md-backdrop ng-if="vm.entityWithoutData" class="md-noDataBackdrop">
   <div class="block" layout="column" layout-align="center center">
     <div ng-if="vm.user === 'visitor'">
       <h2 class="title">
@@ -6,7 +6,7 @@
       </h2>
       <p class="message">
         <a analytics-on="click" analytics-event="click"
-          analytics-category="Offline Kit Comment Link"
+          analytics-category="Offline entity Comment Link"
           href="#disqus_thread">Leave a commment</a>
         below to let its provider know you are interest
       </p>

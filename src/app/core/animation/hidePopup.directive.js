@@ -5,7 +5,7 @@
     .directive('hidePopup', hidePopup);
 
     /**
-     * Used on kit dashboard to hide popup with full sensor description
+     * Used on entity dashboard to hide popup with full sensor description
      * 
      */
     

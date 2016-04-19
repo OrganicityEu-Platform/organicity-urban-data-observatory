@@ -4,32 +4,32 @@
   angular.module('app.components')
     .factory('utils', utils);
 
-    utils.$inject = ['device', 'PreviewKit', '$q'];
-    function utils(device, PreviewKit, $q) {
+    utils.$inject = ['device', 'Previewentity', '$q'];
+    function utils(device, Previewentity, $q) {
       var service = {
-        parseKit: parseKit,
-        parseKitTime: parseKitTime,
+        parseentity: parseentity,
+        parseentityTime: parseentityTime,
         parseSensorTime: parseSensorTime,
         convertTime: convertTime,
-        getOwnerKits: getOwnerKits
+        getOwnerentitites: getOwnerentitites
       };
       return service;
 
       ///////////////////////////
 
-      function parseKit(object) {
-        var parsedKit = {
-          kitName: object.device.name,
-          kitType: parseKitType(object),  
-          kitLastTime: moment(parseKitTime(object)).fromNow(), 
-          kitLocation: parseKitLocation(object), 
-          kitLabels: parseKitLabels(object),
-          kitClass: classify(parseKitType(object))      
+      function parseentity(object) {
+        var parsedentity = {
+          entityName: object.device.name,
+          entityType: parseentityType(object),  
+          entityLastTime: moment(parseentityTime(object)).fromNow(), 
+          entityLocation: parseentityLocation(object), 
+          entityLabels: parseentityLabels(object),
+          entityClass: classify(parseentityType(object))      
         };
-        return parsedKit;
+        return parsedentity;
       }
 
-      function parseKitLocation(object) {
+      function parseentityLocation(object) {
         var location = '';
         
         var city = object.data.location.city;
@@ -45,29 +45,29 @@
         return location;
       }
 
-      function parseKitLabels(object) {
+      function parseentityLabels(object) {
         return {
           status: object.status,
           exposure: object.data.location.exposure
         };
       }
 
-      function parseKitType(object) {
-        var kitType; 
+      function parseentityType(object) {
+        var entityType; 
 
-        kitType = 'Unknown Kit';
+        entityType = 'Unknown entity';
         
-        return kitType; 
+        return entityType; 
       }
 
-      function classify(kitType) {
-        if(!kitType) {
+      function classify(entityType) {
+        if(!entityType) {
           return '';
         }
-        return kitType.toLowerCase().split(' ').join('_');
+        return entityType.toLowerCase().split(' ').join('_');
       }
 
-      function parseKitTime(object) {
+      function parseentityTime(object) {
         /*jshint camelcase: false */
         return object.updated_at;
       }
@@ -85,19 +85,19 @@
         }
       }
 
-      function getOwnerKits(ids) {
+      function getOwnerentitites(ids) {
         var deferred = $q.defer();
-        var kitsResolved = 0;
-        var kits = [];
+        var entititesResolved = 0;
+        var entitites = [];
 
         ids.forEach(function(id, index) {
           device.getDevice(id)
             .then(function(data) {
-              kits[index] = new PreviewKit(data);
-              kitsResolved++;
+              entitites[index] = new Previewentity(data);
+              entititesResolved++;
 
-              if(ids.length === kitsResolved) {
-                deferred.resolve(kits);
+              if(ids.length === entititesResolved) {
+                deferred.resolve(entitites);
               }
             });
         });
