@@ -10,54 +10,29 @@
   angular.module('app.components')
     .constant('MARKER_ICONS', {
       defaultIcon: {},
-      markerSmartCitizenNormal: {
+      markerEntitiesNormal: {
         type: 'div',
-        className: 'markerSmartCitizenNormal',
+        className: 'markerEntitiesNormal',
         iconSize: [24, 24]
       },
-      markerSmartCitizenOnline: {
+      markerEntitiesOnline: {
         type: 'div',
-        className: 'markerSmartCitizenOnline',
+        className: 'markerEntitiesOnline',
         iconSize: [24, 24]
       },
-      markerSmartCitizenOnlineActive: {
+      markerEntitiesOnlineActive: {
         type: 'div',
-        className: 'markerSmartCitizenOnline marker_blink',
+        className: 'markerEntitiesOnline marker_blink',
         iconSize: [24, 24]
       },
-      markerSmartCitizenOffline: {
+      markerEntitiesOffline: {
         type: 'div',
-        className: 'markerSmartCitizenOffline',
+        className: 'markerEntitiesOffline',
         iconSize: [24, 24]
       },
-      markerSmartCitizenOfflineActive: {
+      markerEntitiesOfflineActive: {
         type: 'div',
-        className: 'markerSmartCitizenOffline marker_blink',
-        iconSize: [24, 24]
-      },
-      markerOrganicityNormal: {
-        type: 'div',
-        className: 'markerOrganicityNormal',
-        iconSize: [24, 24]
-      },
-      markerOrganicityOnline: {
-        type: 'div',
-        className: 'markerOrganicityOnline',
-        iconSize: [24, 24]
-      },
-      markerOrganicityOnlineActive: {
-        type: 'div',
-        className: 'markerOrganicityOnline marker_blink',
-        iconSize: [24, 24]
-      },
-      markerOrganicityOffline: {
-        type: 'div',
-        className: 'markerOrganicityOffline',
-        iconSize: [24, 24]
-      },
-      markerOrganicityOfflineActive: {
-        type: 'div',
-        className: 'markerOrganicityOffline marker_blink',
+        className: 'markerEntitiesOffline marker_blink',
         iconSize: [24, 24]
       }
     });

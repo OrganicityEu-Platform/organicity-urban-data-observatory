@@ -103,13 +103,8 @@
       function parseType(object) {
         var kitType;
 
-        // var kitName = !object.kit ? 'No kit property': object.kit.name;
+        kitType = 'Organicity';
 
-        // if((new RegExp('sck', 'i')).test(kitName)) { 
-        //   kitType = 'SmartCitizen Kit';
-        // } else {
-          kitType = 'Organicity';
-        // }
         return kitType; 
       }
 

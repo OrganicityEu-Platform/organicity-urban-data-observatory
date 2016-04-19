@@ -61,6 +61,8 @@
       vm.dropdownOptionsCommunity = DROPDOWN_OPTIONS_COMMUNITY;
       vm.dropdownSelectedCommunity = undefined;
 
+
+
       $scope.$on('removeNav', function() {
         $scope.$apply(function() {
           vm.isShown = false;

@@ -141,9 +141,9 @@
         var icon;
 
         if(hasLabel(labels, 'offline')) {
-          icon = MARKER_ICONS.markerOrganicityOffline;
+          icon = MARKER_ICONS.markerEntitiesOffline;
         } else {
-          icon = MARKER_ICONS.markerOrganicityOnline;
+          icon = MARKER_ICONS.markerEntitiesOnline;
         }  
         return icon;
       }

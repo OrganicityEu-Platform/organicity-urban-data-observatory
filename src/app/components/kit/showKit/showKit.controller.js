@@ -136,15 +136,6 @@
       }
 
       function removeUser() {
-        var alert = $mdDialog.alert()
-          .title('Delete your account?')
-          .content('If you wish to remove you account completely, please contact our support team at support@smartcitizen.me')
-          .ariaLabel('')
-          .ok('OK!')
-          .theme('primary')
-          .clickOutsideToClose(true);
-
-        $mdDialog.show(alert);
       }
 
       function showSensorOnChart(sensorID) {
@@ -467,7 +458,7 @@
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position){
             if(!position){
-              alert.error('Please, allow smartcitizen to geolocate your' +
+              alert.error('Please, allow Organicity to geolocate your' +
                 'position so we can find a kit near you.');
               return;
             }

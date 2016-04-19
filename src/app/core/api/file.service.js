@@ -24,7 +24,7 @@
 
       function uploadFile(fileData, key, policy, signature) {
         return Upload.upload({
-          url: 'https://smartcitizen.s3-eu-west-1.amazonaws.com',
+          url: 'https://organicity.s3-eu-west-1.amazonaws.com', //Not working temp example
           method: 'POST',
           fields: {
             key: key,
@@ -42,7 +42,7 @@
       function getImageURL(filename, size) {
         size = size === undefined ? 's101' : size;
 
-        return 'https://images.smartcitizen.me/' + size + '/' + filename;
+        return 'https://images.organicity.eu/' + size + '/' + filename;  //Not working temp example
       }
     }
 })();

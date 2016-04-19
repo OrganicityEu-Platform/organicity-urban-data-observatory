@@ -98,8 +98,8 @@
       }
 
       function logout() {
-        $window.localStorage.removeItem('smartcitizen.token');
-        $window.localStorage.removeItem('smartcitizen.data');
+        $window.localStorage.removeItem('organicity.token');
+        $window.localStorage.removeItem('organicity.data');
       }
 
       function getCurrentUserInfo() {

@@ -5,8 +5,8 @@
 
         // var airbrake = new airbrakeJs.Client();
 
-        // airbrake.setProject('561ce288daa9031312000008', '791ff4af9dda4841b5ebd594ecad961e');
-        // airbrake.setHost('https://errors.smartcitizen.me');
+        // airbrake.setProject('xxx', 'xxx');
+        // airbrake.setHost('https://errors.organicity.eu');  // Example not yet ready
 
         $provide.decorator('$exceptionHandler', ['$delegate', function($delegate) {
           return function (exception, cause) {

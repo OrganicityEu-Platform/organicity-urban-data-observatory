@@ -42,47 +42,6 @@
           controller: 'StaticController',
           controllerAs: 'vm'
         })
-        .state('layout.kitEdit', {
-          url: '/kits/edit/:id?step',
-          templateUrl: 'app/components/kit/editKit/editKit.html',
-          controller: 'EditKitController',
-          controllerAs: 'vm',
-          resolve: {
-            belongsToUser: function(auth, $location, $stateParams, userUtils, kitUtils, $window, AuthUser) {
-              if(!auth.isAuth()) {
-                $location.path('/');
-                return;
-              }
-              var kitID = parseInt($stateParams.id);
-              var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('organicity.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('organicity.data') )));
-              var belongsToUser = kitUtils.belongsToUser(userData.kits, kitID);
-              var isAdmin = userUtils.isAdmin(userData);
-
-              if(!isAdmin && !belongsToUser) {
-                console.error('This kit does not belong to user');
-                $location.path('/');
-              }
-            },
-            kitData: function($stateParams, device, FullKit) {
-              var kitID = $stateParams.id;
-
-              return device.getDevice(kitID)
-                .then(function(deviceData) {
-                  return new FullKit(deviceData);
-                });
-            },
-            step: function($stateParams){
-              return parseInt($stateParams.step) || 1;
-            }
-          }
-        })
-
-        .state('layout.kitAdd', {
-          url: '/kits/new',
-          templateUrl: 'app/components/kit/newKit/newKit.html',
-          controller: 'NewKitController',
-          controllerAs: 'vm'
-        })
 
         /*
         -- Home state --

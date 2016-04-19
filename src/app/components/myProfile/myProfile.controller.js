@@ -106,15 +106,7 @@
       }
 
       function removeUser() {
-        var alert = $mdDialog.alert()
-          .title('Delete your account?')
-          .content('If you wish to remove you account completely, please contact our support team at support@smartcitizen.me')
-          .ariaLabel('')
-          .ok('OK!')
-          .theme('primary')
-          .clickOutsideToClose(true);
 
-        $mdDialog.show(alert);
       }
 
       function highlightIcon(iconIndex) {
