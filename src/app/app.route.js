@@ -375,7 +375,7 @@
         requireBase: false
       }).hashPrefix('!');
 
-      //RestangularProvider.setBaseUrl('http://127.0.0.1:3000'); //Dev fixtures
+      //RestangularProvider.setBaseUrl('http://127.0.0.1:3000'); //Dev cache
       RestangularProvider.setBaseUrl('http://ec2-54-68-181-32.us-west-2.compute.amazonaws.com:8090/v1');
 
       /* Remove angular leaflet logs */

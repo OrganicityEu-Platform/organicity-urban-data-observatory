@@ -48,8 +48,7 @@
 			}
 
 			function isHTML5GeolocationGranted(){
-				return $window.localStorage
-					.getItem('organicity.geolocation_granted');
+			   return $window.localStorage.getItem('organicity.geolocation_granted');
 			}
 	  }
 })();
