@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('auth', auth);
     
-    auth.$inject = ['$location', '$window', '$state', 'Restangular', '$rootScope', 'AuthUser', '$timeout', 'alert'];
-    function auth($location, $window, $state, Restangular, $rootScope, AuthUser, $timeout, alert) {
+    auth.$inject = ['$location', '$window', '$state', 'accountsAPI', '$rootScope', 'AuthUser', '$timeout', 'alert'];
+    function auth($location, $window, $state, accountsAPI, $rootScope, AuthUser, $timeout, alert) {
 
     	var user = {
         token: null,
@@ -94,7 +94,7 @@
       }
 
       function login(loginData) {
-        return Restangular.all('sessions').post(loginData);
+        return accountsAPI.all('sessions').post(loginData);
       }
 
       function logout() {
@@ -103,18 +103,18 @@
       }
 
       function getCurrentUserInfo() {
-        return Restangular.all('').customGET('me');
+        return accountsAPI.all('').customGET('me');
       }
 
       function recoverPassword(data) {
-        return Restangular.all('password_resets').post(data);
+        return accountsAPI.all('password_resets').post(data);
       }
 
       function getResetPassword(code) {
-        return Restangular.one('password_resets', code).get();
+        return accountsAPI.one('password_resets', code).get();
       }
       function patchResetPassword(code, data) {
-        return Restangular.one('password_resets', code).patch(data);
+        return accountsAPI.one('password_resets', code).patch(data);
       }
       function isAdmin(userData) {
         return userData.role === 'admin';

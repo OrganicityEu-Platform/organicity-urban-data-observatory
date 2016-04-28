@@ -4,7 +4,7 @@
 	angular.module('app.components')
 	  .factory('user', user);
 	  
-	  user.$inject = ['Restangular'];
+	  user.$inject = ['accountsAPI'];
 	  function user(Restangular) {
       var service = {
         createUser: createUser,
@@ -16,15 +16,15 @@
       ////////////////////
 
       function createUser(signupData) {
-        return Restangular.all('users').post(signupData);
+        return accountsAPI.all('users').post(signupData);
       }
 
       function getUser(id) {
-        return Restangular.one('users', id).get();
+        return accountsAPI.one('users', id).get();
       }
 
       function updateUser(updateData) {
-        return Restangular.all('me').customPUT(updateData);
+        return accountsAPI.all('me').customPUT(updateData);
       }
 	  }
 })();

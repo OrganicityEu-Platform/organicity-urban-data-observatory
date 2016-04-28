@@ -4,8 +4,8 @@
 	angular.module('app.components')
 	  .factory('device', device);
     
-    device.$inject = ['Restangular', '$window', 'timeUtils', '$filter', '$q'];
-	  function device(Restangular, $window, timeUtils, $filter, $q) {
+    device.$inject = ['entitiesAPI', '$window', 'timeUtils', '$filter', '$q'];
+	  function device(entitiesAPI, $window, timeUtils, $filter, $q) {
       var worldMarkers, entities, entitiesPrevious;
 
       initialize();
@@ -35,7 +35,7 @@
       function getDevices(location) {
       	var parameter = '';
       	parameter += location.lat + ',' + location.lng;
-      	return Restangular.all('entities').getList({near: parameter, 'per_page': '100'});
+      	return entitiesAPI.all('entities').getList({near: parameter, 'per_page': '100'});
       }
 
       function setAllDevices(data) {        
@@ -67,7 +67,7 @@
         } else {
           console.log("Data expired: Refreshing entities");
           setPrevAllDevices();
-          return Restangular.all('entities').getList().then(function(data) {
+          return entitiesAPI.all('entities').getList().then(function(data) {
             setAllDevices(data)
             return data;
           });
@@ -83,11 +83,11 @@
       }
 
       function createDevice(data) {
-        return Restangular.all('entities').post(data);
+        return entitiesAPI.all('entities').post(data);
       }
 
       function updateDevice(id, data) {
-        return Restangular.one('entities', id).patch(data);
+        return entitiesAPI.one('entities', id).patch(data);
       }
 
       function getWorldMarkers() {
