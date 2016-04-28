@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('HasSensorentity', ['entity', function(entity) {
+    .factory('HasSensorEntity', ['entity', function(entity) {
 
-      function HasSensorentity(object) {
+      function HasSensorEntity(object) {
         entity.call(this, object);
 
         this.data = object.data.attributes;
@@ -12,10 +12,10 @@
         this.latitude = object.data.location.latitude;
       }
 
-      HasSensorentity.prototype = Object.create(entity.prototype);
-      HasSensorentity.prototype.constructor = entity;
+      HasSensorEntity.prototype = Object.create(entity.prototype);
+      HasSensorEntity.prototype.constructor = entity;
 
-      HasSensorentity.prototype.sensorsHasData = function() {
+      HasSensorEntity.prototype.sensorsHasData = function() {
         var parsedSensors = this.data.map(function(sensor) {
           return sensor.value;
         });
@@ -25,6 +25,6 @@
         });
       };
 
-      return HasSensorentity;
+      return HasSensorEntity;
     }]);
 })();

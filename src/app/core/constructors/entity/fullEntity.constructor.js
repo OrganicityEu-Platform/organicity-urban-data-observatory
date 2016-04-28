@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('Fullentity', ['entity', 'Sensor', 'entityUtils', function(entity, Sensor, entityUtils) {
+    .factory('fullEntity', ['entity', 'Sensor', 'entityUtils', function(entity, Sensor, entityUtils) {
 
       /**
        * Full entity constructor.
@@ -22,7 +22,7 @@
        * @property {string} macAddress - entity mac address
        * @property {number} elevation
        */
-      function Fullentity(object) {
+      function fullEntity(object) {
 
         entity.call(this, object);
 
@@ -39,10 +39,10 @@
 
       }
 
-      Fullentity.prototype = Object.create(entity.prototype);
-      Fullentity.prototype.constructor = Fullentity;
+      fullEntity.prototype = Object.create(entity.prototype);
+      fullEntity.prototype.constructor = fullEntity;
 
-      Fullentity.prototype.getSensors = function() {
+      fullEntity.prototype.getSensors = function() {
         var sensors = _(this.data)
             .chain()
             .map(function(sensor, i) {
@@ -51,6 +51,6 @@
             .value();
             return sensors;
       };
-      return Fullentity;
+      return fullEntity;
     }]); 
 })();
