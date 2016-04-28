@@ -1,4 +1,9 @@
-server 'lin2.server.smartcitizen.me', user: 'deployer', roles: %w{app db web}
+server 'lin2.server.smartcitizen.me', user: 'deployer', roles: %w{app db web}, port: 2233
+
+set :deploy_to, '/home/deployer/apps/oc-observatory-web'
+
+# Default branch is :master
+set :branch, 'master'
 
 # server-based syntax
 # ======================

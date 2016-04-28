@@ -98,7 +98,7 @@
           url: '/:id',
           views: {
             'container@layout.home': {
-              templateUrl: 'app/components/entity/showentity/showentity.html',
+              templateUrl: 'app/components/entity/showEntity/showEntity.html',
               controller: 'entityController',
               controllerAs: 'vm'
             }
