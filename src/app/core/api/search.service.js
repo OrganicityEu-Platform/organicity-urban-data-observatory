@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('search', search);
     
-    search.$inject = ['$http', 'Restangular'];
-    function search($http, Restangular) {
+    search.$inject = ['$http', 'entitiesAPI'];
+    function search($http, entitiesAPI) {
       var service = {
         globalSearch: globalSearch
       };
@@ -15,7 +15,7 @@
       /////////////////////////
 
       function globalSearch(query) {
-    	  return Restangular.all('search').getList({q: query});
+    	  return entitiesAPI.all('search').getList({q: query});
       }
     }
 })();
