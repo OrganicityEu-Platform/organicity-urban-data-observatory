@@ -5,15 +5,15 @@
     .controller('entityController', entityController);
 
     entityController.$inject = ['$state','$scope', '$stateParams', 'entityData',
-      'ownerentitites', 'utils', 'sensor', 'Fullentity', '$mdDialog', 'belongsToUser',
+      'ownerentitites', 'utils', 'sensor', 'fullEntity', '$mdDialog', 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
       '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'device',
-      'HasSensorentity', 'geolocation'];
+      'HasSensorEntity', 'geolocation'];
     function entityController($state, $scope, $stateParams, entityData,
-      ownerentitites, utils, sensor, Fullentity, $mdDialog, belongsToUser,
+      ownerentitites, utils, sensor, fullEntity, $mdDialog, belongsToUser,
       timeUtils, animation, $location, auth, entityUtils, userUtils,
       $timeout, mainSensors, compareSensors, alert, $q, device,
-      HasSensorentity, geolocation) {
+      HasSensorEntity, geolocation) {
 
       var vm = this;
       var sensorsData = [];
@@ -476,7 +476,7 @@
                 _(data)
                   .chain()
                   .map(function(device) {
-                    return new HasSensorentity(device);
+                    return new HasSensorEntity(device);
                   })
                   .filter(function(entity) {
                     return !!entity.longitude && !!entity.latitude;

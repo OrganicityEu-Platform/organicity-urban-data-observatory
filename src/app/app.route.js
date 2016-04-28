@@ -105,7 +105,7 @@
           },
 
           resolve: {
-            entityData: function($stateParams, device, Fullentity) {
+            entityData: function($stateParams, device, fullEntity) {
               
               var entityID = $stateParams.id;
 
@@ -114,7 +114,7 @@
               }
               
               return device.getDevice(entityID).then(function(deviceData) {
-                return new Fullentity(deviceData);
+                return new fullEntity(deviceData);
               });
 
             },
