@@ -37,7 +37,6 @@ cd UrbanDataObservatory
 * `gulp test:auto` to launch your unit tests with Karma in watch mode
 * `gulp protractor` to launch your e2e tests with Protractor
 * `gulp protractor:dist` to launch your e2e tests with Protractor on the dist files
-* `gulp deploy` to publish the project to Github pages (gh-pages branch).
 
 Note: in case you see something like:
 > Error: Command failed: fatal: unable to read c6a8d370f3e95d9110eca4a03b704bd8940ca40b
@@ -69,5 +68,5 @@ For data that has been resolved from the router, I've normally appended 'Data' t
 
 ### Deployment
 
-* **Staging:** Change base tag on index.html to `base` url for staging: http://organicityeu.github.io/UrbanDataObservatory/ and do `gulp deploy`. 
-* **Production:** Change base tag back to `/`. Do `cap production deploy` and select the branch you want to deploy at http://organicity.smartcitizen.me/
+* **Staging:**  Do `cap staging deploy` and select the branch you want to deploy at http://staging.organicity.smartcitizen.me/
+* **Production:** Do `cap production deploy` to deploy the `master` branch at http://organicity.smartcitizen.me/
