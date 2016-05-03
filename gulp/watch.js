@@ -8,7 +8,7 @@ function isOnlyChange(event) {
 }
 
 module.exports = function(options) {
-  gulp.task('watch', ['inject', 'inject:scktool'], function () {
+  gulp.task('watch', ['inject'], function () {
 
     gulp.watch([options.src + '/*.html', 'bower.json'], ['inject']);
 
