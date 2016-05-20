@@ -20,7 +20,8 @@
         markersByIndex[parseInt($state.params.id)].myData.id :
         undefined;
 
-      vm.markers = markersByIndex;
+      vm.markers = markers;
+      console.log(markers);
 
       vm.tiles = {
         url: 'https://api.tiles.mapbox.com/v4/tomasdiez.ed7899f5/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg'
@@ -103,7 +104,7 @@
         var id = data.leafletEvent.target.options.myData.id;
 
         var availability = data.leafletEvent.target.options.myData.labels[0];
-        
+
         ga('send', 'event', 'entity Marker', 'click', availability);
 
         $state.go('layout.home.entity', {id: id});
