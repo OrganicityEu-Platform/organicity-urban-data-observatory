@@ -5,9 +5,9 @@
     .factory('entitiesAPI', function(Restangular) {
       return Restangular.withConfig(function(RestangularConfigurer) {
       		//RestangularConfigurer.setBaseUrl('http://127.0.0.1:3000'); //Dev cache
-      		RestangularConfigurer.setBaseUrl('http://ec2-52-40-19-99.us-west-2.compute.amazonaws.com:8090/v1');
+      		RestangularConfigurer.setBaseUrl('http://139.162.164.206/api/v0');
       		//RestangularConfigurer.setBaseUrl('https://organicityassetsdiscovery-fpgpcgrrbc.now.sh/'); //Temp 30sec cached for speed
         });
     });
-  
+
 })();

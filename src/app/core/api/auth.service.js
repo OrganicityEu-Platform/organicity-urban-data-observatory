@@ -3,9 +3,9 @@
 
   angular.module('app.components')
     .factory('auth', auth);
-    
-    auth.$inject = ['$location', '$window', '$state', 'accountsAPI', '$rootScope', 'AuthUser', '$timeout', 'alert'];
-    function auth($location, $window, $state, accountsAPI, $rootScope, AuthUser, $timeout, alert) {
+
+    auth.$inject = ['$http', '$location', '$rootScope', '$state', '$timeout', '$window', 'accountsAPI', 'alert', 'AuthUser'];
+    function auth($http, $location, $rootScope, $state, $timeout, $window, accountsAPI, alert, AuthUser) {
 
     	var user = {
         token: null,
@@ -31,7 +31,7 @@
         isAdmin: isAdmin
     	};
     	return service;
-      
+
       //////////////////////////
 
       function initialize() {
@@ -93,8 +93,15 @@
         setCurrentUser();
       }
 
-      function login(loginData) {
-        return accountsAPI.all('sessions').post(loginData);
+      function login() {
+
+        // Here it should go the logic for the login oauth flow
+        // GET https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://localhost:8080/resources/&scope=&state=
+        // POST https://accounts.organicity.eu/realms/organicity/login-actions/authenticate?code=QZXmSAhIOKkMv1Wqw0qA5j__l-hIWCYdaO6niY5B9Bc.3dd256c6-1ad5-4f87-9ba1-cbdac04a9e2c&execution=7c8382a4-624c-4911-9135-242e1f2b0af1
+
+        console.log('NEW LOGIN!')
+        window.location.href = "https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://localhost:8080/resources/&scope=&state=";
+        console.log(document.cookie);
       }
 
       function logout() {

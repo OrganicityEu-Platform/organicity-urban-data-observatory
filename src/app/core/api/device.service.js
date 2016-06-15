@@ -3,7 +3,7 @@
 
 	angular.module('app.components')
 	  .factory('device', device);
-    
+
     device.$inject = ['entitiesAPI', '$window', 'timeUtils', '$filter', '$q'];
 	  function device(entitiesAPI, $window, timeUtils, $filter, $q) {
       var worldMarkers, entities, entitiesPrevious;
@@ -31,25 +31,26 @@
           removeMarkers();
         }
       }
-      
+
       function getDevices(location) {
       	var parameter = '';
       	parameter += location.lat + ',' + location.lng;
-      	return entitiesAPI.all('entities').getList({near: parameter, 'per_page': '100'});
+      	return entitiesAPI.all('assets').getList({'page': '1', 'per': '100'});
       }
 
-      function setAllDevices(data) {        
+      function setAllDevices(data) {
+				console.log('HELLO')
         var obj = {
           timestamp: new Date(),
           data: data
         };
         removeEntitiesMarkers();
         $window.localStorage.setItem('organicity.entities', JSON.stringify(obj));
-        entities = obj.data; 
+        entities = obj.data;
       }
 
       function setPrevAllDevices() {
-        entitiesPrevious = entities; 
+        entitiesPrevious = entities;
       }
 
       function getPrevAllDevices() {
@@ -67,8 +68,9 @@
         } else {
           console.log("Data expired: Refreshing entities");
           setPrevAllDevices();
-          return entitiesAPI.all('entities').getList().then(function(data) {
-            setAllDevices(data)
+          return entitiesAPI.all('assets').getList().then(function(data) {
+						console.log(data);
+            setAllDevices(data);
             return data;
           });
         }
@@ -78,16 +80,16 @@
         return getAllDevices().then(function(entities){
           return _.find(entities, function(entity) {
              return entity.id == id;
-          }); 
+          });
         });
       }
 
       function createDevice(data) {
-        return entitiesAPI.all('entities').post(data);
+        return entitiesAPI.all('assets').post(data);
       }
 
       function updateDevice(id, data) {
-        return entitiesAPI.one('entities', id).patch(data);
+        return entitiesAPI.one('assets', id).patch(data);
       }
 
       function getWorldMarkers() {
@@ -102,15 +104,15 @@
         };
 
         $window.localStorage.setItem('organicity.markers', JSON.stringify(obj) );
-        worldMarkers = obj.data; 
+        worldMarkers = obj.data;
       }
 
       function getEntitiesTimeStamp() {
-        return ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).timestamp); 
+        return ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).timestamp);
       }
 
       function areEntitiesMarkersOld() {
-        var markersDate = getEntitiesTimeStamp();  
+        var markersDate = getEntitiesTimeStamp();
         return !timeUtils.isWithin(60, 'seconds', markersDate);
       }
 
@@ -119,11 +121,11 @@
       }
 
       function getTimeStamp() {
-        return ($window.localStorage.getItem('organicity.markers') && JSON.parse($window.localStorage.getItem('organicity.markers') ).timestamp); 
+        return ($window.localStorage.getItem('organicity.markers') && JSON.parse($window.localStorage.getItem('organicity.markers') ).timestamp);
       }
 
       function areMarkersOld() {
-        var markersDate = getTimeStamp();  
+        var markersDate = getTimeStamp();
         return !timeUtils.isWithin(60, 'seconds', markersDate);
       }
 
