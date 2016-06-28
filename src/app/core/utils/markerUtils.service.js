@@ -35,10 +35,10 @@
         var location = '';
         var locationSource = {};
 
-        if(object.data.location.city && object.data.location.country) {
+        if(object.context.position.city && object.context.position.country) {
             locationSource = object.data.location;
-        } else if (object.provider && object.provider.location.city && object.provider.location.country){
-            locationSource = object.provider.location;
+        } else if (object.provider && object.context.position.city && object.context.position.country){
+            locationSource = object.context.position;
             locationSource.justOwnerLocation = true;
         }  
           
@@ -99,10 +99,10 @@
       function parseCoordinates(object) {
         var location = {};
 
-        if(object.data.location.latitude && object.data.location.longitude && object.data.location.latitude != 0 && object.data.location.longitude != 0) {
-            location.lat = object.data.location.latitude;
-            location.lng = object.data.location.longitude;
-        } else if (object.provider.location.city){ //tmp. for unlocated data
+        if(object.context.position.latitude && object.context.position.longitude && object.context.position.latitude != 0 && object.context.position.longitude != 0) {
+            location.lat = object.context.position.latitude;
+            location.lng = object.context.position.longitude;
+        } else if (object.context.position.city){ //tmp. for unlocated data
 
             var providerFixture = [
               {
@@ -123,7 +123,7 @@
             ];
 
           var providerLocation = _.find(providerFixture, function(provider) {
-            return provider.city == object.provider.location.city
+            return provider.city == object.context.position.city
           });
 
           location.lat = providerLocation.lat;

@@ -39,7 +39,6 @@
       }
 
       function setAllDevices(data) {
-				console.log('HELLO')
         var obj = {
           timestamp: new Date(),
           data: data
