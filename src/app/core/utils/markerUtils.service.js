@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('markerUtils', markerUtils);
 
-    markerUtils.$inject = ['device', 'entityUtils', 'COUNTRY_CODES', 'MARKER_ICONS'];
-    function markerUtils(device, entityUtils, COUNTRY_CODES, MARKER_ICONS) {
+    markerUtils.$inject = ['entity', 'entityUtils', 'COUNTRY_CODES', 'MARKER_ICONS'];
+    function markerUtils(entity, entityUtils, COUNTRY_CODES, MARKER_ICONS) {
       var service = {
         parseName: parseName,
         parseType: parseType,
@@ -73,13 +73,13 @@
       function parseLabels(object) {
         var system_tags = [];
 
-        if(!object.uuid) {
-          object.uuid = object.name || "no:name"; //tmp.
+        if(!object.name) {
+          object.name = object.id || "no:name"; //tmp.
         }
 
         system_tags.push((this.isOnline(object)) ? "online" : "offline");
 
-        var entityName = object.uuid.split(":");
+        var entityName = object.id.split(":");
 
         var source = entityName[3];
         var origin = entityName[4];
@@ -97,44 +97,11 @@
       }
 
       function parseCoordinates(object) {
-        var location = {};
-
-        if(object.context.position.latitude && object.context.position.longitude && object.context.position.latitude != 0 && object.context.position.longitude != 0) {
-            location.lat = object.context.position.latitude;
-            location.lng = object.context.position.longitude;
-        } else if (object.context.position.city){ //tmp. for unlocated data
-
-            var providerFixture = [
-              {
-                city: "Santander",
-                lat: 43.4647222,
-                lng: -3.8044444
-              },
-              {
-                city: "London",
-                lat: 51.5072,
-                lng: -0.1275
-              },
-              {
-                city: "Aarhus",
-                lat: 56.1572,
-                lng: 10.2107
-              }
-            ];
-
-          var providerLocation = _.find(providerFixture, function(provider) {
-            return provider.city == object.context.position.city
-          });
-
-          location.lat = providerLocation.lat;
-          location.lng = providerLocation.lng;  
-        }
-
-        return location;
+        return object.position;
       }
 
       function parseId(object) {
-        return object.id;
+        return object.id.replace(/-/g, '_'); // Angular ids doesn't support hyphens.
       }
 
       function getIcon(labels) {

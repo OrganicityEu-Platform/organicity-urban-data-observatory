@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('entityUtils', entityUtils);
 
-    entityUtils.$inject = ['COUNTRY_CODES', 'device'];
-    function entityUtils(COUNTRY_CODES, device) {
+    entityUtils.$inject = ['COUNTRY_CODES', 'entity'];
+    function entityUtils(COUNTRY_CODES, entity) {
       var service = {
         parseName: parseName,
         parseLocation: parseLocation,
@@ -133,7 +133,7 @@
           id: object.provider.id,
           username: object.provider.username,
           /*jshint camelcase: false */
-          entitites: object.provider.device_ids,
+          entitites: object.provider.entity_ids,
           city: object.provider.location.city,
           country: COUNTRY_CODES[object.provider.location.country_code],
           url: object.provider.url,

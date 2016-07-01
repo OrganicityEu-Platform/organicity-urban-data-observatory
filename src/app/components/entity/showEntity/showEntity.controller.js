@@ -5,14 +5,14 @@
     .controller('entityController', entityController);
 
     entityController.$inject = ['$state','$scope', '$stateParams', 'entityData',
-      'ownerentitites', 'utils', 'sensor', 'fullEntity', '$mdDialog', 'belongsToUser',
+      'ownerEntitites', 'utils', 'sensor', 'fullEntity', '$mdDialog', 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
-      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'device',
+      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'entity',
       'HasSensorEntity', 'geolocation'];
     function entityController($state, $scope, $stateParams, entityData,
-      ownerentitites, utils, sensor, fullEntity, $mdDialog, belongsToUser,
+      ownerEntitites, utils, sensor, fullEntity, $mdDialog, belongsToUser,
       timeUtils, animation, $location, auth, entityUtils, userUtils,
-      $timeout, mainSensors, compareSensors, alert, $q, device,
+      $timeout, mainSensors, compareSensors, alert, $q, entity,
       HasSensorEntity, geolocation) {
 
       var vm = this;
@@ -28,7 +28,7 @@
       vm.hasHistorical = false;
 
       vm.entity = entityData;
-      vm.ownerentitites = ownerentitites;
+      vm.ownerEntitites = ownerEntitites;
       vm.entityBelongsToUser = belongsToUser;
       vm.removeUser = removeUser;
 
@@ -106,6 +106,7 @@
       ///////////////
 
       function initialize() {
+        debugger;
         $timeout(function() {
           colorSensorMainIcon();
           colorArrows();
@@ -191,8 +192,8 @@
         });
       }
       // calls api to get sensor data and saves it to sensorsData array
-      function getChartData(deviceID, sensorID, dateFrom, dateTo, options) {
-        return sensor.getSensorsDataNew(deviceID, sensorID, dateFrom, dateTo)
+      function getChartData(entityID, sensorID, dateFrom, dateTo, options) {
+        return sensor.getSensorsDataNew(entityID, sensorID, dateFrom, dateTo)
           .then(function(data) {
             sensorsData[sensorID] = data.readings;
             return data;
@@ -469,14 +470,14 @@
               lat:position.coords.latitude,
               lng:position.coords.longitude
             };
-            device.getDevices(location)
+            entity.getEntities(location)
               .then(function(data){
                 data = data.plain();
 
                 _(data)
                   .chain()
-                  .map(function(device) {
-                    return new HasSensorEntity(device);
+                  .map(function(entity) {
+                    return new HasSensorEntity(entity);
                   })
                   .filter(function(entity) {
                     return !!entity.longitude && !!entity.latitude;

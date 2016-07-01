@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('entity', ['Sensor', 'entityUtils', function(Sensor, entityUtils) {
+    .factory('Entity', ['Sensor', 'entityUtils', function(Sensor, entityUtils) {
 
       /**
        * entity constructor. 
@@ -17,7 +17,7 @@
        * @property {string} state - State of the entity. Ex: Never published
        * @property {Array} userTags - User tags. Ex: ''
        */
-      function entity(object) {
+      function Entity(object) {
         this.id = object.id;
         this.name = entityUtils.parseName(object);
         this.uuid = object.uuid;
@@ -29,6 +29,6 @@
         /*jshint camelcase: false */
         //this.userTags = object.user_tags; //tmp
       }
-      return entity;
+      return Entity;
     }]);
 })();

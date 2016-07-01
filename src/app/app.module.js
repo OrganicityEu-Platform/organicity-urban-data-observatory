@@ -9,7 +9,7 @@ angular.module('app', [
   'angularSpinner',
   'ngDropdowns',
   'oauth',
-  'leaflet-directive',
+  'ui-leaflet',
 	'app.components',
   'angularLoad',
   'angulartics',

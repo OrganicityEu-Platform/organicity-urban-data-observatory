@@ -301,9 +301,9 @@
                   <a ng-href="{{ vm.entity.owner.url }}">{{ vm.entity.owner.url || 'No URL'}}</a>
                 </p>
               </div>
-              <div ng-if="vm.ownerentitites.length > 0" class="entity_owner_entitites">
+              <div ng-if="vm.ownerEntitites.length > 0" class="entity_owner_entitites">
                 <h3 class="entity_owner_entitites_title">Resources of {{ vm.entity.owner.username }}</h3>
-                <div class="entityList_parent" layout="row" layout-align="start center" ng-repeat="entity in vm.ownerentitites | limitTo: 5">
+                <div class="entityList_parent" layout="row" layout-align="start center" ng-repeat="entity in vm.ownerEntitites | limitTo: 5">
                   <md-button ng-href="./entitites/{{entity.id}}" class="entityList" ng-class="{entityList_primary: !vm.entityBelongsToUser, entityList_secondary: vm.entityBelongsToUser, entityList_borderBottom: $last}" layout="row" layout-align="start center">
                     <div class="entityList_container" layout="row" layout-align="start center">
                       <div class="">
@@ -345,7 +345,7 @@
                     </md-button>
                   </div>
                 </div>
-                <md-button ng-href="/users/{{ vm.entity.owner.id }}"  ng-if="vm.ownerentitites.length > 5" class="entity_owner_entitites_more_button" aria-label="">VIEW ALL entitites OF {{ vm.entity.owner.username }}</md-button>
+                <md-button ng-href="/users/{{ vm.entity.owner.id }}"  ng-if="vm.ownerEntitites.length > 5" class="entity_owner_entitites_more_button" aria-label="">VIEW ALL entitites OF {{ vm.entity.owner.username }}</md-button>
               </div>
             </div>
           </div>
