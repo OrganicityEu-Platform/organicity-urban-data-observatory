@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    angular.module('app.components').factory('Layer', ['markerUtils', function(markerUtils) {
+    angular.module('app.components').factory('Layer', ['miniMarker', 'markerUtils', function(miniMarker, markerUtils) {
         /**
          * Layer constructor
          * @constructor
@@ -54,9 +54,10 @@
 
         function onEachFeature(feature, layer) {
             // Here the marker constructor
-            var name = feature.properties.id; //feature.properties.id
-            var popup = '<div class="popup"><div class="popup_top"><p class="popup_name">' + name + '</p><p class="popup_type">' + '</p><p class="popup_time"><md-icon class="popup_icon" md-svg-src="./assets/images/update_icon.svg"></md-icon>' + '</p></div><div class="popup_bottom"><p class="popup_location"><md-icon class="popup_icon" md-svg-src="./assets/images/location_icon_dark.svg"></md-icon>' + '</p><div class="popup_labels">' + '</div></div></div>';
-            layer.bindPopup(popup);
+            //var name = feature.properties.id; //feature.properties.id
+            //var popup = '<div class="popup"><div class="popup_top"><p class="popup_name">' + name + '</p><p class="popup_type">' + '</p><p class="popup_time"><md-icon class="popup_icon" md-svg-src="./assets/images/update_icon.svg"></md-icon>' + '</p></div><div class="popup_bottom"><p class="popup_location"><md-icon class="popup_icon" md-svg-src="./assets/images/location_icon_dark.svg"></md-icon>' + '</p><div class="popup_labels">' + '</div></div></div>';
+            var marker = new miniMarker(feature);
+            layer.bindPopup(marker.html);
             layer.on({
                 click: whenClicked
             });

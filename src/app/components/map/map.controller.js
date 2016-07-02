@@ -8,7 +8,7 @@
         var vm = this;
 
         vm.tiles = mapUtils.getBaseLayers().oc.url;
-
+        
         vm.layers = {
             baselayers: mapUtils.getBaseLayers(),
             overlays: new Overlays(entitiesLayers)

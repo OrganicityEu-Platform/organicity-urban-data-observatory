@@ -32,6 +32,7 @@
       }
 
       function parseLocation(object) {
+        return 'Unknown';
         var location = '';
         var locationSource = {};
 
@@ -127,7 +128,7 @@
         }
 
         if(!object.name) {
-        return;
+          return "Unknown";
         }
 
         var entityName = object.name.split(":");
