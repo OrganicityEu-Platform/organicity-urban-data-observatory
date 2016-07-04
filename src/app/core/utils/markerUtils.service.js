@@ -62,7 +62,7 @@
       }
 
       function isOnline(object) {
-        var time = object['last_reading_at'];
+        var time = object['last_updated_at'];
         var timeDifference =  (new Date() - new Date(time))/1000;
         if(!time || timeDifference > 7*24*60*60) { //a week
           return false;
@@ -93,7 +93,17 @@
       }
 
       function parseUserTags(object) {
-        var user_tags = ["organicity"]; //temp
+        var user_tags = [];
+
+        if(!object.type) {
+          return user_tags;
+        }
+
+        var entityType = object.type.split(":");
+
+        if(entityType) user_tags.push(entityType[entityType.length-1]);
+
+        /*jshint camelcase: false */
         return user_tags;
       }
 
