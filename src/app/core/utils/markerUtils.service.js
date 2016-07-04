@@ -26,27 +26,26 @@
       ///////////////
 
       function parseType(object) {
-        var entityType; 
+        var entityType;
         entityType = 'Organicity'; //tmp
-        return entityType; 
+        return entityType;
       }
 
       function parseLocation(object) {
         var location = '';
         var locationSource = {};
 
-        if(object.data.location.city && object.data.location.country) {
-            locationSource = object.data.location;
-        } else if (object.provider && object.provider.location.city && object.provider.location.country){
-            locationSource = object.provider.location;
+        if(object.context.position != null && object.context.position.city && object.context.position.country) {
+            locationSource = object.context.position;
+        } else if (object.related.site != null && object.related.site.position.city && object.related.site.position.country){
+            locationSource = object.related.site.position;
             locationSource.justOwnerLocation = true;
-        }  
-          
+        }
+
         /*jshint camelcase: false */
         var city = locationSource.city;
         var country_code = locationSource.country_code;
         var country = COUNTRY_CODES[country_code];
-
 
         if(!!city) {
           location += city;
@@ -61,7 +60,7 @@
       }
 
       function isOnline(object) {
-        var time = object['last_reading_at'];
+        var time = object['context']['last_reading_at'];
         var timeDifference =  (new Date() - new Date(time))/1000;
         if(!time || timeDifference > 7*24*60*60) { //a week
           return false;
@@ -74,7 +73,7 @@
         var system_tags = [];
 
         if(!object.uuid) {
-          object.uuid = object.name || "no:name"; //tmp.
+          object.uuid = object['context']['name'] || "no:name"; //tmp.
         }
 
         system_tags.push((this.isOnline(object)) ? "online" : "offline");
@@ -96,13 +95,22 @@
         return user_tags;
       }
 
+      function check_location(object) {
+        if (object.context && object.context.position != null && object.context.position.latitude && object.context.position.longitude && object.context.position.latitude != 0 && object.context.position.longitude != 0) {
+          return true;
+        }
+
+        else {
+          return false;
+        }
+      }
+
       function parseCoordinates(object) {
         var location = {};
-
-        if(object.data.location.latitude && object.data.location.longitude && object.data.location.latitude != 0 && object.data.location.longitude != 0) {
-            location.lat = object.data.location.latitude;
-            location.lng = object.data.location.longitude;
-        } else if (object.provider.location.city){ //tmp. for unlocated data
+        if(check_location(object)) {
+            location.lat = parseFloat(object.context.position.latitude);
+            location.lng = parseFloat(object.context.position.longitude);
+        } else if (object.related && object.related.site){ //tmp. for unlocated data
 
             var providerFixture = [
               {
@@ -123,18 +131,17 @@
             ];
 
           var providerLocation = _.find(providerFixture, function(provider) {
-            return provider.city == object.provider.location.city
+            return provider.city == object.related.site.position.city
           });
-
-          location.lat = providerLocation.lat;
-          location.lng = providerLocation.lng;  
+          location.lat = parseFloat(object.related.site.position.latitude);
+          location.lng = parseFloat(object.related.site.position.longitude);
         }
-
         return location;
       }
 
       function parseId(object) {
-        return object.id;
+        var splitted_id = object.id.split(':');
+        return splitted_id[splitted_id.length - 1]
       }
 
       function getIcon(labels) {
@@ -144,7 +151,7 @@
           icon = MARKER_ICONS.markerEntitiesOffline;
         } else {
           icon = MARKER_ICONS.markerEntitiesOnline;
-        }  
+        }
         return icon;
       }
 
@@ -156,25 +163,24 @@
 
       function parseName(object) {
         if(!object.uuid) {
-          object.uuid = object.name; //tmp.
+          object.uuid = object['context']['name']; //tmp.
         }
 
-        if(!object.name) {
-        return;
+        if(!object['context']['name']) {
+          return;
         }
 
-        var entityName = object.name.split(":");
+        var entityName = object['context']['name'].split(":");
 
         entityName = entityName.slice(4, entityName.length);
         entityName = _.map(entityName, makeCase);
 
         object.name = entityName.join(" ");
-
         return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
       }
 
       function parseTime(object) {
-        var time = object['last_reading_at'];
+        var time = object['context']['last_reading_at'];
         if(!time) {
           return 'No time';
         }

@@ -106,13 +106,13 @@
 
           resolve: {
             entityData: function($stateParams, device, fullEntity) {
-              
+
               var entityID = $stateParams.id;
 
               if(!entityID) {
                 return undefined;
               }
-              
+
               return device.getDevice(entityID).then(function(deviceData) {
                 return new fullEntity(deviceData);
               });
@@ -340,6 +340,19 @@
               auth.logout();
               $location.path('/');
               $rootScope.$broadcast('loggedOut');
+            }
+          }
+        })
+        /*
+        -- Callback --
+        It saves token from accounts organicity
+        */
+        .state('callback', {
+          url: '/callback',
+          authenticate: false,
+          resolve: {
+            callback: function($location, $state, auth, $rootScope) {
+              auth.callback();
             }
           }
         })

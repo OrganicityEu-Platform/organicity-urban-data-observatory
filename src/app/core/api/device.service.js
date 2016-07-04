@@ -39,7 +39,6 @@
       }
 
       function setAllDevices(data) {
-				console.log('HELLO')
         var obj = {
           timestamp: new Date(),
           data: data
@@ -69,7 +68,6 @@
           console.log("Data expired: Refreshing entities");
           setPrevAllDevices();
           return entitiesAPI.all('assets').getList().then(function(data) {
-						console.log(data);
             setAllDevices(data);
             return data;
           });

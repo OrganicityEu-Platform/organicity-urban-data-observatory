@@ -25,6 +25,7 @@
         saveData: saveData,
         login: login,
         logout: logout,
+        callback: callback,
         recoverPassword: recoverPassword,
         getResetPassword: getResetPassword,
         patchResetPassword: patchResetPassword,
@@ -100,8 +101,13 @@
         // POST https://accounts.organicity.eu/realms/organicity/login-actions/authenticate?code=QZXmSAhIOKkMv1Wqw0qA5j__l-hIWCYdaO6niY5B9Bc.3dd256c6-1ad5-4f87-9ba1-cbdac04a9e2c&execution=7c8382a4-624c-4911-9135-242e1f2b0af1
 
         console.log('NEW LOGIN!')
-        window.location.href = "https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://localhost:8080/resources/&scope=&state=";
-        console.log(document.cookie);
+        window.location.href = "https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://localhost:8080/callback&scope=&state=";
+      }
+
+      function callback() {
+        console.log("HALLO!! HALLO!!");
+        var token = $location.$$hash.split('&')[1].slice(14);
+        window.localStorage.setItem('organicity.token', JSON.stringify(token) );
       }
 
       function logout() {

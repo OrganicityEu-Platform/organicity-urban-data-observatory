@@ -19,5 +19,9 @@
       auth.login();
     }
 
+    function getToken() {
+      auth.getToken();
+    }
+
   }
 })();
