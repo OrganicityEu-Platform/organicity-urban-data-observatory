@@ -108,6 +108,7 @@
         console.log("HALLO!! HALLO!!");
         var token = $location.$$hash.split('&')[1].slice(14);
         window.localStorage.setItem('organicity.token', JSON.stringify(token) );
+        return window.localStorage.getItem('organicity.token');
       }
 
       function logout() {
@@ -116,7 +117,7 @@
       }
 
       function getCurrentUserInfo() {
-        return accountsAPI.all('').customGET('me');
+        return accountsAPI.all('').customGET('');
       }
 
       function recoverPassword(data) {
