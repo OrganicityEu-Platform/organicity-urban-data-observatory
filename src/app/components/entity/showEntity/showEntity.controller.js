@@ -73,10 +73,10 @@
           user: 'UserA'
         }
         annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
-          function () {
+          function (response) {
             console.log("annotation completed");
           },
-          function () {
+          function (response) {
             console.log("failed");
           });
       });
@@ -112,10 +112,10 @@
           user: 'UserA'
         }
         annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
-          function () {
+          function (response) {
             console.log("annotation completed");
           },
-          function () {
+          function (response) {
             console.log("failed");
           });
       });
@@ -180,7 +180,7 @@
         if (oldVal == newVal) return;
         if (newVal == undefined) return;
         var tag = 'urn:oc:tag:DirectFeedback:Like';
-        if (newVal == false) {
+        if (newVal == 'false') {
           tag = 'urn:oc:tag:DirectFeedback:Dislike';
         }
         var annotationObject = {
