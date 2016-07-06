@@ -51,7 +51,7 @@
     vm.geolocate = geolocate;
 
 
-    vm.reputation=3; //todo load reputation asset attribute to vm object
+    vm.reputation=undefined; //todo load reputation asset attribute to vm object
     vm.like = undefined;
     vm.reliability = undefined;
     vm.availability = undefined;
@@ -221,6 +221,16 @@
         });
     }
 
+    function updateReputation(){
+      if (vm.sensors) {
+        for (var sensor in vm.sensors) {
+          if (vm.sensors[sensor].uuid == 'urn_oc_attributeType_reputation') {
+              vm.reputation=vm.sensors[sensor].value;
+          }
+        }
+      }
+    }
+
     // event listener on change of value of main sensor selector
     $scope.$watch('vm.selectedSensor', function (newVal, oldVal) {
       vm.selectedSensorToCompare = undefined;
@@ -287,6 +297,8 @@
         getAvailability();
         getUsability();
         getLike();
+        updateReputation();
+
         if (vm.entity.state.name === 'never published' || vm.entity.state.name === 'not configured') {
           if (vm.entityBelongsToUser) {
             alert.info.noData.owner($stateParams.id);
