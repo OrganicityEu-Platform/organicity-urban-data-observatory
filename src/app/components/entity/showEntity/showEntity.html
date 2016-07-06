@@ -217,10 +217,10 @@
                   <md-radio-button value="true">Like</md-radio-button>
                   <md-radio-button value="false"> Dislike</md-radio-button>
                 </md-radio-group>
+                <input-stars max="5"  ng-model="vm.reputation" readonly="true" ></input-stars>
                 <md-slider md-discrete ng-model="vm.reliability" step="1" min="1" max="10"> Reliability</md-slider>
                 <md-slider md-discrete ng-model="vm.availability" step="1" min="1" max="10"> Availability</md-slider>
                 <md-slider md-discrete ng-model="vm.usability" step="1" min="1" max="10"> Usability</md-slider>
-                <md-button class="call-to-action" ng-click="vm.pushReputation()">Annotate ....</md-button>
                 <p class="entity_details_type">
                   <md-icon class="entity_detailed_icon_content"
                            md-svg-src="./assets/images/entity_details_icon_normal.svg">

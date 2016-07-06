@@ -51,12 +51,11 @@
     vm.geolocate = geolocate;
 
 
-    vm.like = undefined;    //todo add observer
+    vm.reputation=3; //todo load reputation asset attribute to vm object
+    vm.like = undefined;
     vm.reliability = undefined;
-    vm.availability = undefined; //todo add observer
-    vm.usability = undefined; //todo add observer
-    vm.pushReputation = getReliability; //todo
-
+    vm.availability = undefined;
+    vm.usability = undefined;
 
     function watchReliability() {
       $scope.$watch('vm.reliability', function (newVal, oldVal) {
