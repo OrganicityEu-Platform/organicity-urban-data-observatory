@@ -45,40 +45,57 @@
         if(!user.token) {
           return;
         }
-        return getCurrentUserInfo()
-          .then(function(data) {
-            console.log($(data));
-            if (!$(data).text) {
-              $window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
+        var data = JSON.parse(getCurrentUserInfo());
+        $window.localStorage.setItem('organicity.data', JSON.stringify(data) )
+        var newUser = new AuthUser(data);
+        //check sensitive information
+        if(user.data && user.data.role !== newUser.role) {
+          user.data = newUser;
+          $location.path('/');
+        }
+        user.data = newUser;
 
-              var newUser = new AuthUser(data);
-              //check sensitive information
-              if(user.data && user.data.role !== newUser.role) {
-                user.data = newUser;
-                $location.path('/');
-              }
-              user.data = newUser;
-            } else {
-              console.log("No User info yet.")
-              var newUser = new AuthUser();
-              user.data = newUser;
-              $location.path('/');
-            }
-            // used for app initialization
-            if(time && time === 'appLoad') {
-              //wait until navbar is loaded to emit event
-              $timeout(function() {
-                $rootScope.$broadcast('loggedIn', {time: 'appLoad'});
-              }, 3000);
-            } else {
-              // used for login
-              $state.reload();
-              $timeout(function() {
-                alert.success('Login was successful');
-                $rootScope.$broadcast('loggedIn', {});
-              }, 2000);
-            }
-          });
+        // used for app initialization
+        if(time && time === 'appLoad') {
+          //wait until navbar is loaded to emit event
+          $timeout(function() {
+            $rootScope.$broadcast('loggedIn', {time: 'appLoad'});
+          }, 3000);
+        } else {
+          // used for login
+          $state.reload();
+          $timeout(function() {
+            alert.success('Login was successful');
+            $rootScope.$broadcast('loggedIn', {});
+          }, 2000);
+        }
+        // return getCurrentUserInfo()
+        //   .then(function(data) {
+        //     $window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
+        //
+        //     var newUser = new AuthUser(data);
+        //     //check sensitive information
+        //     if(user.data && user.data.role !== newUser.role) {
+        //       user.data = newUser;
+        //       $location.path('/');
+        //     }
+        //     user.data = newUser;
+        //
+        //     // used for app initialization
+        //     if(time && time === 'appLoad') {
+        //       //wait until navbar is loaded to emit event
+        //       $timeout(function() {
+        //         $rootScope.$broadcast('loggedIn', {time: 'appLoad'});
+        //       }, 3000);
+        //     } else {
+        //       // used for login
+        //       $state.reload();
+        //       $timeout(function() {
+        //         alert.success('Login was successful');
+        //         $rootScope.$broadcast('loggedIn', {});
+        //       }, 2000);
+        //     }
+        //   });
       }
 
       function updateUser() {
@@ -116,6 +133,7 @@
         var token = $location.$$hash.split('&')[1].slice(14);
         window.localStorage.setItem('organicity.token', JSON.stringify(token) );
         return window.localStorage.getItem('organicity.token');
+        $location.path('/');
       }
 
       function logout() {
@@ -124,8 +142,10 @@
       }
 
       function getCurrentUserInfo() {
-        var token = window.localStorage.getItem('organicity.token');
-        return accountsAPI.all('').customGET('',{'authorization_code': token});
+        // var token = $window.localStorage.getItem('organicity.token');
+        // accountsAPI.setDefaultHeaders({ Authorization: 'Bearer ' + token });
+        // return accountsAPI.all('').customGET('');
+        return '{"id":5187,"uuid":"76c6af2d-59bd-4b27-8dfd-457e2c5ba47f","role":"citizen","username":"hiromipaw","avatar":"https://images.smartcitizen.me/s100/avatars/76c/1bfqkch.nopressure.png","url":"http://www.nopressure.co.uk","location":{"city":"Barcelona","country":null,"country_code":null},"joined_at":"2016-03-15T15:39:08Z","updated_at":"2016-05-31T09:05:06Z","email":"silvia@nopressure.co.uk","legacy_api_key":"9bdabd7cbe728b1e2bcf439500c98b797e0f12ba","devices":[{"id":3301,"uuid":"c8e3b870-703a-4c0d-afdd-db5c2ad61af7","mac_address":"00:06:66:2a:02:d1","name":"HiroTestBCN","description":"This is a test kit","location":{"city":"Barcelona","state":"Catalunya","address":"Via Laietana, 44, 08003 Barcelona, Barcelona, Spain","country":"Spain","state_code":"CT","postal_code":"08003","country_code":"ES"},"latitude":41.3862036,"longitude":2.175894,"kit_id":3,"state":"has_published","system_tags":["online","outdoor"],"last_reading_at":"2016-07-08T13:10:04Z","added_at":"2016-04-13T09:49:54Z","updated_at":"2016-06-17T06:39:55Z"}]}'
       }
 
       function recoverPassword(data) {
