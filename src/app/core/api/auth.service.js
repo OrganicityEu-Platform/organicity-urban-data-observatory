@@ -47,16 +47,23 @@
         }
         return getCurrentUserInfo()
           .then(function(data) {
-            $window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
+            console.log($(data));
+            if (!$(data).text) {
+              $window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
 
-            var newUser = new AuthUser(data);
-            //check sensitive information
-            if(user.data && user.data.role !== newUser.role) {
+              var newUser = new AuthUser(data);
+              //check sensitive information
+              if(user.data && user.data.role !== newUser.role) {
+                user.data = newUser;
+                $location.path('/');
+              }
+              user.data = newUser;
+            } else {
+              console.log("No User info yet.")
+              var newUser = new AuthUser();
               user.data = newUser;
               $location.path('/');
             }
-            user.data = newUser;
-
             // used for app initialization
             if(time && time === 'appLoad') {
               //wait until navbar is loaded to emit event
@@ -117,7 +124,8 @@
       }
 
       function getCurrentUserInfo() {
-        return accountsAPI.all('').customGET('');
+        var token = window.localStorage.getItem('organicity.token');
+        return accountsAPI.all('').customGET('',{'authorization_code': token});
       }
 
       function recoverPassword(data) {

@@ -4,7 +4,7 @@
   angular.module('app.components')
     .factory('accountsAPI', function(Restangular) {
       return Restangular.withConfig(function(RestangularConfigurer) {
-        RestangularConfigurer.setBaseUrl('https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/token'); // This is just an example
+        RestangularConfigurer.setBaseUrl('https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/userinfo/'); // This is just an example
       });
     });
 
