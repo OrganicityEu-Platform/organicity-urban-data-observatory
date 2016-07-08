@@ -3,16 +3,17 @@
 
 angular.module('app', [
   'ngFileUpload',
-	'ngMaterial',
-	'ui.router',
-	'restangular',
+  'ngMaterial',
+  'ui.router',
+  'restangular',
   'angularSpinner',
   'ngDropdowns',
   'oauth',
   'leaflet-directive',
-	'app.components',
+  'app.components',
   'angularLoad',
   'angulartics',
   'angulartics.google.analytics',
-  'ngCookies'
+  'ngCookies',
+  'angular-input-stars'
 ]);
