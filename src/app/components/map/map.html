@@ -1,5 +1,7 @@
 <section class="map" change-map-height>
-  <leaflet center="vm.center" layers="vm.layers" defaults="vm.defaults" event-broadcast="vm.events" width="100%" height="100%"></leaflet> <!-- tiles="vm.tiles" -->
+  <leaflet center="vm.center" layercontrol="vm.layercontrol" layers="vm.layers" controls="vm.controls" defaults="vm.defaults" event-broadcast="vm.events" width="100%" height="100%">
+    <!-- <layercontrol md-radio-group  order="normal" auto-hide-opacity="true" show-groups="true" title="Layer Manager" base-title="Base Layers" overlays-title="Overlays Layers"></layercontrol> -->
+  </leaflet> <!-- tiles="vm.tiles" -->
 <!--   <div class="map_legend" layout="row" layout-align="start center" move-filters>
     <md-button ng-click="vm.openFilterPopup()" class="map_filter_button" layout="row" layout-align="center center" aria-label>
       <md-icon md-svg-src="./assets/images/filter_icon.svg"></md-icon>

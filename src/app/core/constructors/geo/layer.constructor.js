@@ -6,11 +6,12 @@
          * @constructor
          * @param {Object} FeatureCollection - geoJSON Object with entities layer
          */
-        function Layer(FeatureCollection) {
-            this.name = FeatureCollection.properties.name;
+        function Layer(FeatureCollection, group) {
+            this.name = markerUtils.parseEntityType(FeatureCollection.properties);
             this.type = 'geoJSONShape';
             this.visible = true;
             this.data = FeatureCollection;
+            this.alldata = FeatureCollection;
             this.layerOptions = {
                 cluster: true,
                 showCoverageOnHover: false,
@@ -18,9 +19,18 @@
                 onEachFeature: onEachFeature,
                 pointToLayer: pointTolayer,
             }
+            this.disablePoints = disablePoints;
+            this.doRefresh = false;
+            if (group) this.group = group;
         }
 
         return Layer;
+
+        function disablePoints(myScope) {
+             this.data =  _.filter(this.data.features, function(feature){ return feature.geometry.type != "Point"});
+             this.doRefresh = true;     
+             myScope.$apply();
+        }
 
         function pointTolayer(obj) {
             var icon = L.divIcon(markerUtils.getIcon(markerUtils.parseLabels(obj.properties)));
@@ -53,19 +63,11 @@
         }
 
         function onEachFeature(feature, layer) {
-            // Here the marker constructor
-            //var name = feature.properties.id; //feature.properties.id
-            //var popup = '<div class="popup"><div class="popup_top"><p class="popup_name">' + name + '</p><p class="popup_type">' + '</p><p class="popup_time"><md-icon class="popup_icon" md-svg-src="./assets/images/update_icon.svg"></md-icon>' + '</p></div><div class="popup_bottom"><p class="popup_location"><md-icon class="popup_icon" md-svg-src="./assets/images/location_icon_dark.svg"></md-icon>' + '</p><div class="popup_labels">' + '</div></div></div>';
             var marker = new miniMarker(feature);
-            layer.bindPopup(marker.html);
+            layer.bindPopup(marker.popupHtml);
             layer.on({
-                click: whenClicked
+                click: marker.whenClicked
             });
-        }
-
-        function whenClicked(e) {
-            console.log("whenClicked");
-            console.log(e);
         }
 
         function camelize(str) {

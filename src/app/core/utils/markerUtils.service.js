@@ -9,6 +9,7 @@
       var service = {
         parseName: parseName,
         parseType: parseType,
+        parseEntityType: parseEntityType,
         parseLocation: parseLocation,
         parseLabels: parseLabels,
         parseUserTags: parseUserTags,
@@ -29,6 +30,11 @@
         var entityType; 
         entityType = 'Organicity'; //tmp
         return entityType; 
+      }
+
+      function parseEntityType(object) {
+        var entityType = object.name.split(":");
+        return makeTitle(entityType[entityType.length-1]);
       }
 
       function parseLocation(object) {
@@ -175,5 +181,8 @@
       function makeCase(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
       }
+
+      function makeTitle(str){
+        return str.replace(/([A-Z])/, ' $1') .replace(/^./, function(str){ return str.toUpperCase(); }) }
     }
 })();

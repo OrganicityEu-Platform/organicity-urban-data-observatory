@@ -6,15 +6,14 @@
          * @constructor
          * @param {Object} featureCollections - An array of FeatureCollections
          */
-        function Overlays(featureCollections) {
+        function Overlays(featureCollections, group) {
             var self = this;
-            _.each(featureCollections, function(featureCollection, index) {
-                self[getOverlayName(featureCollection)] = new Layer(featureCollection);
+            _.each(featureCollections, function(featureCollection) {
+                self[getOverlayName(featureCollection)] = new Layer(featureCollection, group);
             });
         }
 
         return Overlays;
-
 
         function getOverlayName(featureCollection) {
             return camelize(featureCollection.properties.name);
