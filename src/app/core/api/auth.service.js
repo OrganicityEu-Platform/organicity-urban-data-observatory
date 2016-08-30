@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('auth', auth);
 
-    auth.$inject = ['$http', '$location', '$rootScope', '$state', '$timeout', '$window', 'accountsAPI', 'alert', 'AuthUser'];
-    function auth($http, $location, $rootScope, $state, $timeout, $window, accountsAPI, alert, AuthUser) {
+    auth.$inject = ['$http', '$location', '$rootScope', '$state', '$timeout', '$window', 'accountsAPI', 'alert', 'AuthUser', 'jwtHelper'];
+    function auth($http, $location, $rootScope, $state, $timeout, $window, accountsAPI, alert, AuthUser, jwtHelper) {
 
     	var user = {
         token: null,
@@ -124,16 +124,17 @@
         // GET https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://localhost:8080/resources/&scope=&state=
         // POST https://accounts.organicity.eu/realms/organicity/login-actions/authenticate?code=QZXmSAhIOKkMv1Wqw0qA5j__l-hIWCYdaO6niY5B9Bc.3dd256c6-1ad5-4f87-9ba1-cbdac04a9e2c&execution=7c8382a4-624c-4911-9135-242e1f2b0af1
 
-        console.log('NEW LOGIN!')
+        console.log('NEW LOGIN!');
         window.location.href = "https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://localhost:8080/callback&scope=&state=";
       }
 
       function callback() {
         console.log("HALLO!! HALLO!!");
+        console.log($location.$$hash);
         var token = $location.$$hash.split('&')[1].slice(14);
         window.localStorage.setItem('organicity.token', JSON.stringify(token) );
-        return window.localStorage.getItem('organicity.token');
-        $location.path('/');
+        window.localStorage.getItem('organicity.token');
+        return $location.path('/');
       }
 
       function logout() {
@@ -142,10 +143,19 @@
       }
 
       function getCurrentUserInfo() {
-        // var token = $window.localStorage.getItem('organicity.token');
-        // accountsAPI.setDefaultHeaders({ Authorization: 'Bearer ' + token });
-        // return accountsAPI.all('').customGET('');
-        return '{"id":5187,"uuid":"76c6af2d-59bd-4b27-8dfd-457e2c5ba47f","role":"citizen","username":"hiromipaw","avatar":"https://images.smartcitizen.me/s100/avatars/76c/1bfqkch.nopressure.png","url":"http://www.nopressure.co.uk","location":{"city":"Barcelona","country":null,"country_code":null},"joined_at":"2016-03-15T15:39:08Z","updated_at":"2016-05-31T09:05:06Z","email":"silvia@nopressure.co.uk","legacy_api_key":"9bdabd7cbe728b1e2bcf439500c98b797e0f12ba","devices":[{"id":3301,"uuid":"c8e3b870-703a-4c0d-afdd-db5c2ad61af7","mac_address":"00:06:66:2a:02:d1","name":"HiroTestBCN","description":"This is a test kit","location":{"city":"Barcelona","state":"Catalunya","address":"Via Laietana, 44, 08003 Barcelona, Barcelona, Spain","country":"Spain","state_code":"CT","postal_code":"08003","country_code":"ES"},"latitude":41.3862036,"longitude":2.175894,"kit_id":3,"state":"has_published","system_tags":["online","outdoor"],"last_reading_at":"2016-07-08T13:10:04Z","added_at":"2016-04-13T09:49:54Z","updated_at":"2016-06-17T06:39:55Z"}]}'
+        var token = $window.localStorage.getItem('organicity.token');
+        var jwt_decoded = jwtHelper.decodeToken(token);
+        console.log(jwt_decoded);
+        return JSON.stringify({ id: jwt_decoded.jti,
+                                uuid: jwt_decoded.jti,
+                                role: "",
+                                name: jwt_decoded.name,
+                                username: jwt_decoded.preferred_username,
+                                avatar: "http://i.imgur.com/XYBgt.gif",
+                                url: "",
+                                location: { city: "null", country: "null", country_code: null},
+                                email: jwt_decoded.email,
+                              });
       }
 
       function recoverPassword(data) {
