@@ -41,6 +41,7 @@
       //run on app initialization so that we can keep auth across different sessions
       function setCurrentUser(time) {
         user.token = $window.localStorage.getItem('organicity.token') && JSON.parse( $window.localStorage.getItem('organicity.token') );
+        // Check for user properties
         user.data = $window.localStorage.getItem('organicity.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('organicity.data') ));
         if(!user.token) {
           return;
@@ -133,7 +134,19 @@
         console.log($location.$$hash);
         var token = $location.$$hash.split('&')[1].slice(14);
         window.localStorage.setItem('organicity.token', JSON.stringify(token) );
-        window.localStorage.getItem('organicity.token');
+        var jwt_decoded = jwtHelper.decodeToken(token);
+        window.localStorage.setItem('organicity.data', JSON.stringify({
+                                id: jwt_decoded.sub,
+                                uuid: jwt_decoded.sub,
+                                role: "",
+                                name: jwt_decoded.name,
+                                username: jwt_decoded.preferred_username,
+                                avatar: "http://i.imgur.com/XYBgt.gif",
+                                url: "",
+                                location: { city: "null", country: "null", country_code: "null"},
+                                email: jwt_decoded.email,
+                              }) );
+
         return $location.path('/');
       }
 
@@ -145,10 +158,10 @@
       function getCurrentUserInfo() {
         var token = $window.localStorage.getItem('organicity.token');
         var jwt_decoded = jwtHelper.decodeToken(token);
-        if jwtHelper.isTokenExpired(expToken) {
+        if (jwtHelper.isTokenExpired(token)) {
+          console.log("EXPIRED");
           return login();
-        }
-        else {
+        } else {
           return JSON.stringify({ id: jwt_decoded.sub,
                                   uuid: jwt_decoded.sub,
                                   role: "",
