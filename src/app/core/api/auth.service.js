@@ -145,17 +145,21 @@
       function getCurrentUserInfo() {
         var token = $window.localStorage.getItem('organicity.token');
         var jwt_decoded = jwtHelper.decodeToken(token);
-        console.log(jwt_decoded);
-        return JSON.stringify({ id: jwt_decoded.jti,
-                                uuid: jwt_decoded.jti,
-                                role: "",
-                                name: jwt_decoded.name,
-                                username: jwt_decoded.preferred_username,
-                                avatar: "http://i.imgur.com/XYBgt.gif",
-                                url: "",
-                                location: { city: "null", country: "null", country_code: null},
-                                email: jwt_decoded.email,
-                              });
+        if jwtHelper.isTokenExpired(expToken) {
+          return login();
+        }
+        else {
+          return JSON.stringify({ id: jwt_decoded.sub,
+                                  uuid: jwt_decoded.sub,
+                                  role: "",
+                                  name: jwt_decoded.name,
+                                  username: jwt_decoded.preferred_username,
+                                  avatar: "http://i.imgur.com/XYBgt.gif",
+                                  url: "",
+                                  location: { city: "null", country: "null", country_code: "null"},
+                                  email: jwt_decoded.email,
+                                });
+        }
       }
 
       function recoverPassword(data) {
