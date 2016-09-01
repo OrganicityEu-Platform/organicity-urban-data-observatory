@@ -67,8 +67,21 @@
         } else {
           console.log("Data expired: Refreshing entities");
           setPrevAllDevices();
-          return entitiesAPI.all('assets').getList().then(function(data) {
-            setAllDevices(data);
+
+					// var devices = [];
+					// for(var i = 1; i < 10; i++) {
+					// 	var devs = entitiesAPI.all('assets').getList({'page': String(i), 'per': '100'})
+					// 	devices.push(devs);
+					// }
+					//
+					// $q.all(devices).then(function(devices) {
+					// 	setAllDevices(devices);
+					// 	console.log([].concat.apply([], devices));
+          //   return [].concat.apply([], devices);
+					// });
+
+          return entitiesAPI.all('assets/geo').getList({'page': '1', 'per': '100'}).then(function(data) {
+						setAllDevices(data);
             return data;
           });
         }

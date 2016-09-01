@@ -162,12 +162,14 @@
       }
 
       function parseName(object) {
-        if(!object.uuid) {
-          object.uuid = object['context']['name']; //tmp.
-        }
 
-        if(!object['context']['name']) {
-          return;
+        if(!object.uuid) {
+          if (object['context']) {
+            object.uuid = object['context']['name']; //tmp.
+          }
+          else {
+            return;
+          }
         }
 
         var entityName = object['context']['name'].split(":");

@@ -71,20 +71,24 @@
                 return worldMarkers;
               }
               return device.getAllDevices().then(function(data) {
-                return _.chain(data)
-                  .tap(function(data) {
-                    device.setAllDevices(data);
-                  })
-                  .map(function(device) {
-                    return new Marker(device);
-                  })
-                  .filter(function(marker) {
-                    return !!marker.lng && !!marker.lat;
-                  })
-                  .tap(function(data) {
-                    device.setWorldMarkers(data);
-                  })
-                  .value();
+                if (data.route == "assets/geo")
+                  return data;
+                else {
+                  return _.chain(data)
+                    .tap(function(data) {
+                      device.setAllDevices(data);
+                    })
+                    .map(function(device) {
+                      return new Marker(device);
+                    })
+                    .filter(function(marker) {
+                      return !!marker.lng && !!marker.lat;
+                    })
+                    .tap(function(data) {
+                      device.setWorldMarkers(data);
+                    })
+                    .value();
+                  }
               });
             }
           }

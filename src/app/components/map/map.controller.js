@@ -13,15 +13,12 @@
       var mapClicked = false;
 
       var initialLocation = markers[0];
-      var markersByIndex = _.indexBy(markers, function(marker) {
-        return marker.myData.id;
-      });
+      var markersByIndex = markersIndexes(markers);
       var focusedMarkerID = $state.params.id?
         markersByIndex[parseInt($state.params.id)].myData.id :
         undefined;
 
       vm.markers = markers;
-      console.log(markers);
 
       vm.tiles = {
         url: 'https://api.tiles.mapbox.com/v4/tomasdiez.ed7899f5/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg'
@@ -129,8 +126,6 @@
         vm.center.lat = data.lat;
         vm.center.lng = data.lng;
 
-
-
         $timeout(function() {
           leafletData.getMarkers()
             .then(function(markers) {
@@ -195,6 +190,18 @@
       function initialize() {
         checkFiltersSelected();
       }
+
+      function markersIndexes(markers) {
+        if (markers.route == "assets/geo") {
+          return [];
+        }
+        else {
+          _.indexBy(markers, function(marker) {
+            return marker.myData.id;
+          });
+        }
+      }
+
 
       function checkFiltersSelected() {
         var allFiltersSelected = _.every(vm.filterData, function(filterValue) {

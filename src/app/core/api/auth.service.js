@@ -135,17 +135,7 @@
         var token = $location.$$hash.split('&')[1].slice(14);
         window.localStorage.setItem('organicity.token', JSON.stringify(token) );
         var jwt_decoded = jwtHelper.decodeToken(token);
-        window.localStorage.setItem('organicity.data', JSON.stringify({
-                                id: jwt_decoded.sub,
-                                uuid: jwt_decoded.sub,
-                                role: "",
-                                name: jwt_decoded.name,
-                                username: jwt_decoded.preferred_username,
-                                avatar: "http://i.imgur.com/XYBgt.gif",
-                                url: "",
-                                location: { city: "null", country: "null", country_code: "null"},
-                                email: jwt_decoded.email,
-                              }) );
+        window.localStorage.setItem('organicity.data', userData(jwt_decoded) );
 
         return $location.path('/');
       }
@@ -162,17 +152,21 @@
           console.log("EXPIRED");
           return login();
         } else {
-          return JSON.stringify({ id: jwt_decoded.sub,
-                                  uuid: jwt_decoded.sub,
-                                  role: "",
-                                  name: jwt_decoded.name,
-                                  username: jwt_decoded.preferred_username,
-                                  avatar: "http://i.imgur.com/XYBgt.gif",
-                                  url: "",
-                                  location: { city: "null", country: "null", country_code: "null"},
-                                  email: jwt_decoded.email,
-                                });
+          return userData(jwt_decoded);
         }
+      }
+
+      function userData(jwt_decoded) {
+        return JSON.stringify({ id: jwt_decoded.sub,
+                                uuid: jwt_decoded.sub,
+                                role: "",
+                                name: jwt_decoded.name,
+                                username: jwt_decoded.preferred_username,
+                                avatar: "./assets/images/avatar.svg",
+                                url: "",
+                                location: { city: "null", country: "null", country_code: "null"},
+                                email: jwt_decoded.email,
+                              });
       }
 
       function recoverPassword(data) {
