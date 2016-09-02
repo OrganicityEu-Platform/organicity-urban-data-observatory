@@ -48,7 +48,7 @@
           return [];
         }
 
-        return $q.all([device.getAllDevices(), getPlacesMapzen(query)])
+        return $q.all([device.getAllEntities(), getPlacesMapzen(query)])
           .then(function(data) {
 
             if(data.length === 0) {

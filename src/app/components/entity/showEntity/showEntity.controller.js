@@ -4,31 +4,31 @@
   angular.module('app.components')
     .controller('entityController', entityController);
 
-  entityController.$inject = ['$state', '$scope', '$stateParams', 'entityData',
-    'ownerentitites', 'utils', 'sensor', 'fullEntity', '$mdDialog', 'belongsToUser',
-    'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
-    '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'device',
-    'HasSensorEntity', 'geolocation', 'annotation'];
-  function entityController($state, $scope, $stateParams, entityData,
-                            ownerentitites, utils, sensor, fullEntity, $mdDialog, belongsToUser,
-                            timeUtils, animation, $location, auth, entityUtils, userUtils,
-                            $timeout, mainSensors, compareSensors, alert, $q, device,
-                            HasSensorEntity, geolocation, annotation) {
+    entityController.$inject = ['$state','$scope', '$stateParams', 'entityData',
+      'ownerEntitites', 'utils', 'sensor', 'fullEntity', '$mdDialog', 'belongsToUser',
+      'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
+      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'entity',
+      'HasSensorEntity', 'geolocation'];
+    function entityController($state, $scope, $stateParams, entityData,
+      ownerEntitites, utils, sensor, fullEntity, $mdDialog, belongsToUser,
+      timeUtils, animation, $location, auth, entityUtils, userUtils,
+      $timeout, mainSensors, compareSensors, alert, $q, entity,
+      HasSensorEntity, geolocation) {
 
-    var vm = this; //todo extend vm for showing the values...
-    var sensorsData = [];
+      var vm = this;
+      var sensorsData = [];
 
-    var mainSensorID, compareSensorID;
-    var picker = initializePicker();
+      var mainSensorID, compareSensorID;
+      var picker = initializePicker();
 
-    if (entityData) {
-      animation.entityLoaded({lat: entityData.latitude, lng: entityData.longitude, id: parseInt($stateParams.id)});
-    }
+      if(entityData){
+        animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: parseInt($stateParams.id) });
+      }
 
     vm.hasHistorical = false;
 
     vm.entity = entityData;
-    vm.ownerentitites = ownerentitites;
+    vm.ownerEntitites = ownerEntitites;
     vm.entityBelongsToUser = belongsToUser;
     vm.removeUser = removeUser;
 
@@ -159,12 +159,37 @@
       });
     }
 
-    function getUsability() {
-      annotation.getAnnotation(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tag:Usability:Score').then( //todo fix user
-        function (response) {
-          console.log(response);
-          if (response.numericValue != undefined) {
-            vm.usability = response.numericValue;
+      initialize();
+
+      ///////////////
+
+      function initialize() {
+        debugger;
+        $timeout(function() {
+          colorSensorMainIcon();
+          colorArrows();
+          colorClock();
+          // events below can probably be refactored to use $viewContentLoaded https://github.com/angular-ui/ui-router/wiki#user-content-view-load-events
+          animation.viewLoaded();
+          animation.mapStateLoaded();
+        }, 1000);
+
+        if(vm.entity){
+          if(vm.entity.state.name === 'never published' || vm.entity.state.name === 'not configured') {
+            if(vm.entityBelongsToUser) {
+              alert.info.noData.owner($stateParams.id);
+            } else {
+              alert.info.noData.visitor();
+            }
+            $timeout(function() {
+              animation.entityWithoutData({belongsToUser: vm.entityBelongsToUser});
+            }, 1000);
+          } else if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
+            alert.info.longTime();
+          }else{
+            if(geolocation.isHTML5GeolocationGranted()){
+              geolocate();
+            }
           }
           watchUsability();
         },
@@ -315,6 +340,39 @@
             geolocate();
           }
         }
+
+        options.from = options && options.from || picker.getValuePickerFrom();
+        options.to = options && options.to || picker.getValuePickerTo();
+
+        //show spinner
+        vm.loadingChart = true;
+        //grab chart data and save it
+
+        // it can be either 2 sensors or 1 sensor, so we use $q.all to wait for all
+        $q.all(
+          _.map(sensorsID, function(sensorID) {
+            var id = vm.entity.uuid;//$stateParams.id
+            return getChartData(id, sensorID, options.from, options.to)
+              .then(function(data) {
+                return data;
+              });
+          })
+        ).then(function() {
+          // after all sensors resolve, prepare data and attach it to scope
+          // the variable on the scope will pass the data to the chart directive
+          vm.chartDataMain = prepareChartData([mainSensorID, compareSensorID]);
+        });
+      }
+      // calls api to get sensor data and saves it to sensorsData array
+      function getChartData(entityID, sensorID, dateFrom, dateTo, options) {
+        return sensor.getSensorsDataNew(entityID, sensorID, dateFrom, dateTo)
+          .then(function(data) {
+            sensorsData[sensorID] = data.readings;
+            return data;
+          }, function(data) {
+            sensorsData[sensorID] = [];
+            return data;
+          });
       }
     }
 
@@ -586,26 +644,46 @@
         return getSecondsFromDate(new Date());
       }
 
-      function getSevenDaysAgo() {
-        return getSecondsFromDate(getToday() - (7 * 24 * 60 * 60 * 1000));
-      }
+      function geolocate() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position){
+            if(!position){
+              alert.error('Please, allow Organicity to geolocate your' +
+                'position so we can find a entity near you.');
+              return;
+            }
 
-      function getDateToHaveDataInChart() {
-        var today = moment();
-        var lastTime = moment(entityData.time);
-        var difference = today.diff(lastTime, 'days');
-        var result = difference * 3;
+            geolocation.grantHTML5Geolocation();
 
-        return lastTime.subtract(result, 'days').valueOf();
-      }
+            var location = {
+              lat:position.coords.latitude,
+              lng:position.coords.longitude
+            };
+            entity.getEntities(location)
+              .then(function(data){
+                data = data.plain();
 
-      if (entityData) {
-        if (timeUtils.isWithin(7, 'days', entityData.time) || !entityData.time) {
-          //set from-picker to seven days ago
-          from_picker.set('select', getSevenDaysAgo());
-        } else {
-          // set from-picker to
-          from_picker.set('select', getDateToHaveDataInChart());
+                _(data)
+                  .chain()
+                  .map(function(entity) {
+                    return new HasSensorEntity(entity);
+                  })
+                  .filter(function(entity) {
+                    return !!entity.longitude && !!entity.latitude;
+                  })
+                  .find(function(entity) {
+                    return _.contains(entity.labels, 'online');
+                  })
+                  .tap(function(closestentity) {
+                    if(closestentity) {
+                      $state.go('layout.home.entity', {id: closestentity.id});
+                    } else {
+                      $state.go('layout.home.entity', {id: data[0].id});
+                    }
+                  })
+                  .value();
+              });
+          });
         }
         //set to-picker to today
         to_picker.set('select', getToday());

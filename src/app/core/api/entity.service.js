@@ -1,24 +1,25 @@
 (function() {
 	'use strict';
 
-	// angular.module('app.components') // Deprecated?!
-	//   .factory('device', device);
+	angular.module('app.components')
+	  .factory('entity', entity);
 
-    device.$inject = ['entitiesAPI', '$window', 'timeUtils', '$filter', '$q'];
-	  function device(entitiesAPI, $window, timeUtils, $filter, $q) {
+    entity.$inject = ['entitiesAPI', '$window', 'timeUtils', '$filter', '$q'];
+	  function entity(entitiesAPI, $window, timeUtils, $filter, $q) {
+
       var worldMarkers, entities, entitiesPrevious;
 
       initialize();
 
 	  	var service = {
-        getDevices: getDevices,
-        getAllDevices: getAllDevices,
-        setAllDevices : setAllDevices,
-        getDevice: getDevice,
-        createDevice: createDevice,
-        updateDevice: updateDevice,
+        getAllEntities: getAllEntities,
+        setAllEntities : setAllEntities,
+        getEntity: getEntity,
+        createEntity: createEntity,
+        updateEntity: updateEntity,
         getWorldMarkers: getWorldMarkers,
-        setWorldMarkers: setWorldMarkers
+        setWorldMarkers: setWorldMarkers,
+        getGeoJSON: getGeoJSON
 	  	};
 
 	  	return service;
@@ -32,13 +33,8 @@
         }
       }
 
-      function getDevices(location) {
-      	var parameter = '';
-      	parameter += location.lat + ',' + location.lng;
-      	return entitiesAPI.all('assets').getList({'page': '1', 'per': '100'});
-      }
 
-      function setAllDevices(data) {
+      function setAllEntities(data) {
         var obj = {
           timestamp: new Date(),
           data: data
@@ -48,58 +44,66 @@
         entities = obj.data;
       }
 
-      function setPrevAllDevices() {
+      function setPrevAllEntities() {
         entitiesPrevious = entities;
       }
 
-      function getPrevAllDevices() {
+      function getPrevAllEntities() {
         var deferred = $q.defer();
         deferred.resolve(entitiesPrevious);
         return deferred.promise;
       }
 
-      function getAllDevices() {
-        if (!areEntitiesMarkersOld()) {
-          console.log("Data is cached: Entities are less than 60sec old.");
-          var deferred = $q.defer();
-          deferred.resolve(entities || ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).data));
-          return deferred.promise;
-        } else {
+      function getAllEntities() {
+        // if (!areEntitiesMarkersOld()) {
+        //   console.log("Data is cached: Entities are less than 60sec old.");
+        //   var deferred = $q.defer();
+        //   deferred.resolve(entities || ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).data));
+        //   return deferred.promise;
+        // } else {
           console.log("Data expired: Refreshing entities");
-          setPrevAllDevices();
-
-					// var devices = [];
-					// for(var i = 1; i < 10; i++) {
-					// 	var devs = entitiesAPI.all('assets').getList({'page': String(i), 'per': '100'})
-					// 	devices.push(devs);
-					// }
-					//
-					// $q.all(devices).then(function(devices) {
-					// 	setAllDevices(devices);
-					// 	console.log([].concat.apply([], devices));
-          //   return [].concat.apply([], devices);
-					// });
-
-          return entitiesAPI.all('assets/geo').getList({'page': '1', 'per': '100'}).then(function(data) {
-						setAllDevices(data);
-            return data;
-          });
-        }
+          // setPrevAllEntities();
+          return entitiesAPI.all('assets/lightweight').getOne({'page': 'all', 'per': 'all'});
+          //.then(function(data) {
+            // setAllEntities(data);
+            //return data;
+          //});
+        // }
       }
 
-      function getDevice(id) {
-        return getAllDevices().then(function(entities){
-          return _.find(entities, function(entity) {
-             return entity.id == id;
-          });
-        });
+      function getGeoJSON() {
+        // if (!areEntitiesMarkersOld()) {
+        //   console.log("Data is cached: Entities are less than 60sec old.");
+        //   var deferred = $q.defer();
+        //   deferred.resolve(entities || ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).data));
+        //   return deferred.promise;
+        // } else {
+          console.log("Data expired: Refreshing entities");
+          // setPrevAllEntities();
+          return entitiesAPI.one('assets/geo').get({'page': 'all', 'per': 'all'});
+          //.then(function(data) {
+            // setAllEntities(data);
+            //return data;
+          //});
+        // }
       }
 
-      function createDevice(data) {
+
+      function getEntitiesMarkers(location) {
+        var parameter = '';
+        parameter += location.lat + ',' + location.lng;
+        return entitiesAPI.all('assets').getList({'page': '1', 'per': '100'});
+      }
+
+      function getEntity(id) {
+        return entitiesAPI.one('assets').getList({'urn': id});
+      }
+
+      function createEntity(data) {
         return entitiesAPI.all('assets').post(data);
       }
 
-      function updateDevice(id, data) {
+      function updateEntity(id, data) {
         return entitiesAPI.one('assets', id).patch(data);
       }
 

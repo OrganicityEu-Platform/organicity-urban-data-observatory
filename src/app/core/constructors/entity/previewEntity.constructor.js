@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('Previewentity', ['entity', function(entity) {
+    .factory('PreviewEntity', ['entity', function(entity) {
 
       /** 
        * Preview entity constructor.
@@ -11,7 +11,7 @@
        * @constructor
        * @param {Object} object - Object with all the data about the entity from the API
        */
-      function Previewentity(object) {
+      function PreviewEntity(object) {
         entity.call(this, object);
 
         this.dropdownOptions = [
@@ -19,10 +19,10 @@
           {text: 'EDIT', value: '2', href: 'entitites/edit/' + this.id}
         ];
       }
-      Previewentity.prototype = Object.create(entity.prototype);
-      Previewentity.prototype.constructor = entity;
+      PreviewEntity.prototype = Object.create(entity.prototype);
+      PreviewEntity.prototype.constructor = entity;
 
-      return Previewentity;
+      return PreviewEntity;
 
     }]);
 })();
