@@ -11,30 +11,15 @@
 
         vm.controls = {};
 
-        // vm.defaults = {
-        //     tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-        //     maxZoom: 14,
-        //     path: {
-        //         weight: 10,
-        //         color: '#800000',
-        //         opacity: 1
-        //     },
-        //     layers: {
-        //         visible: true,
-        //         position: 'topright',
-        //         collapsed: false
-        //     }
-        // };
-
         vm.layers = {
             baselayers: mapUtils.getBaseLayers(),
-            overlays: new Overlays(entitiesLayers, "Asset Types")
+            overlays: new Overlays(entitiesLayers, 'Asset Types')
         };
 
         vm.center = {
             lat: 48,
             lng: 18.5,
-            zoom: 3
+            zoom: 4
         };
 
         vm.defaults = {
@@ -73,20 +58,32 @@
            };
        });
 
+       $scope.$watch('vm.center.zoom', function(zoom) {
+           console.log(zoom);
+           if (zoom >=8) {
+             var params = { lat: vm.center.lat, long: vm.center.lng }
+             entity.getGeoJSON(params).then(function(data) {
+               console.log(data)
+               return JSON.parse(data);
+             }, function(error){
+               console.log(error);
+               // return [JSON.parse(FIXTURE_C)];
+             });
+           }
+           if (vm.controls.minimap) {
+              vm.controls.minimap.toggleDisplay = (zoom > 10) ? true : false;
+              console.log(vm.controls.minimap.toggleDisplay);
+           }
+       });
+
         /* Just an idea
         http://blog.thematicmapping.org/2012/10/how-to-control-your-leaflet-map-with.html
-        $scope.$on("centerUrlHash", function(event, centerHash) {
+        $scope.$on('centerUrlHash', function(event, centerHash) {
             console.log(centerHash);
             $location.search({ c: centerHash });
         });
 
-        $scope.$watch("vm.center.zoom", function(zoom) {
-            console.log(zoom);
-            if (vm.controls.minimap) {
-               vm.controls.minimap.toggleDisplay = (zoom > 10) ? true : false;
-                console.log(vm.controls.minimap.toggleDisplay);
-            }
-        });
+
         */
     }
 })();

@@ -10,7 +10,7 @@
         parseName: parseName,
         parseType: parseType,
         parseEntityType: parseEntityType,
-        parseLocation: parseLocation,
+        parseLocation: parseLocation, // Different object with O W N name
         parseLabels: parseLabels,
         parseUserTags: parseUserTags,
         parseCoordinates: parseCoordinates,
@@ -28,31 +28,43 @@
 
       function parseType(object) {
         var entityType;
-        entityType = 'Organicity'; //tmp
+        if (object.name === 'cluster') {
+          entityType = object.name; //tmp
+        }
+        else {
+          entityType = object.type;
+        }
         return entityType;
       }
 
       function parseEntityType(object) {
-        var entityType = object.name.split(":");
+        var entityType = object.name.split(':');
         return makeTitle(entityType[entityType.length-1]);
       }
 
       function parseLocation(object) {
-        return 'Unknown';
+
         var location = '';
         var locationSource = {};
 
-        if(object.context.position.city && object.context.position.country) {
+        if(object.context) {
+          if (object.context.position.city && object.context.position.country) {
             locationSource = object.data.location;
+          }
         } else if (object.provider && object.context.position.city && object.context.position.country){
             locationSource = object.context.position;
             locationSource.justOwnerLocation = true;
         }
+        var city = '';
+        var countryCode = '';
+        var country = '';
 
-        /*jshint camelcase: false */
-        var city = locationSource.city;
-        var country_code = locationSource.country_code;
-        var country = COUNTRY_CODES[country_code];
+        if (locationSource) {
+          /*jshint camelcase: false */
+          city = locationSource.city;
+          countryCode = locationSource.country_code;
+          country = COUNTRY_CODES[countryCode];
+        }
 
         if(!!city) {
           location += city;
@@ -61,7 +73,9 @@
           location += ', ' + country;
         }
 
-        if(locationSource.justOwnerLocation) location += ' (provider location)';
+        if (locationSource.justOwnerLocation) {
+          location += ' (provider location)';
+        }
 
         return location;
       }
@@ -77,43 +91,56 @@
       }
 
       function parseLabels(object) {
-        var system_tags = [];
+        var systemTags = [];
+        var entityName;
 
         if(!object.name) {
-          object.name = object.id || "no:name"; //tmp.
+          object.name = object.id || 'no:name'; //tmp.
         }
 
-        system_tags.push((this.isOnline(object)) ? "online" : "offline");
+        if(!object.id) {
+          object.id = 'cluster:id'; //tmp.
+        }
+        if (object.name === 'cluster') {
+          entityName = 'Device cluster';
+        } else {
+          systemTags.push((this.isOnline(object)) ? 'online' : 'offline');
 
-        var entityName = object.id.split(":");
+          entityName = object.id.split(':');
 
-        var source = entityName[3];
-        var origin = entityName[4];
+          var source = entityName[3];
+          var origin = entityName[4];
 
-        if(source) system_tags.push(source);
-        if(origin) system_tags.push(origin);
-
+          if(source) {
+            systemTags.push(source);
+          }
+          if(origin) {
+            systemTags.push(origin);
+          }
+        }
         /*jshint camelcase: false */
-        return system_tags;
+        return systemTags;
       }
 
       function parseUserTags(object) {
-        var user_tags = [];
+        var userTags = [];
 
         if(!object.type) {
-          return user_tags;
+          return userTags;
         }
 
-        var entityType = object.type.split(":");
+        var entityType = object.type.split(':');
 
-        if(entityType) user_tags.push(entityType[entityType.length-1]);
+        if(entityType) {
+          userTags.push(entityType[entityType.length-1]);
+        }
 
         /*jshint camelcase: false */
-        return user_tags;
+        return userTags;
       }
 
-      function check_location(object) {
-        if (object.context && object.context.position != null && object.context.position.latitude && object.context.position.longitude && object.context.position.latitude != 0 && object.context.position.longitude != 0) {
+      function checkLocation(object) {
+        if (object.context && object.context.position !== null && object.context.position.latitude && object.context.position.longitude && object.context.position.latitude !== 0 && object.context.position.longitude !== 0) {
           return true;
         }
 
@@ -123,7 +150,11 @@
       }
 
       function parseCoordinates(object) {
-        return object.position;
+        if (object.position) {
+          return object.position;
+        } else if (object.geometry.coordinates) {
+          return object.geometry.coordinates;
+        }
       }
 
       function parseId(object) {
@@ -148,24 +179,40 @@
       }
 
       function parseName(object) {
+        var entityName = 'Unknown';
         if(!object.name) {
-          return "Unknown";
+          return 'Unknown';
+        }
+        if (object.name === 'cluster') {
+          entityName = object.count + ' devices';
+        }
+        else {
+          entityName = object.name;
         }
 
-        var entityName = object['context']['name'].split(":");
+        if (object['context']) {
+          entityName = object['context']['name'].split(':');
 
-        entityName = entityName.slice(4, entityName.length);
-        entityName = _.map(entityName, makeCase);
+        }
 
-        object.name = entityName.join(" ");
-        return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
+        return entityName;
       }
 
       function parseTime(object) {
-        var time = object['context']['last_reading_at'];
+        var time = 'Unknown';
+
+        if (object['context']) {
+          time = object['context']['last_reading_at'];
+        }
+
+        if (object.name === 'cluster') {
+          time = new Date(Date.now());
+        }
+
         if(!time) {
           return 'No time';
         }
+
         return moment(time).fromNow();
       }
 
@@ -187,6 +234,6 @@
       }
 
       function makeTitle(str){
-        return str.replace(/([A-Z])/, ' $1') .replace(/^./, function(str){ return str.toUpperCase(); }) }
+        return str.replace(/([A-Z])/, ' $1') .replace(/^./, function(str){ return str.toUpperCase(); }); }
     }
 })();

@@ -19,6 +19,7 @@
         updateEntity: updateEntity,
         getWorldMarkers: getWorldMarkers,
         setWorldMarkers: setWorldMarkers,
+				getClusterGeoJSON: getClusterGeoJSON,
         getGeoJSON: getGeoJSON
 	  	};
 
@@ -28,7 +29,7 @@
 
       function initialize() {
         if(areMarkersOld()) {
-          console.log("Data expired: Refreshing markers");
+          console.log('Data expired: Refreshing markers');
           removeMarkers();
         }
       }
@@ -56,12 +57,12 @@
 
       function getAllEntities() {
         // if (!areEntitiesMarkersOld()) {
-        //   console.log("Data is cached: Entities are less than 60sec old.");
+        //   console.log('Data is cached: Entities are less than 60sec old.');
         //   var deferred = $q.defer();
         //   deferred.resolve(entities || ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).data));
         //   return deferred.promise;
         // } else {
-          console.log("Data expired: Refreshing entities");
+          console.log('Data expired: Refreshing entities');
           // setPrevAllEntities();
           return entitiesAPI.all('assets/lightweight').getOne({'page': 'all', 'per': 'all'});
           //.then(function(data) {
@@ -71,23 +72,53 @@
         // }
       }
 
-      function getGeoJSON() {
-        // if (!areEntitiesMarkersOld()) {
-        //   console.log("Data is cached: Entities are less than 60sec old.");
-        //   var deferred = $q.defer();
-        //   deferred.resolve(entities || ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).data));
-        //   return deferred.promise;
-        // } else {
-          console.log("Data expired: Refreshing entities");
-          // setPrevAllEntities();
-          return entitiesAPI.one('assets/geo').get({'page': 'all', 'per': 'all'});
-          //.then(function(data) {
-            // setAllEntities(data);
-            //return data;
-          //});
-        // }
+			function getGeoJSON(params) {
+				var endpoint = 'assets/geo/search';
+				return  entitiesAPI.one(endpoint).get(params);
+
+			}
+
+      function getClusterGeoJSON() {
+          console.log('Get ClusterGeoJSON');
+
+					var devices = [];
+
+					var locations = [
+						['43.45487000', '-3.81289000', 'Santander'],  			// Santander
+						['51.50722200', '-0.12750000', 'London'],						// London
+						['56.15720000', '10.21070000', 'Aarhus'], 						// Aarhus
+						['38.25000000', '21.73333300', 'Patras'], 						// Patras
+					];
+
+					for(var i = 0; i < 4; i++) {
+						var endpoint = 'assets/geo/zoom/1';
+						var params = {lat: locations[i][0],  long: locations[i][1]};
+
+				    var devs = entitiesAPI.one(endpoint).get(params);
+						devices.push(devs);
+					}
+
+					var data = $q.all(devices).then(function(devices) {
+						return '{ "type": "FeatureCollection", "properties": { "name": "urn:oc:entitytype:clusters" }, "features": [' + getGeoDevices(devices) + ']}';
+					});
+					return data;
       }
 
+			function getGeoDevices(devices) {
+				return devices.map(getGeoData);
+			}
+
+			function getGeoData(elem) {
+				return '{ "type": "' + elem.type + '", "geometry":' + getGeoGeometry(elem.geometry) + ', "properties":' + getGeoProperties(elem.properties) + '}';
+			}
+
+			function getGeoGeometry(geometry) {
+				return '{ "type": "' + geometry.type + '", "coordinates": [' + geometry.coordinates[1] + ',' + geometry.coordinates[0] + ']}';
+			}
+
+			function getGeoProperties(properties) {
+				return '{ "name": "cluster", "count":' + properties.count + '}';
+			}
 
       function getEntitiesMarkers(location) {
         var parameter = '';
@@ -108,7 +139,7 @@
       }
 
       function getWorldMarkers() {
-        console.log("Data is cached: Markers are less than 60sec old.");
+        console.log('Data is cached: Markers are less than 60sec old.');
         return worldMarkers || ($window.localStorage.getItem('organicity.markers') && JSON.parse($window.localStorage.getItem('organicity.markers') ).data);
       }
 

@@ -18,17 +18,19 @@
                 iconCreateFunction: iconCreateFunction,
                 onEachFeature: onEachFeature,
                 pointToLayer: pointTolayer,
-            }
+            };
             this.disablePoints = disablePoints;
             this.doRefresh = false;
-            if (group) this.group = group;
+            if (group) {
+              this.group = group;
+            }
         }
 
         return Layer;
 
         function disablePoints(myScope) {
-             this.data =  _.filter(this.data.features, function(feature){ return feature.geometry.type != "Point"});
-             this.doRefresh = true;     
+             this.data =  _.filter(this.data.features, function(feature){ return feature.geometry.type !== 'Point';});
+             this.doRefresh = true;
              myScope.$apply();
         }
 
@@ -46,7 +48,6 @@
         function iconCreateFunction(cluster) {
             var childCount = cluster.getChildCount();
             var a = cluster.getAllChildMarkers();
-            console.log(a);
             var c = ' marker-cluster-';
             if (childCount < 5) {
                 c += 'small';
@@ -72,7 +73,7 @@
 
         function camelize(str) {
             return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
-                return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+                return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
             }).replace(/\s+/g, '');
         }
     }]);

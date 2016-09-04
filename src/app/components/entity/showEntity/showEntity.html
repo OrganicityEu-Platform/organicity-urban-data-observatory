@@ -336,16 +336,8 @@
               </div>
               <div ng-if="vm.ownerEntitites.length > 0" class="entity_owner_entitites">
                 <h3 class="entity_owner_entitites_title">Resources of {{ vm.entity.owner.username }}</h3>
-<<<<<<< HEAD
-                <div class="entityList_parent" layout="row" layout-align="start center"
-                     ng-repeat="entity in vm.ownerentitites | limitTo: 5">
-                  <md-button ng-href="./entitites/{{entity.id}}" class="entityList"
-                             ng-class="{entityList_primary: !vm.entityBelongsToUser, entityList_secondary: vm.entityBelongsToUser, entityList_borderBottom: $last}"
-                             layout="row" layout-align="start center">
-=======
                 <div class="entityList_parent" layout="row" layout-align="start center" ng-repeat="entity in vm.ownerEntitites | limitTo: 5">
                   <md-button ng-href="./entitites/{{entity.id}}" class="entityList" ng-class="{entityList_primary: !vm.entityBelongsToUser, entityList_secondary: vm.entityBelongsToUser, entityList_borderBottom: $last}" layout="row" layout-align="start center">
->>>>>>> ce2e6b0f0eb151511195af07eb66f27844ee41e0
                     <div class="entityList_container" layout="row" layout-align="start center">
                       <div class="">
                         <img class="entityList_avatar" ng-src="{{ entity.avatar || './assets/images/avatar.svg' }}"/>
