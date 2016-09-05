@@ -8,7 +8,10 @@
          */
         function Overlays(featureCollections, group) {
             var self = this;
-            _.each([featureCollections], function(featureCollection) {
+            if (!featureCollections.length) {
+              featureCollections = [featureCollections];
+            }
+            _.each(featureCollections, function(featureCollection) {
                 self[getOverlayName(featureCollection)] = new Layer(featureCollection, group);
             });
         }

@@ -61,29 +61,34 @@
        $scope.$watch('vm.center.zoom', function(zoom) {
            console.log(zoom);
            if (zoom >=8) {
-             var params = { lat: vm.center.lat, long: vm.center.lng }
+             var params = { lat: vm.center.lat, long: vm.center.lng, radius: '10' };
              entity.getGeoJSON(params).then(function(data) {
-               console.log(data)
-               return JSON.parse(data);
+               console.log(params);
+               console.log(data);
+               entity.setAllEntities(data);
+               vm.layers = {
+                   baselayers: mapUtils.getBaseLayers(),
+                   overlays: new Overlays(JSON.parse(JSON.stringify(data)), 'Asset Types')
+               };
              }, function(error){
                console.log(error);
-               // return [JSON.parse(FIXTURE_C)];
+             });
+           }
+           else {
+             return entity.getClusterGeoJSON().then(function(data) {
+               entity.setAllEntities(data);
+               vm.layers = {
+                   baselayers: mapUtils.getBaseLayers(),
+                   overlays: new Overlays(JSON.parse(JSON.stringify(data)), 'Asset Types')
+               };
+             }, function(error){
+               console.log(error);
              });
            }
            if (vm.controls.minimap) {
-              vm.controls.minimap.toggleDisplay = (zoom > 10) ? true : false;
+              vm.controls.minimap.toggleDisplay = (zoom >= 8) ? true : false;
               console.log(vm.controls.minimap.toggleDisplay);
            }
        });
-
-        /* Just an idea
-        http://blog.thematicmapping.org/2012/10/how-to-control-your-leaflet-map-with.html
-        $scope.$on('centerUrlHash', function(event, centerHash) {
-            console.log(centerHash);
-            $location.search({ c: centerHash });
-        });
-
-
-        */
     }
 })();

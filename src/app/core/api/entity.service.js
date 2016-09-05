@@ -109,15 +109,7 @@
 			}
 
 			function getGeoData(elem) {
-				return '{ "type": "' + elem.type + '", "geometry":' + getGeoGeometry(elem.geometry) + ', "properties":' + getGeoProperties(elem.properties) + '}';
-			}
-
-			function getGeoGeometry(geometry) {
-				return '{ "type": "' + geometry.type + '", "coordinates": [' + geometry.coordinates[1] + ',' + geometry.coordinates[0] + ']}';
-			}
-
-			function getGeoProperties(properties) {
-				return '{ "name": "cluster", "count":' + properties.count + '}';
+				return '{ "type": "' + elem.type + '", "geometry":' + JSON.stringify(elem.geometry) + ', "properties":' + JSON.stringify(elem.properties) + '}';
 			}
 
       function getEntitiesMarkers(location) {

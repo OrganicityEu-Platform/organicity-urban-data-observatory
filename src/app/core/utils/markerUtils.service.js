@@ -48,12 +48,12 @@
         var locationSource = {};
 
         if(object.context) {
-          if (object.context.position.city && object.context.position.country) {
-            locationSource = object.data.location;
-          }
-        } else if (object.provider && object.context.position.city && object.context.position.country){
+          if (object.provider && object.context.position.city && object.context.position.country){
             locationSource = object.context.position;
             locationSource.justOwnerLocation = true;
+          } else if (object.context.position.city && object.context.position.country) {
+            locationSource = object.data.location;
+          }
         }
         var city = '';
         var countryCode = '';
