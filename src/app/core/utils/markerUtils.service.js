@@ -28,17 +28,35 @@
 
       function parseType(object) {
         var entityType;
-        if (object.name === 'cluster') {
+        console.log(object);
+        if (object.name === 'Cluster') {
           entityType = object.name; //tmp
         }
-        else {
-          entityType = object.type;
+        else if (object.properties && object.properties.type) {
+          var typeString = object.properties.type.split(':');
+          entityType = typeString[typeString.length-1]
+        }
+        else if (object.type) {
+          var typeString = object.type.split(':');
+          entityType = typeString[typeString.length-1]
         }
         return entityType;
       }
 
       function parseEntityType(object) {
-        var entityType = object.name.split(':');
+        var entityType;
+        if (object.name === 'Cluster') {
+          entityType = object.name; //tmp
+        }
+        else if (object.type) {
+          entityType = object.type.split(':');
+        }
+        else if (object.properties) {
+          entityType = object.properties.type.split(':');
+        }
+        else {
+          entityType = object.name.split(':');
+        }
         return makeTitle(entityType[entityType.length-1]);
       }
 
@@ -81,7 +99,13 @@
       }
 
       function isOnline(object) {
-        var time = object['last_updated_at'];
+        var time = Date.now;
+        if (object.last_updated_at) {
+          time = Date.parse(object.last_updated_at);
+        }
+        else {
+          time = Date.parse(object.last_update_at);
+        }
         var timeDifference =  (new Date() - new Date(time))/1000;
         if(!time || timeDifference > 7*24*60*60) { //a week
           return false;
@@ -101,7 +125,7 @@
         if(!object.id) {
           object.id = 'cluster:id'; //tmp.
         }
-        if (object.name === 'cluster') {
+        if (object.name === 'Cluster') {
           entityName = 'Device cluster';
         } else {
           systemTags.push((this.isOnline(object)) ? 'online' : 'offline');
@@ -183,30 +207,34 @@
         if(!object.name) {
           return 'Unknown';
         }
-        if (object.name === 'cluster') {
+        if (object.name === 'Cluster') {
           entityName = object.count + ' devices';
         }
+        else if (object.context && object.context.name) {
+          var entityNameString = object.context.name.split(':');
+          entityName = entityNameString[entityNameString.length-1]
+        }
         else {
-          entityName = object.name;
+          var entityNameString = object.name.split(':');
+          entityName = entityNameString[entityNameString.length-1]
         }
-
-        if (object['context']) {
-          entityName = object['context']['name'].split(':');
-
-        }
-
         return entityName;
       }
 
       function parseTime(object) {
         var time = 'Unknown';
 
-        if (object['context']) {
-          time = object['context']['last_reading_at'];
+        if (object.context) {
+          time = object.context.last_reading_at;
         }
-
-        if (object.name === 'cluster') {
+        else if (object.last_updated_at) {
+          time = Date.parse(object.last_updated_at)
+        }
+        else if (object.name === 'Cluster') {
           time = new Date(Date.now());
+        }
+        else {
+          time = Date.parse(object.last_update_at);
         }
 
         if(!time) {

@@ -63,19 +63,6 @@
            if (zoom >=8) {
              var params = { lat: vm.center.lat, long: vm.center.lng, radius: '10' };
              entity.getGeoJSON(params).then(function(data) {
-               console.log(params);
-               console.log(data);
-               entity.setAllEntities(data);
-               vm.layers = {
-                   baselayers: mapUtils.getBaseLayers(),
-                   overlays: new Overlays(JSON.parse(JSON.stringify(data)), 'Asset Types')
-               };
-             }, function(error){
-               console.log(error);
-             });
-           }
-           else {
-             return entity.getClusterGeoJSON().then(function(data) {
                entity.setAllEntities(data);
                vm.layers = {
                    baselayers: mapUtils.getBaseLayers(),
