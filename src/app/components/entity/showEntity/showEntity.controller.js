@@ -128,7 +128,7 @@
             }, 1000);
           } else if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
             alert.info.longTime();
-          }else{
+          } else { 
             if(geolocation.isHTML5GeolocationGranted()){
               geolocate();
             }

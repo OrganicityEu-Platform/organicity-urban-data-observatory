@@ -119,6 +119,7 @@
       }
 
       function getEntity(id) {
+				console.log("HELLO");
         return entitiesAPI.one('assets').getList({'urn': id});
       }
 

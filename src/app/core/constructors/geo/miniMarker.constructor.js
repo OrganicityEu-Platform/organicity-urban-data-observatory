@@ -2,26 +2,27 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('miniMarker', ['markerUtils', function (markerUtils) {
+    .factory('miniMarker', ['markerUtils', '$location', '$state', function (markerUtils, $location, $state) {
 
       /**
        * Marker constructor
        * @constructor
-       * @param {Object} deviceData - Object with data about marker from API
+       * @param {Object} entityData - Object with data about marker from API
        * @property {number} lat - Latitude
        * @property {number} lng - Longitude
        * @property {string} message - Message inside marker popup
        * @property {Object} icon - Object with classname, size and type of marker icon
        * @property {string} layer - Map layer that icons belongs to
        * @property {boolean} focus - Whether marker popup is opened
-       * @property {Object} myData - Marker id and labels 
+       * @property {Object} myData - Marker id and labels
        */
 
-      function minMarker(entityFeature) {
+      function miniMarker(entityFeature) {
+        this.entityFeature = entityFeature;
         this.popupHtml = markerPopup(entityFeature);
         this.whenClicked = whenClicked;
       }
-      return minMarker;
+      return miniMarker;
 
       function markerPopup(entityFeature){
         return  '<div class="popup"><div class="popup_top '+
@@ -41,7 +42,9 @@
       }
 
       function whenClicked(e) {
-          console.log(e);
+        console.log(this);
+        $state.go('layout.home.entity', {id: this.feature.properties.id});
+        $location.path('/' + this.feature.properties.id);
       }
 
       function createTagsTemplate(tagsArr) {

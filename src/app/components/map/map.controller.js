@@ -38,15 +38,37 @@
         vm.events = {
             map: {
                 enable: ['dragend', 'zoomend', 'moveend', 'popupopen', 'popupclose', 'mousedown', 'dblclick', 'click', 'touchstart', 'mouseup'],
-                logic: 'broadcast'
+                logic: 'emit'
             }
         };
 
         animation.viewLoaded();
 
-        $scope.$on('leafletDirectiveMarker.click', function(event, data) {
-            console.log(data);
-        });
+        // $scope.$on('leafletDirectiveMarker.organicityMap.click', function(event, data) {
+        //   var id = data.leafletEvent.target.options.myData.id;
+        //
+        //   vm.entityLoading = true;
+        //   vm.center.lat = data.leafletEvent.latlng.lat;
+        //   vm.center.lng = data.leafletEvent.latlng.lng;
+        //
+        //   if(id === parseInt($state.params.id)) {
+        //     $timeout(function() {
+        //       vm.entityLoading = false;
+        //     }, 0);
+        //     return;
+        //   }
+        //
+        //   focusedMarkerID = data.leafletEvent.target.options.myData.id;
+        //
+        //   updateType = 'map';
+        //   id = data.leafletEvent.target.options.myData.id;
+        //   var availability = data.leafletEvent.target.options.myData.labels[0];
+        //   console.log(data);
+        //   ga('send', 'event', 'entity Marker', 'click', availability);
+        //
+        //   $state.go('layout.home.entity', {id: id});
+        //
+        // });
 
         leafletData.getMap().then(function() {
            vm.controls.minimap = {
@@ -59,7 +81,6 @@
        });
 
        $scope.$watch('vm.center.zoom', function(zoom) {
-           console.log(zoom);
            if (zoom >=8) {
              var params = { lat: vm.center.lat, long: vm.center.lng, radius: '10' };
              entity.getGeoJSON(params).then(function(data) {
@@ -74,7 +95,6 @@
            }
            if (vm.controls.minimap) {
               vm.controls.minimap.toggleDisplay = (zoom >= 8) ? true : false;
-              console.log(vm.controls.minimap.toggleDisplay);
            }
        });
     }

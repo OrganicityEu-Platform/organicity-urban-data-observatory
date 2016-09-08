@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('markerUtils', markerUtils);
 
-    markerUtils.$inject = ['entity', 'entityUtils', 'COUNTRY_CODES', 'MARKER_ICONS'];
-    function markerUtils(entity, entityUtils, COUNTRY_CODES, MARKER_ICONS) {
+    markerUtils.$inject = ['entity', 'entityUtils', 'COUNTRY_CODES', 'MARKER_ICONS', '$state'];
+    function markerUtils(entity, entityUtils, COUNTRY_CODES, MARKER_ICONS, $state) {
       var service = {
         parseName: parseName,
         parseType: parseType,
@@ -28,7 +28,6 @@
 
       function parseType(object) {
         var entityType;
-        console.log(object);
         if (object.name === 'Cluster') {
           entityType = object.name; //tmp
         }
