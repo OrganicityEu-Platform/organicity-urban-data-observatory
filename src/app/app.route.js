@@ -97,8 +97,8 @@
                 return undefined;
               }
 
-              return device.getDevice(entityID).then(function(deviceData) {
-                return new fullEntity(deviceData);
+              return entity.getEntity(entityID).then(function(entityData) {
+                return new fullEntity(entityData);
               });
 
             },
