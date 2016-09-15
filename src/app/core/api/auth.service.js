@@ -132,7 +132,7 @@
       function callback() {
         console.log('HALLO!! HALLO!!');
         console.log($location.$$hash);
-        var token = $location.$$hash.split('&')[1].slice(14);
+        var token = $location.$$hash.split('&')[1].slice(13);
         window.localStorage.setItem('organicity.token', JSON.stringify(token) );
         var jwtDecoded = jwtHelper.decodeToken(token);
         window.localStorage.setItem('organicity.data', userData(jwtDecoded) );

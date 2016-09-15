@@ -18,7 +18,7 @@
         .state('landing', {
           url: '/',
           controller: function($state){
-            $state.go('layout.home');
+            $state.go('layout.home.entity');
           }
         })
         /*
@@ -51,7 +51,7 @@
         */
         .state('layout.home', {
           url: '/resources',
-          abstract: false,
+          abstract: true,
           views: {
             '': {
               templateUrl: 'app/components/home/template.html'

@@ -43,8 +43,6 @@
 
       function whenClicked(e) {
         console.log(this);
-        $state.go('layout.home.entity', {id: this.feature.properties.id});
-        $location.path('/' + this.feature.properties.id);
       }
 
       function createTagsTemplate(tagsArr) {
