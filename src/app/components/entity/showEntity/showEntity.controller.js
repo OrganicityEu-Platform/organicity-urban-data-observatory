@@ -51,7 +51,6 @@
       vm.loadingChart = true;
 
       vm.geolocate = geolocate;
-      debugger;
       // event listener on change of value of main sensor selector
       $scope.$watch('vm.selectedSensor', function(newVal, oldVal) {
         vm.selectedSensorToCompare = undefined;
@@ -108,7 +107,6 @@
       ///////////////
 
       function initialize() {
-        debugger;
         $timeout(function() {
           colorSensorMainIcon();
           colorArrows();

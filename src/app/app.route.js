@@ -50,7 +50,7 @@
         Abstract state, it only activates when there's a child state activated
         */
         .state('layout.home', {
-          url: '/resources',
+          url: '/assets',
           views: {
             '': {
               templateUrl: 'app/components/home/template.html'
@@ -291,7 +291,7 @@
               if(auth.isAuth()) {
                 return $location.path('/');
               }
-              $location.path('/resources');
+              $location.path('/assets');
               $location.search('login', 'true');
             }
           }
@@ -366,7 +366,7 @@
         });
 
       /* Default state */
-      $urlRouterProvider.otherwise('/resources');
+      $urlRouterProvider.otherwise('/assets');
 
       $locationProvider.html5Mode({
         enabled: true,

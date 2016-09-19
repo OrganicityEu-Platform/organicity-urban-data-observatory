@@ -119,9 +119,10 @@
       }
 
       function getEntity(id) {
-				console.log("HELLO");
-				endpoint = 'assets/' + id;
-        return entitiesAPI.one(endpoint).getList();
+				console.log(id);
+				var endpoint = 'assets/' + id;
+				console.log(endpoint);
+        return entitiesAPI.one(endpoint).get({});
       }
 
       function createEntity(data) {
