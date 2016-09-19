@@ -13,28 +13,28 @@
         convertTime: convertTime,
         getOwnerentitites: getOwnerentitites
       };
-      
-      debugger;
+
 
       return service;
 
       ///////////////////////////
 
       function parseEntity(object) {
+        console.log(object);
         var parsedEntity = {
           entityName: object.entity.name,
-          entityType: parseEntityType(object),  
-          entityLastTime: moment(parseEntityTime(object)).fromNow(), 
-          entityLocation: parseEntityLocation(object), 
+          entityType: parseEntityType(object),
+          entityLastTime: moment(parseEntityTime(object)).fromNow(),
+          entityLocation: parseEntityLocation(object),
           entityLabels: parseEntityLabels(object),
-          entityClass: classify(parseEntityType(object))      
+          entityClass: classify(parseEntityType(object))
         };
         return parsedEntity;
       }
 
       function parseEntityLocation(object) {
         var location = '';
-        
+
         var city = object.data.location.city;
         var country = object.data.location.country;
 
@@ -56,11 +56,11 @@
       }
 
       function parseEntityType(object) {
-        var entityType; 
+        var entityType;
 
         entityType = 'Unknown entity';
-        
-        return entityType; 
+
+        return entityType;
       }
 
       function classify(entityType) {

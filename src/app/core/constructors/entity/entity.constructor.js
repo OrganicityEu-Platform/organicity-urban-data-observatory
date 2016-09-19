@@ -5,7 +5,7 @@
     .factory('Entity', ['Sensor', 'entityUtils', function(Sensor, entityUtils) {
 
       /**
-       * entity constructor. 
+       * entity constructor.
        * @constructor
        * @param {Object} object - Object with all the data about the entity from the API
        * @property {number} id - ID of the entity
@@ -18,6 +18,7 @@
        * @property {Array} userTags - User tags. Ex: ''
        */
       function Entity(object) {
+        console.log(object)
         this.id = object.id;
         this.name = entityUtils.parseName(object);
         this.uuid = object.uuid;

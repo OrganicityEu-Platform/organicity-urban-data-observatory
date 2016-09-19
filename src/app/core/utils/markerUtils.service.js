@@ -28,7 +28,10 @@
 
       function parseType(object) {
         var entityType;
-        if (object.name === 'Cluster') {
+        if (!object.name) {
+          entityType = '';
+        }
+        else if (object.name.includes('Cluster')) {
           entityType = object.name; //tmp
         }
         else if (object.properties && object.properties.type) {
@@ -44,7 +47,7 @@
 
       function parseEntityType(object) {
         var entityType;
-        if (object.name === 'Cluster') {
+        if (object.name.includes('Cluster')) {
           entityType = object.name; //tmp
         }
         else if (object.type) {
@@ -124,7 +127,7 @@
         if(!object.id) {
           object.id = 'cluster:id'; //tmp.
         }
-        if (object.name === 'Cluster') {
+        if (object.name.includes('Cluster')) {
           entityName = 'Device cluster';
         } else {
           systemTags.push((this.isOnline(object)) ? 'online' : 'offline');
@@ -206,8 +209,8 @@
         if(!object.name) {
           return 'Unknown';
         }
-        if (object.name === 'Cluster') {
-          entityName = object.count + ' devices';
+        else if (object.name.includes('Cluster')) {
+          entityName = object.count + ' devices in ' + object.city;
         }
         else if (object.context && object.context.name) {
           var entityNameString = object.context.name.split(':');
@@ -229,7 +232,7 @@
         else if (object.last_updated_at) {
           time = Date.parse(object.last_updated_at)
         }
-        else if (object.name === 'Cluster') {
+        else if (object.name && object.name.includes('Cluster')) {
           time = new Date(Date.now());
         }
         else {
@@ -240,7 +243,7 @@
           return 'No time';
         }
 
-        return moment(time).fromNow();
+        return 'Last updated ' + moment(time).fromNow();
       }
 
       function getMarkerIcon(marker, state) {

@@ -5,12 +5,14 @@
     .controller('entityController', entityController);
 
     entityController.$inject = ['$state','$scope', '$stateParams', 'entityData',
-      'ownerEntitites', 'utils', 'sensor', 'fullEntity', '$mdDialog', 'belongsToUser',
+      //'ownerEntitites',
+      'utils', 'sensor', 'fullEntity', '$mdDialog', 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
       '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'entity',
       'HasSensorEntity', 'geolocation'];
     function entityController($state, $scope, $stateParams, entityData,
-      ownerEntitites, utils, sensor, fullEntity, $mdDialog, belongsToUser,
+      // ownerEntitites,
+      utils, sensor, fullEntity, $mdDialog, belongsToUser,
       timeUtils, animation, $location, auth, entityUtils, userUtils,
       $timeout, mainSensors, compareSensors, alert, $q, entity,
       HasSensorEntity, geolocation) {
@@ -28,7 +30,7 @@
       vm.hasHistorical = false;
 
       vm.entity = entityData;
-      vm.ownerEntitites = ownerEntitites;
+      // vm.ownerEntitites = ownerEntitites;
       vm.entityBelongsToUser = belongsToUser;
       vm.removeUser = removeUser;
 

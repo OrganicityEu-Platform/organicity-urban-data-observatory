@@ -51,7 +51,6 @@
         */
         .state('layout.home', {
           url: '/resources',
-          abstract: true,
           views: {
             '': {
               templateUrl: 'app/components/home/template.html'
@@ -89,7 +88,7 @@
           },
 
           resolve: {
-            entityData: function($stateParams, device, fullEntity) {
+            entityData: function($stateParams, entity, fullEntity) {
 
               var entityID = $stateParams.id;
 
@@ -100,35 +99,37 @@
               return entity.getEntity(entityID).then(function(entityData) {
                 return new fullEntity(entityData);
               });
-
             },
             mainSensors: function(entityData) {
-              if(!entityData) {
-                return undefined;
-              }
-              return entityData.getSensors();
+              // if(!entityData) {
+              //   return undefined;
+              // }
+              // return entityData.getSensors();
+              return;
             },
             compareSensors: function(entityData) {
-              if(!entityData) {
-                return undefined;
-              }
-              return entityData.getSensors();
+              // if(!entityData) {
+              //   return undefined;
+              // }
+              // return entityData.getSensors();
+              return;
             },
-            ownerentitites: function(entityData, Previewentity, $q, device) {
-              if(!entityData) {
-                return undefined;
-              }
-              var entityIDs = entityData.owner.entitites;
-
-              return $q.all(
-                entityIDs.map(function(id) {
-                  return device.getDevice(id)
-                    .then(function(data) {
-                      return new Previewentity(data);
-                    });
-                })
-              );
-            },
+            // ownerentitites: function(entityData, previewEntity, $q, entity) {
+            //   // if(!entityData) {
+            //   //   return undefined;
+            //   // }
+            //   // var entityIDs = entityData.owner.entitites;
+            //   //
+            //   // return $q.all(
+            //   //   entityIDs.map(function(id) {
+            //   //     return device.getDevice(id)
+            //   //       .then(function(data) {
+            //   //         return new previewEntity(data);
+            //   //       });
+            //   //   })
+            //   // );
+            //
+            // },
             belongsToUser: function($window, $stateParams, auth, AuthUser, entityUtils, userUtils) {
               return false;
               // if(!auth.isAuth() || !$stateParams.id) {

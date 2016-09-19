@@ -54,8 +54,8 @@
         } else if (object.provider && object.provider.location && object.provider.location.city && object.provider.location.country){
             locationSource = object.provider.location;
             locationSource.justOwnerLocation = true;
-        }  
-          
+        }
+
         /*jshint camelcase: false */
         var city = locationSource.city;
         var country_code = locationSource.country_code;
@@ -105,7 +105,7 @@
 
         entityType = 'Organicity';
 
-        return entityType; 
+        return entityType;
       }
 
       function classify(entityType) {
@@ -142,8 +142,8 @@
       }
 
       function parseState(object) {
-        var name = this.parseStateName(object); 
-        var className = classify(name); 
+        var name = this.parseStateName(object);
+        var className = classify(name);
         return {
           name: name,
           className: className
@@ -167,7 +167,7 @@
       }
 
       function belongsToUser(entititesArray, entityID) {
-        
+
         return entititesArray;
         // return _.some(entititesArray, function(entity) {
         //   return entity.id === entityID;
@@ -183,7 +183,7 @@
           return true;
         }
       }
-      
+
       function makeCase(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
       }
