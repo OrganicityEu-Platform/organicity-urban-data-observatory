@@ -12,18 +12,18 @@
         this.latitude = object.data.location.latitude;
       }
 
-      // HasSensorEntity.prototype = Object.create(entity.prototype);
-      // HasSensorEntity.prototype.constructor = entity;
-      //
-      // HasSensorEntity.prototype.sensorsHasData = function() {
-      //   var parsedSensors = this.data.map(function(sensor) {
-      //     return sensor.value;
-      //   });
-      //
-      //   return _.some(parsedSensors, function(sensorValue) {
-      //     return !!sensorValue;
-      //   });
-      // };
+      HasSensorEntity.prototype = Object.create(entity.prototype);
+      HasSensorEntity.prototype.constructor = entity;
+
+      HasSensorEntity.prototype.sensorsHasData = function() {
+        var parsedSensors = this.data.map(function(sensor) {
+          return sensor.value;
+        });
+
+        return _.some(parsedSensors, function(sensorValue) {
+          return !!sensorValue;
+        });
+      };
 
       return HasSensorEntity;
     }]);

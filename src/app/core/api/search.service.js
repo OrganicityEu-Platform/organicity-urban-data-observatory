@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('search', search);
     
-    search.$inject = ['$http', 'entitiesAPI'];
-    function search($http, entitiesAPI) {
+    search.$inject = ['$http', 'assetsAPI'];
+    function search($http, assetsAPI) {
       var service = {
         globalSearch: globalSearch
       };
@@ -15,7 +15,7 @@
       /////////////////////////
 
       function globalSearch(query) {
-    	  return entitiesAPI.all('search').getList({q: query});
+    	  return assetsAPI.all('search').getList({q: query});
       }
     }
 })();

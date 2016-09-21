@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('fullEntity', ['entity', 'Sensor', 'entityUtils', function(entity, Sensor, entityUtils) {
+    .factory('FullEntity', ['Entity', 'Sensor', 'entityUtils', function(Entity, Sensor, entityUtils) {
 
       /**
        * Full entity constructor.
@@ -22,27 +22,25 @@
        * @property {string} macAddress - entity mac address
        * @property {number} elevation
        */
-      function fullEntity(object) {
-
-        entity.call(this, object);
-
+      function FullEntity(object) {
+        Entity.call(this, object);
         this.version = 'Organicity';
+        this.name = entityUtils.parseName(object);
         this.time = entityUtils.parseTime(object);
         this.timeParsed = !this.time ? 'No time' : moment(this.time).format('MMMM DD, YYYY - HH:mm');
         this.timeAgo = !this.time ? 'No time' : moment(this.time).fromNow();
-        // this.class = entityUtils.classify(entityUtils.parseType(object));
+        this.class = entityUtils.classify(entityUtils.parseType(object));
         this.description = '';
-        // this.owner = entityUtils.parseOwner(object);
+        this.owner = entityUtils.parseOwner(object);
         this.data = object.data.attributes;
-        this.latitude = object.data.location.latitude;
-        this.longitude = object.data.location.longitude;
-
+        this.latitude = object.context.position.latitude;
+        this.longitude = object.context.position.longitude;
       }
-      debugger;
-      fullEntity.prototype = Object.create(entity.prototype);
-      fullEntity.prototype.constructor = fullEntity;
 
-      // fullEntity.prototype.getSensors = function() {
+      // FullEntity.prototype = Object.create(Entity.prototype);
+      // FullEntity.prototype.constructor = FullEntity;
+
+      // FullEntity.prototype.getSensors = function() {
       //   var sensors = _(this.data)
       //       .chain()
       //       .map(function(sensor, i) {
@@ -51,6 +49,6 @@
       //       .value();
       //       return sensors;
       // };
-      return fullEntity;
+      return FullEntity;
     }]);
 })();

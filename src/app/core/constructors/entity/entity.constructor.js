@@ -3,7 +3,6 @@
 
   angular.module('app.components')
     .factory('Entity', ['Sensor', 'entityUtils', function(Sensor, entityUtils) {
-
       /**
        * entity constructor.
        * @constructor
@@ -17,11 +16,11 @@
        * @property {string} state - State of the entity. Ex: Never published
        * @property {Array} userTags - User tags. Ex: ''
        */
+
       function Entity(object) {
-        console.log(object)
         this.id = object.id;
         this.name = entityUtils.parseName(object);
-        this.uuid = object.uuid;
+        this.uuid = object.id;
         this.type = entityUtils.parseType(object);
         this.location = entityUtils.parseLocation(object);
         this.avatar = entityUtils.parseAvatar(object, this.type);

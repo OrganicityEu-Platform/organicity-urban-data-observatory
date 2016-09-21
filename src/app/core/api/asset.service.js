@@ -2,21 +2,21 @@
 	'use strict';
 
 	angular.module('app.components')
-	  .factory('entity', entity);
+	  .factory('asset', asset);
 
-    entity.$inject = ['entitiesAPI', '$window', 'timeUtils', '$filter', '$q'];
-	  function entity(entitiesAPI, $window, timeUtils, $filter, $q) {
+    asset.$inject = ['assetsAPI', '$window', 'timeUtils', '$filter', '$q'];
+	  function asset(assetsAPI, $window, timeUtils, $filter, $q) {
 
-      var worldMarkers, entities, entitiesPrevious;
+      var worldMarkers, assets, assetsPrevious;
 
       initialize();
 
 	  	var service = {
         getAllEntities: getAllEntities,
-        setAllEntities : setAllEntities,
-        getEntity: getEntity,
-        createEntity: createEntity,
-        updateEntity: updateEntity,
+        setAllEntities: setAllEntities,
+        getAsset: getAsset,
+        createAsset: createAsset,
+        updateAsset: updateAsset,
         getWorldMarkers: getWorldMarkers,
         setWorldMarkers: setWorldMarkers,
 				getClusterGeoJSON: getClusterGeoJSON,
@@ -41,17 +41,17 @@
           data: data
         };
         removeEntitiesMarkers();
-        $window.localStorage.setItem('organicity.entities', JSON.stringify(obj));
-        entities = obj.data;
+        $window.localStorage.setItem('organicity.assets', JSON.stringify(obj));
+        assets = obj.data;
       }
 
       function setPrevAllEntities() {
-        entitiesPrevious = entities;
+        assetsPrevious = assets;
       }
 
       function getPrevAllEntities() {
         var deferred = $q.defer();
-        deferred.resolve(entitiesPrevious);
+        deferred.resolve(assetsPrevious);
         return deferred.promise;
       }
 
@@ -59,12 +59,12 @@
         // if (!areEntitiesMarkersOld()) {
         //   console.log('Data is cached: Entities are less than 60sec old.');
         //   var deferred = $q.defer();
-        //   deferred.resolve(entities || ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).data));
+        //   deferred.resolve(assets || ($window.localStorage.getItem('organicity.assets') && JSON.parse($window.localStorage.getItem('organicity.assets') ).data));
         //   return deferred.promise;
         // } else {
-          console.log('Data expired: Refreshing entities');
+          console.log('Data expired: Refreshing assets');
           // setPrevAllEntities();
-          return entitiesAPI.all('assets/lightweight').getOne({'page': 'all', 'per': 'all'});
+          return assetsAPI.all('assets/lightweight').getOne({'page': 'all', 'per': 'all'});
           //.then(function(data) {
             // setAllEntities(data);
             //return data;
@@ -74,7 +74,7 @@
 
 			function getGeoJSON(params) {
 				var endpoint = 'assets/geo/search';
-				return  entitiesAPI.one(endpoint).get(params);
+				return  assetsAPI.one(endpoint).get(params);
 
 			}
 
@@ -94,12 +94,12 @@
 						var endpoint = 'assets/geo/zoom/1';
 						var params = {lat: locations[i][0],  long: locations[i][1]};
 
-				    var devs = entitiesAPI.one(endpoint).get(params);
+				    var devs = assetsAPI.one(endpoint).get(params);
 						devices.push(devs);
 					}
 
 					var data = $q.all(devices).then(function(devices) {
-						return '{ "type": "FeatureCollection", "properties": { "name": "urn:oc:entitytype:clusters" }, "features": [' + getGeoDevices(devices) + ']}';
+						return '{ "type": "FeatureCollection", "properties": { "name": "urn:oc:assettype:clusters" }, "features": [' + getGeoDevices(devices) + ']}';
 					});
 					return data;
       }
@@ -115,22 +115,22 @@
       function getEntitiesMarkers(location) {
         var parameter = '';
         parameter += location.lat + ',' + location.lng;
-        return entitiesAPI.all('assets').getList({'page': '1', 'per': '100'});
+        return assetsAPI.all('assets').getList({'page': '1', 'per': '100'});
       }
 
-      function getEntity(id) {
+      function getAsset(id) {
 				console.log(id);
 				var endpoint = 'assets/' + id;
 				console.log(endpoint);
-        return entitiesAPI.one(endpoint).get({});
+        return assetsAPI.one(endpoint).get({});
       }
 
-      function createEntity(data) {
-        return entitiesAPI.all('assets').post(data);
+      function createAsset(data) {
+        return assetsAPI.all('assets').post(data);
       }
 
-      function updateEntity(id, data) {
-        return entitiesAPI.one('assets', id).patch(data);
+      function updateAsset(id, data) {
+        return assetsAPI.one('assets', id).patch(data);
       }
 
       function getWorldMarkers() {
@@ -149,7 +149,7 @@
       }
 
       function getEntitiesTimeStamp() {
-        return ($window.localStorage.getItem('organicity.entities') && JSON.parse($window.localStorage.getItem('organicity.entities') ).timestamp);
+        return ($window.localStorage.getItem('organicity.assets') && JSON.parse($window.localStorage.getItem('organicity.assets') ).timestamp);
       }
 
       function areEntitiesMarkersOld() {
@@ -158,7 +158,7 @@
       }
 
       function removeEntitiesMarkers() {
-        $window.localStorage.removeItem('organicity.entities');
+        $window.localStorage.removeItem('organicity.assets');
       }
 
       function getTimeStamp() {

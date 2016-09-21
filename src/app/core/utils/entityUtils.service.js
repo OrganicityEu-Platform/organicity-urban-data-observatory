@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('entityUtils', entityUtils);
 
-    entityUtils.$inject = ['COUNTRY_CODES', 'entity'];
-    function entityUtils(COUNTRY_CODES, entity) {
+    entityUtils.$inject = ['asset', 'COUNTRY_CODES'];
+    function entityUtils(asset, COUNTRY_CODES) {
       var service = {
         parseName: parseName,
         parseLocation: parseLocation,
@@ -31,6 +31,7 @@
       ///////////////
 
       function parseName(object) {
+        console.log(object);
         if(!object.name) {
           return;
         }
@@ -49,17 +50,14 @@
         var location = '';
         var locationSource = {};
 
-        if(object.data && object.data.location && object.data.location.city && object.data.location.country) {
-            locationSource = object.data.location;
-        } else if (object.provider && object.provider.location && object.provider.location.city && object.provider.location.country){
-            locationSource = object.provider.location;
-            locationSource.justOwnerLocation = true;
+        if(object.context && object.context.position && object.context.position.city && object.context.position.country) {
+            locationSource = object.context.position;
         }
 
         /*jshint camelcase: false */
         var city = locationSource.city;
         var country_code = locationSource.country_code;
-        var country = COUNTRY_CODES[country_code];
+        var country = locationSource.country;
 
 
         if(!!city) {
@@ -101,11 +99,11 @@
       }
 
       function parseType(object) {
-        var entityType;
-
-        entityType = 'Organicity';
-
-        return entityType;
+        if(object.type) {
+          return object.type;
+        } else {
+          return 'entity';
+        }
       }
 
       function classify(entityType) {
@@ -117,7 +115,7 @@
 
       function parseTime(object) {
         /*jshint camelcase: false */
-        return object.last_reading_at;
+        return object.context.last_updated_at;
       }
 
       function parseVersion(object) {
@@ -128,16 +126,16 @@
       }
 
       function parseOwner(object) {
-        if (!object.provider) return;
+        if (!object.context.provider) return;
         return {
-          id: object.provider.id,
-          username: object.provider.username,
+          id: object.context.provider,
+          username: object.context.provider,
           /*jshint camelcase: false */
-          entitites: object.provider.entity_ids,
-          city: object.provider.location.city,
-          country: COUNTRY_CODES[object.provider.location.country_code],
-          url: object.provider.url,
-          avatar: object.provider.avatar
+          // entitites: object.provider.entity_ids,
+          city: object.context.position.city,
+          country: COUNTRY_CODES[object.context.position.country_code],
+          // url: object.provider.url,
+          avatar: './entitys/images/avatar.svg'
         };
       }
 
@@ -158,7 +156,7 @@
       }
 
       function parseAvatar() {
-        return './assets/images/organicity-avatar.jpg';
+        return './entitys/images/avatar.svg';
       }
 
       function parseSensorTime(sensor) {

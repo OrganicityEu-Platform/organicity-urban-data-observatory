@@ -6,22 +6,22 @@
 
     entityController.$inject = ['$state','$scope', '$stateParams', 'entityData',
       //'ownerEntitites',
-      'utils', 'sensor', 'fullEntity', '$mdDialog', 'belongsToUser',
+      'utils', 'sensor', '$mdDialog', 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
-      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'entity',
+      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'asset',
       'HasSensorEntity', 'geolocation'];
     function entityController($state, $scope, $stateParams, entityData,
       // ownerEntitites,
-      utils, sensor, fullEntity, $mdDialog, belongsToUser,
+      utils, sensor, $mdDialog, belongsToUser,
       timeUtils, animation, $location, auth, entityUtils, userUtils,
-      $timeout, mainSensors, compareSensors, alert, $q, entity,
+      $timeout, mainSensors, compareSensors, alert, $q, asset,
       HasSensorEntity, geolocation) {
-
+      debugger;
       var vm = this;
       var sensorsData = [];
 
       var mainSensorID, compareSensorID;
-      var picker = initializePicker();
+      //var picker = initializePicker();
 
       if(entityData){
         animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: parseInt($stateParams.id) });
@@ -30,8 +30,9 @@
       vm.hasHistorical = false;
 
       vm.entity = entityData;
+
       // vm.ownerEntitites = ownerEntitites;
-      vm.entityBelongsToUser = belongsToUser;
+      // vm.entityBelongsToUser = belongsToUser;
       vm.removeUser = removeUser;
 
       vm.battery = undefined;
@@ -73,7 +74,7 @@
           colorSensorCompareName();
 
           setSensor({type: 'main', value: newVal});
-          changeChart([mainSensorID]);
+          //changeChart([mainSensorID]);
         }, 100);
 
       });
@@ -117,16 +118,7 @@
         }, 1000);
 
         if(vm.entity){
-          if(vm.entity.state.name === 'never published' || vm.entity.state.name === 'not configured') {
-            if(vm.entityBelongsToUser) {
-              alert.info.noData.owner($stateParams.id);
-            } else {
-              alert.info.noData.visitor();
-            }
-            $timeout(function() {
-              animation.entityWithoutData({belongsToUser: vm.entityBelongsToUser});
-            }, 1000);
-          } else if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
+          if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
             alert.info.longTime();
           } else {
             if(geolocation.isHTML5GeolocationGranted()){

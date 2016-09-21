@@ -1,9 +1,9 @@
 (function() {
     'use strict';
     angular.module('app.components').controller('MapController', MapController);
-    MapController.$inject = ['$scope', '$state', '$timeout', '$location', 'entitiesLayers', 'Overlays', 'entity', '$mdDialog', 'leafletData', 'mapUtils', 'markerUtils', 'alert', 'animation'];
+    MapController.$inject = ['$scope', '$state', '$timeout', '$location', 'entitiesLayers', 'Overlays', 'asset', '$mdDialog', 'leafletData', 'mapUtils', 'markerUtils', 'alert', 'animation'];
 
-    function MapController($scope, $state, $timeout, $location, entitiesLayers, Overlays, entity, $mdDialog, leafletData, mapUtils, markerUtils, alert, animation) {
+    function MapController($scope, $state, $timeout, $location, entitiesLayers, Overlays, asset, $mdDialog, leafletData, mapUtils, markerUtils, alert, animation) {
 
         var vm = this;
 

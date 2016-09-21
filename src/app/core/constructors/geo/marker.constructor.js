@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('Marker', ['entity', 'markerUtils', function(entity, markerUtils) {
+    .factory('Marker', ['asset', 'markerUtils', function(asset, markerUtils) {
 
       /**
        * Marker constructor

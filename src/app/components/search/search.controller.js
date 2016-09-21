@@ -4,8 +4,8 @@
   angular.module('app.components')
     .controller('SearchController', SearchController);
 
-    SearchController.$inject = ['$scope', 'search', 'SearchResult', '$location', 'animation', 'SearchResultLocation', 'device', 'entityUtils', '$http', '$q'];
-    function SearchController($scope, search, SearchResult, $location, animation, SearchResultLocation, device, entityUtils, $http, $q) {
+    SearchController.$inject = ['$scope', 'search', 'SearchResult', '$location', 'animation', 'SearchResultLocation', 'device', 'assetUtils', '$http', '$q'];
+    function SearchController($scope, search, SearchResult, $location, animation, SearchResultLocation, device, assetUtils, $http, $q) {
       var vm = this;
 
       vm.searchTextChange = searchTextChange;
@@ -117,7 +117,7 @@
 
                 var matches = [];
 
-                item.labels = entityUtils.parseLabels(item).join(" ");
+                item.labels = assetUtils.parseLabels(item).join(" ");
 
                 var keysToSearch = [
                 {

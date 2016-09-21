@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('markerUtils', markerUtils);
 
-    markerUtils.$inject = ['entity', 'entityUtils', 'COUNTRY_CODES', 'MARKER_ICONS', '$state'];
-    function markerUtils(entity, entityUtils, COUNTRY_CODES, MARKER_ICONS, $state) {
+    markerUtils.$inject = ['asset', 'entityUtils', 'COUNTRY_CODES', 'MARKER_ICONS', '$state'];
+    function markerUtils(asset, entityUtils, COUNTRY_CODES, MARKER_ICONS, $state) {
       var service = {
         parseName: parseName,
         parseType: parseType,

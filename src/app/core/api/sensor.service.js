@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('sensor', sensor);
 
-    sensor.$inject = ['entitiesAPI', 'historicalAPI', 'utils', 'sensorUtils'];
-    function sensor(entitiesAPI, historicalAPI, utils, sensorUtils) {
+    sensor.$inject = ['assetsAPI', 'historicalAPI', 'utils', 'sensorUtils'];
+    function sensor(assetsAPI, historicalAPI, utils, sensorUtils) {
 
       var service = {
         callAPI: callAPI,
@@ -16,7 +16,8 @@
       ////////////////
 
       function callAPI() {
-        return entitiesAPI.all('attibutes').getList(); // Not implemented
+        debugger;
+        return assetsAPI.all('attibutes').getList(); // Not implemented
       }
 
       function getSensorsDataNew(deviceID, sensorID, dateFrom, dateTo) {

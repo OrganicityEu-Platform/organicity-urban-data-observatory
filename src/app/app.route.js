@@ -63,8 +63,8 @@
             }
           },
           resolve: {
-            entitiesLayers: function($state, entity) {
-                return entity.getClusterGeoJSON().then(function(data) {
+            entitiesLayers: function($state, asset) {
+                return asset.getClusterGeoJSON().then(function(data) {
                   return JSON.parse(data);
                 }, function(error){
                   console.log(error);
@@ -88,32 +88,35 @@
           },
 
           resolve: {
-            entityData: function($stateParams, entity, fullEntity) {
-
+            entityData: function($stateParams, asset, FullEntity) {
+              debugger;
               var entityID = $stateParams.id;
 
               if(!entityID) {
                 return undefined;
               }
 
-              return entity.getEntity(entityID).then(function(entityData) {
-                return new fullEntity(entityData);
+              return asset.getAsset(entityID).then(function(entityData) {
+                debugger;
+                var ent = new FullEntity(entityData);
+                debugger;
+                return ent;
               });
             },
-            mainSensors: function(entityData) {
-              // if(!entityData) {
-              //   return undefined;
-              // }
-              // return entityData.getSensors();
-              return;
-            },
-            compareSensors: function(entityData) {
-              // if(!entityData) {
-              //   return undefined;
-              // }
-              // return entityData.getSensors();
-              return;
-            },
+            // mainSensors: function(entityData) {
+            //   // if(!entityData) {
+            //   //   return undefined;
+            //   // }
+            //   // return entityData.getSensors();
+            //   return;
+            // },
+            // compareSensors: function(entityData) {
+            //   // if(!entityData) {
+            //   //   return undefined;
+            //   // }
+            //   // return entityData.getSensors();
+            //   return;
+            // },
             // ownerentitites: function(entityData, previewEntity, $q, entity) {
             //   // if(!entityData) {
             //   //   return undefined;
@@ -130,18 +133,18 @@
             //   // );
             //
             // },
-            belongsToUser: function($window, $stateParams, auth, AuthUser, entityUtils, userUtils) {
-              return false;
-              // if(!auth.isAuth() || !$stateParams.id) {
-              //   return false;
-              // }
-              // var entityID = parseInt($stateParams.id);
-              // var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('organicity.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('organicity.data') )));
-              // var belongsToUser = entityUtils.belongsToUser(userData.entitites, entityID);
-              // var isAdmin = userUtils.isAdmin(userData);
-
-              // return isAdmin || belongsToUser;
-            }
+            // belongsToUser: function($window, $stateParams, auth, AuthUser, assetUtils, userUtils) {
+            //   return false;
+            //   // if(!auth.isAuth() || !$stateParams.id) {
+            //   //   return false;
+            //   // }
+            //   // var entityID = parseInt($stateParams.id);
+            //   // var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('organicity.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('organicity.data') )));
+            //   // var belongsToUser = assetUtils.belongsToUser(userData.entitites, entityID);
+            //   // var isAdmin = userUtils.isAdmin(userData);
+            //
+            //   // return isAdmin || belongsToUser;
+            // }
           }
         })
         /*

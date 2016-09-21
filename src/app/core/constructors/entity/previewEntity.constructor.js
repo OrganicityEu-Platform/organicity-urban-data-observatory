@@ -19,8 +19,8 @@
         //   {text: 'EDIT', value: '2', href: 'entitites/edit/' + this.id}
         // ];
       }
-      // PreviewEntity.prototype = Object.create(entity.prototype);
-      // PreviewEntity.prototype.constructor = entity;
+      PreviewEntity.prototype = Object.create(entity.prototype);
+      PreviewEntity.prototype.constructor = entity;
 
       return PreviewEntity;
 
