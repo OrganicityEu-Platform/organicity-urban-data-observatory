@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('PreviewEntity', ['entity', function(entity) {
+    .factory('PreviewEntity', ['Entity', function(Entity) {
 
       /**
        * Preview entity constructor.
@@ -19,8 +19,8 @@
         //   {text: 'EDIT', value: '2', href: 'entitites/edit/' + this.id}
         // ];
       }
-      PreviewEntity.prototype = Object.create(entity.prototype);
-      PreviewEntity.prototype.constructor = entity;
+      PreviewEntity.prototype = Object.create(Entity.prototype);
+      PreviewEntity.prototype.constructor = Entity;
 
       return PreviewEntity;
 

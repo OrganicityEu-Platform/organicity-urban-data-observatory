@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('utils', utils);
 
-    utils.$inject = ['entity', 'PreviewEntity', '$q'];
-    function utils(entity, PreviewEntity, $q) {
+    utils.$inject = ['asset', 'PreviewEntity', '$q'];
+    function utils(asset, PreviewEntity, $q) {
       var service = {
         parseEntity: parseEntity,
         parseEntityTime: parseEntityTime,
@@ -94,7 +94,7 @@
         var entitites = [];
 
         ids.forEach(function(id, index) {
-          entity.getEntity(id)
+          asset.getAsset(id)
             .then(function(data) {
               entitites[index] = new PreviewEntity(data);
               entititesResolved++;

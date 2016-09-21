@@ -37,8 +37,8 @@
         this.longitude = object.context.position.longitude;
       }
 
-      // FullEntity.prototype = Object.create(Entity.prototype);
-      // FullEntity.prototype.constructor = FullEntity;
+      FullEntity.prototype = Object.create(Entity.prototype);
+      FullEntity.prototype.constructor = FullEntity;
 
       // FullEntity.prototype.getSensors = function() {
       //   var sensors = _(this.data)

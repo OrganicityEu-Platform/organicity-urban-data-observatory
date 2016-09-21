@@ -89,7 +89,6 @@
 
           resolve: {
             entityData: function($stateParams, asset, FullEntity) {
-              debugger;
               var entityID = $stateParams.id;
 
               if(!entityID) {
@@ -97,10 +96,7 @@
               }
 
               return asset.getAsset(entityID).then(function(entityData) {
-                debugger;
-                var ent = new FullEntity(entityData);
-                debugger;
-                return ent;
+                return new FullEntity(entityData);
               });
             },
             // mainSensors: function(entityData) {

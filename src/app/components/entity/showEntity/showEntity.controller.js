@@ -6,17 +6,22 @@
 
     entityController.$inject = ['$state','$scope', '$stateParams', 'entityData',
       //'ownerEntitites',
-      'utils', 'sensor', '$mdDialog', 'belongsToUser',
+      'utils', 'sensor', '$mdDialog',
+      // 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
-      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'asset',
-      'HasSensorEntity', 'geolocation'];
+      '$timeout', //'mainSensors', 'compareSensors',
+      'alert', '$q', 'asset',
+      //'HasSensorEntity',
+      'geolocation'];
     function entityController($state, $scope, $stateParams, entityData,
       // ownerEntitites,
-      utils, sensor, $mdDialog, belongsToUser,
+      utils, sensor, $mdDialog,
+      // belongsToUser,
       timeUtils, animation, $location, auth, entityUtils, userUtils,
-      $timeout, mainSensors, compareSensors, alert, $q, asset,
-      HasSensorEntity, geolocation) {
-      debugger;
+      $timeout, //mainSensors, compareSensors,
+      alert, $q, asset,
+      // HasSensorEntity,
+      geolocation) {
       var vm = this;
       var sensorsData = [];
 
@@ -36,8 +41,8 @@
       vm.removeUser = removeUser;
 
       vm.battery = undefined;
-      vm.sensors = mainSensors ? mainSensors : undefined;
-      vm.sensorsToCompare = compareSensors;
+      // vm.sensors = mainSensors ? mainSensors : undefined;
+      // vm.sensorsToCompare = compareSensors;
 
       vm.slide = slide;
 
