@@ -44,32 +44,6 @@
 
         animation.viewLoaded();
 
-        // $scope.$on('leafletDirectiveMarker.organicityMap.click', function(event, data) {
-        //   var id = data.leafletEvent.target.options.myData.id;
-        //
-        //   vm.entityLoading = true;
-        //   vm.center.lat = data.leafletEvent.latlng.lat;
-        //   vm.center.lng = data.leafletEvent.latlng.lng;
-        //
-        //   if(id === parseInt($state.params.id)) {
-        //     $timeout(function() {
-        //       vm.entityLoading = false;
-        //     }, 0);
-        //     return;
-        //   }
-        //
-        //   focusedMarkerID = data.leafletEvent.target.options.myData.id;
-        //
-        //   updateType = 'map';
-        //   id = data.leafletEvent.target.options.myData.id;
-        //   var availability = data.leafletEvent.target.options.myData.labels[0];
-        //   console.log(data);
-        //   ga('send', 'event', 'entity Marker', 'click', availability);
-        //
-        //   $state.go('layout.home.entity', {id: id});
-        //
-        // });
-
         leafletData.getMap().then(function() {
            vm.controls.minimap = {
                type: 'minimap',
@@ -80,22 +54,92 @@
            };
        });
 
+       vm.z = { lat: vm.center.lat, long: vm.center.lng, radius: '10' };;
+
        $scope.$watch('vm.center.zoom', function(zoom) {
-           if (zoom >=8) {
-             var params = { lat: vm.center.lat, long: vm.center.lng, radius: '10' };
-             asset.getGeoJSON(params).then(function(data) {
-               asset.setAllEntities(data);
-               vm.layers = {
-                   baselayers: mapUtils.getBaseLayers(),
-                   overlays: new Overlays(JSON.parse(JSON.stringify(data)), 'Asset Types')
-               };
-             }, function(error){
-               console.log(error);
-             });
-           }
+           updateMarkers(); 
            if (vm.controls.minimap) {
               vm.controls.minimap.toggleDisplay = (zoom >= 8) ? true : false;
            }
        });
+
+       $scope.$watch('vm.bounds', function() {
+          updateMarkers();
+       });
+
+      function updateMarkers(){
+        // if (vm.center.zoom >= 8 && !isDataWithin()) {
+        if (vm.center.zoom >= 8) {
+         var radius = getDistanceFromLatLonInKm(vm.center.lat, vm.center.lng, vm.bounds.northEast.lat, vm.bounds.northEast.lng);
+          
+        console.log(radius);
+
+         var params = { lat: vm.center.lat, long: vm.center.lng, radius: radius};
+ 
+         asset.getGeoJSON(params).then(function(data) {
+            asset.setAllEntities(data);
+            vm.layers.overlays = new Overlays(data, 'Asset Types');
+            vm.z = params;
+         }, function(error){
+           console.log(error);
+         });
+       }
+      } 
+
+      function isDataWithin(){
+        var e = isRadiousInsideBoundingBox(vm.z.lat, vm.z.long, vm.z.radius, vm.bounds.northEast.lat, vm.bounds.northEast.lng, vm.bounds.southWest.lat, vm.bounds.northEast.lng); 
+        console.log(e);
+        return e;
+       }
+    
+       // This might go to new service //
+
+      function isRadiousInsideBoundingBox( cLat,  cLon,  cRadius,  rlat1,  rlon1,  rlat2,  rlon2,  rlat3,  rlon3,  rlat4,  rlon4) {
+          var d1 = getDistanceFromLatLonInKm(cLat, cLon, rlat1, rlon1);
+          var d2 = getDistanceFromLatLonInKm(cLat, cLon, rlat2, rlon2);
+          var d3 = getDistanceFromLatLonInKm(cLat, cLon, rlat3, rlon3);
+          var d4 = getDistanceFromLatLonInKm(cLat, cLon, rlat4, rlon4);
+
+          if (d1 <= cRadius || d2 <= cRadius || d3 <= cRadius || d4 <= cRadius) {
+              return true;
+          }
+
+          var width = getDistanceFromLatLonInKm(rlat1, rlon1, rlat2, rlon2);
+          var height = getDistanceFromLatLonInKm(rlat1, rlon1, rlat4, rlon4);
+
+          if (d1 >= cRadius && d2 >= cRadius && d3 >= cRadius && d4 >= cRadius && width >= d1 && width >= d2 && width >= d3 && width >= d4 && height >= d1 && height >= d2 && height >= d3 && height >= d4) {
+              return false;
+          }
+
+          return false;
+      }
+
+      function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+        var R = 6371; // Radius of the earth in km
+        var dLat = deg2rad(lat2-lat1);  // deg2rad below
+        var dLon = deg2rad(lon2-lon1); 
+        var a = 
+          Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2)
+          ; 
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        var d = R * c; // Distance in km
+        return d;
+      }
+
+      function deg2rad(deg) {
+        return deg * (Math.PI/180)
+      }
+
+       // $scope.$on("centerUrlHash", function(event, centerHash) {
+       //     $location.search({ c: centerHash });
+       // });
+
+       // $scope.changeLocation = function(centerHash) {
+       //     $location.search({ c: centerHash });
+       // };
+
+ 
     }
 })();

@@ -5,7 +5,6 @@
     .controller('entityController', entityController);
 
     entityController.$inject = ['$state','$scope', '$stateParams', 'entityData',
-      //'ownerEntitites',
       'utils', 'sensor', '$mdDialog',
       // 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
