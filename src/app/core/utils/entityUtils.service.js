@@ -31,7 +31,6 @@
       ///////////////
 
       function parseName(object) {
-        console.log(object);
         if(!object.name) {
           return;
         }
@@ -115,7 +114,7 @@
 
       function parseTime(object) {
         /*jshint camelcase: false */
-        return object.context.last_updated_at;
+        return object.data.attributes.data.TimeInstant;
       }
 
       function parseVersion(object) {
@@ -135,7 +134,7 @@
           city: object.context.position.city,
           country: COUNTRY_CODES[object.context.position.country_code],
           // url: object.provider.url,
-          avatar: './entitys/images/avatar.svg'
+          avatar: './assets/images/avatar.svg'
         };
       }
 
@@ -156,7 +155,7 @@
       }
 
       function parseAvatar() {
-        return './entitys/images/avatar.svg';
+        return './assets/images/avatar.svg';
       }
 
       function parseSensorTime(sensor) {

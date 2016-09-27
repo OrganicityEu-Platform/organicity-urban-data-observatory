@@ -938,12 +938,28 @@ section .entity_menu {
   .entity_details {
     height: 348px;
     color: $font_color_blue_grey;
+    display: inline-table;
   }
   .entity_details_content {
-    float: left;
+    display: block;
 
+    .details {
+      display: block;
+    }
     h3, h4, p {
       line-height: 0.4em;
+    }
+    ul {
+      list-style: none;
+      li {
+        display: inline-block;
+      }
+    }
+    .slider {
+      display: block;
+    }
+    .extra {
+      display: block;
     }
   }
   .entity_details_name {
@@ -961,10 +977,10 @@ section .entity_menu {
     span {
       color: $font_color_blue_grey;
       font-weight: normal;
-      font-size: 12px; 
+      font-size: 12px;
     }
     .entity_details_uuid {
-        font-size: 12px;   
+        font-size: 12px;
     }
   }
   .entity_details_id {
@@ -1545,11 +1561,11 @@ section .stickMenu {
   }
 
   .img_claim {
-    height: 270px; 
+    height: 270px;
     background-image: url('../assets/images/beta_claim.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: center 260px; 
+    background-position: center 260px;
   }
 }
 

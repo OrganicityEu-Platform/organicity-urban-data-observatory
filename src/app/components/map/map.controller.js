@@ -54,10 +54,10 @@
            };
        });
 
-       vm.z = { lat: vm.center.lat, long: vm.center.lng, radius: '10' };;
+       vm.z = { lat: vm.center.lat, long: vm.center.lng, radius: '10' };
 
        $scope.$watch('vm.center.zoom', function(zoom) {
-           updateMarkers(); 
+           updateMarkers();
            if (vm.controls.minimap) {
               vm.controls.minimap.toggleDisplay = (zoom >= 8) ? true : false;
            }
@@ -70,28 +70,26 @@
       function updateMarkers(){
         // if (vm.center.zoom >= 8 && !isDataWithin()) {
         if (vm.center.zoom >= 8) {
-         var radius = getDistanceFromLatLonInKm(vm.center.lat, vm.center.lng, vm.bounds.northEast.lat, vm.bounds.northEast.lng);
-          
-        console.log(radius);
+          var radius = getDistanceFromLatLonInKm(vm.center.lat, vm.center.lng, vm.bounds.northEast.lat, vm.bounds.northEast.lng);
 
-         var params = { lat: vm.center.lat, long: vm.center.lng, radius: radius};
- 
-         asset.getGeoJSON(params).then(function(data) {
+          var params = { lat: vm.center.lat, long: vm.center.lng, radius: radius};
+
+          asset.getGeoJSON(params).then(function(data) {
             asset.setAllEntities(data);
             vm.layers.overlays = new Overlays(data, 'Asset Types');
             vm.z = params;
-         }, function(error){
-           console.log(error);
-         });
-       }
-      } 
+          }, function(error){
+            console.log(error);
+          });
+        }
+      }
 
       function isDataWithin(){
-        var e = isRadiousInsideBoundingBox(vm.z.lat, vm.z.long, vm.z.radius, vm.bounds.northEast.lat, vm.bounds.northEast.lng, vm.bounds.southWest.lat, vm.bounds.northEast.lng); 
+        var e = isRadiousInsideBoundingBox(vm.z.lat, vm.z.long, vm.z.radius, vm.bounds.northEast.lat, vm.bounds.northEast.lng, vm.bounds.southWest.lat, vm.bounds.northEast.lng);
         console.log(e);
         return e;
        }
-    
+
        // This might go to new service //
 
       function isRadiousInsideBoundingBox( cLat,  cLon,  cRadius,  rlat1,  rlon1,  rlat2,  rlon2,  rlat3,  rlon3,  rlat4,  rlon4) {
@@ -117,13 +115,13 @@
       function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
         var R = 6371; // Radius of the earth in km
         var dLat = deg2rad(lat2-lat1);  // deg2rad below
-        var dLon = deg2rad(lon2-lon1); 
-        var a = 
+        var dLon = deg2rad(lon2-lon1);
+        var a =
           Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+          Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
           Math.sin(dLon/2) * Math.sin(dLon/2)
-          ; 
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+          ;
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         var d = R * c; // Distance in km
         return d;
       }
@@ -132,14 +130,14 @@
         return deg * (Math.PI/180)
       }
 
-       // $scope.$on("centerUrlHash", function(event, centerHash) {
-       //     $location.search({ c: centerHash });
-       // });
+      // $scope.entityLoaded
 
-       // $scope.changeLocation = function(centerHash) {
-       //     $location.search({ c: centerHash });
-       // };
-
- 
+      // $scope.$on("centerUrlHash", function(event, centerHash) {
+      //     $location.search({ c: centerHash });
+      // });
+      //
+      // $scope.changeLocation = function(centerHash) {
+      //     $location.search({ c: centerHash });
+      // };
     }
 })();

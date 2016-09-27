@@ -40,15 +40,15 @@
       FullEntity.prototype = Object.create(Entity.prototype);
       FullEntity.prototype.constructor = FullEntity;
 
-      // FullEntity.prototype.getSensors = function() {
-      //   var sensors = _(this.data)
-      //       .chain()
-      //       .map(function(sensor, i) {
-      //         return new Sensor(sensor, i);
-      //       })
-      //       .value();
-      //       return sensors;
-      // };
+      FullEntity.prototype.getSensors = function() {
+        var data = this.data.data;
+        var sensors = _(this.data.types)
+            .chain()
+            .map(function(type, i) {
+              return new Sensor(type, data[type], i);
+            }).value();
+            return sensors;
+      };
       return FullEntity;
     }]);
 })();

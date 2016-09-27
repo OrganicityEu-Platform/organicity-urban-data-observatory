@@ -5,27 +5,24 @@
     .controller('entityController', entityController);
 
     entityController.$inject = ['$state','$scope', '$stateParams', 'entityData',
+      // 'ownerEntitites',
       'utils', 'sensor', '$mdDialog',
       // 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
-      '$timeout', //'mainSensors', 'compareSensors',
-      'alert', '$q', 'asset',
-      //'HasSensorEntity',
-      'geolocation'];
+      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'asset', 'HasSensorEntity', 'geolocation'];
+
     function entityController($state, $scope, $stateParams, entityData,
       // ownerEntitites,
       utils, sensor, $mdDialog,
       // belongsToUser,
       timeUtils, animation, $location, auth, entityUtils, userUtils,
-      $timeout, //mainSensors, compareSensors,
-      alert, $q, asset,
-      // HasSensorEntity,
-      geolocation) {
+      $timeout, mainSensors, compareSensors, alert, $q, asset, HasSensorEntity, geolocation) {
+
       var vm = this;
       var sensorsData = [];
 
       var mainSensorID, compareSensorID;
-      //var picker = initializePicker();
+      var picker = initializePicker();
 
       if(entityData){
         animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: parseInt($stateParams.id) });
@@ -34,14 +31,15 @@
       vm.hasHistorical = false;
 
       vm.entity = entityData;
+      vm.geolocate = geolocate;
 
       // vm.ownerEntitites = ownerEntitites;
       // vm.entityBelongsToUser = belongsToUser;
       vm.removeUser = removeUser;
 
       vm.battery = undefined;
-      // vm.sensors = mainSensors ? mainSensors : undefined;
-      // vm.sensorsToCompare = compareSensors;
+      vm.sensors = mainSensors ? mainSensors : undefined;
+      vm.sensorsToCompare = compareSensors;
 
       vm.slide = slide;
 
@@ -54,8 +52,6 @@
       vm.showSensorOnChart = showSensorOnChart;
       vm.moveChart = moveChart;
       vm.loadingChart = true;
-
-      vm.geolocate = geolocate;
       // event listener on change of value of main sensor selector
       $scope.$watch('vm.selectedSensor', function(newVal, oldVal) {
         vm.selectedSensorToCompare = undefined;
@@ -78,7 +74,7 @@
           colorSensorCompareName();
 
           setSensor({type: 'main', value: newVal});
-          //changeChart([mainSensorID]);
+          changeChart([mainSensorID]);
         }, 100);
 
       });
@@ -157,7 +153,7 @@
         }) : [];
       }
 
-      function changeChart(sensorsID, options) {
+    function changeChart(sensorsID, options) {
         if(!sensorsID[0]) {
           return;
         }
@@ -191,7 +187,7 @@
       function getChartData(entityID, sensorID, dateFrom, dateTo, options) {
         return sensor.getSensorsDataNew(entityID, sensorID, dateFrom, dateTo)
           .then(function(data) {
-            sensorsData[sensorID] = data.readings;
+            sensorsData[sensorID] = data.data;
             return data;
           }, function(data) {
             sensorsData[sensorID] = [];
@@ -469,13 +465,13 @@
             entity.getEntities(location)
               .then(function(data){
                 data = data.plain();
-
                 _(data)
                   .chain()
                   .map(function(entity) {
                     return new HasSensorEntity(entity);
                   })
                   .filter(function(entity) {
+                    console.log(entity);
                     return !!entity.longitude && !!entity.latitude;
                   })
                   .find(function(entity) {

@@ -23,7 +23,7 @@
 
       function getRollup(dateFrom, dateTo) {
         var rangeDays = timeUtils.getCurrentRange(dateFrom, dateTo, {format: 'd'});
-
+        
         var rollup;
         if(rangeDays <= 1) {
           rollup = '10m';
@@ -36,7 +36,7 @@
       }
 
       function getSensorName(sensor) {
-        var nameParts = sensor.name.split(':');
+        var nameParts = sensor.split(':');
         var mainName = nameParts.length > 0 ? nameParts[0] : sensor.name;
 
         var sensorName = (mainName.toUpperCase() === mainName) ? mainName : mainName.replace(/([A-Z])/g, ' $1').toUpperCase();
@@ -47,23 +47,19 @@
           sensorExtra = (sensorExtra.toUpperCase() === sensorExtra) ? sensorExtra : sensorExtra.replace(/([A-Z])/g, ' $1').toUpperCase();
           sensorName += (' (' + sensorExtra + ')');
         }
-
         return sensorName;
       }
 
-      function getSensorUnit(sensor) {
-        if(sensor.unit) {
+      function getSensorUnit(sensor, sensorData) {
+        if(sensorData.unit) {
           return sensor.unit.replace(/([A-Z])/g, ' $1').toLowerCase();
-        } else if(sensor.name) {
-        /*
-          var nameParts = sensor.name.split(':');
+        } else if(sensorData.type) {
+          var nameParts = sensor.split(':');
           if (nameParts.length > 1) {
             var sensorExtra = nameParts[nameParts.length-1]
             sensorExtra = (sensorExtra.toUpperCase() === sensorExtra) ? sensorExtra : sensorExtra.replace(/([A-Z])/g, ' $1').toUpperCase();
             return sensorExtra;
           }
-        */
-          return 'Units not defined';
         } else {
           return 'No name';
         }
@@ -71,16 +67,17 @@
 
       function getSensorValue(sensor) {
         var value = sensor.value;
-
         if(isNaN(parseInt(value))) {
           value =  'N/A';
+        }
+        else if(sensor.type === 'coords') {
+          value = sensor.value;
         } else {
           value = value.toString();
           if(value.indexOf('.') !== -1) {
             value = value.slice(0, value.indexOf('.') + 3);
           }
         }
-
         return value;
       }
 
@@ -96,7 +93,8 @@
         switch(sensorName) {
           case 'TEMPERATURE':
             return './assets/images/temperature_icon.svg';
-
+          case 'TEMPERATURE (AMBIENT)':
+            return './assets/images/temperature_icon.svg';
           case 'HUMIDITY':
             return './assets/images/humidity_icon.svg';
 
@@ -114,6 +112,9 @@
 
           case 'NETWORKS':
             return './assets/images/networks_icon.svg';
+
+          case 'BATTERY LEVEL':
+            return './assets/images/battery_icon.svg';
 
           case 'BATTERY':
             return './assets/images/battery_icon.svg';

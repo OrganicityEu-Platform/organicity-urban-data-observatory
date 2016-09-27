@@ -205,45 +205,51 @@
             </div>
             <div class="entity_details_content_main" flex>
               <div class="entity_details_content">
-                <h3 class="entity_detailed_name entity_details_name">{{ vm.entity.name }}</h3>
-                <p class="entity_details_location">
-                  <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/location_icon_normal.svg">
-                  </md-icon>
-                  <span>{{ vm.entity.location || 'No location' }}</span>
-                </p>
+                <div class="details">
+                  <h3 class="entity_detailed_name entity_details_name">{{ vm.entity.name }}</h3>
+                  <p class="entity_details_location">
+                    <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/location_icon_normal.svg">
+                    </md-icon>
+                    <span>{{ vm.entity.location || 'No location' }}</span>
+                  </p>
 
 
-                <md-radio-group ng-model="vm.like">
-                  <md-radio-button value="true">Like</md-radio-button>
-                  <md-radio-button value="false"> Dislike</md-radio-button>
-                </md-radio-group>
-                <input-stars max="5"  ng-model="vm.reputation" readonly="true" ></input-stars>
-                <md-slider md-discrete ng-model="vm.reliability" step="1" min="1" max="10"> Reliability</md-slider>
-                <md-slider md-discrete ng-model="vm.availability" step="1" min="1" max="10"> Availability</md-slider>
-                <md-slider md-discrete ng-model="vm.usability" step="1" min="1" max="10"> Usability</md-slider>
-                <p class="entity_details_type">
-                  <md-icon class="entity_detailed_icon_content"
-                           md-svg-src="./assets/images/entity_details_icon_normal.svg">
-                  </md-icon>
-                  <span>{{ vm.entity.type }}</span>
-                  <span class="entity_details_id">
-                      <span>UUID:</span> <span class="entity_details_uuid">{{ vm.entity.uuid }}</span>
-                  </span>
-                </p>
-                <p class="entity_details_lastTime">
-                  <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/update_icon.svg">
-                  </md-icon>
-                  <span>{{ vm.entity.timeAgo }}</span>
-                </p>
-                <p class="entity_details_labels">
-                  <span ng-repeat="label in vm.entity.labels">{{ label }}</span>
-                  <span ng-repeat='tag in vm.entity.userTags'>{{ tag }}</span>
-                </p>
-                <div class="entity_details_description">
-                  <h4 class="entity_details_description_title">Resource description:</h4>
-                  <p class="entity_details_description_content">{{ vm.entity.description || 'This is a resource
-                    provided
-                    by ' + vm.entity.owner.username + '.'}}</p>
+                  <md-radio-group ng-model="vm.like">
+                    <md-radio-button value="true">Like</md-radio-button>
+                    <md-radio-button value="false"> Dislike</md-radio-button>
+                  </md-radio-group>
+                  <input-stars max="5"  ng-model="vm.reputation" readonly="true" ></input-stars>
+                </div>
+                <div class="slider">
+                  <md-slider md-discrete ng-model="vm.reliability" step="1" min="1" max="10"> Reliability</md-slider>
+                  <md-slider md-discrete ng-model="vm.availability" step="1" min="1" max="10"> Availability</md-slider>
+                  <md-slider md-discrete ng-model="vm.usability" step="1" min="1" max="10"> Usability</md-slider>
+                </div>
+                <div class="extra">
+                  <p class="entity_details_type">
+                    <md-icon class="entity_detailed_icon_content"
+                             md-svg-src="./assets/images/entity_details_icon_normal.svg">
+                    </md-icon>
+                    <span>{{ vm.entity.type }}</span>
+                    <span class="entity_details_id">
+                        <span>UUID:</span> <span class="entity_details_uuid">{{ vm.entity.uuid }}</span>
+                    </span>
+                  </p>
+                  <p class="entity_details_lastTime">
+                    <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/update_icon.svg">
+                    </md-icon>
+                    <span>{{ vm.entity.timeAgo }}</span>
+                  </p>
+                  <p class="entity_details_labels">
+                    <span ng-repeat="label in vm.entity.labels">{{ label }}</span>
+                    <span ng-repeat='tag in vm.entity.userTags'>{{ tag }}</span>
+                  </p>
+                  <div class="entity_details_description">
+                    <h4 class="entity_details_description_title">Resource description:</h4>
+                    <p class="entity_details_description_content">{{ vm.entity.description || 'This is a resource
+                      provided
+                      by ' + vm.entity.owner.username + '.'}}</p>
+                  </div>
                 </div>
               </div>
             </div>

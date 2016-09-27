@@ -47,7 +47,9 @@
     }
 
     function getCurrentRange(fromDate, toDate) {
-      return moment(toDate).diff(moment(fromDate), 'days');
+      var td = new Date(toDate);
+      var fd = new Date(fromDate);
+      return moment(td.toISOString()).diff(moment(fd.toISOString()), 'days');
     }
 
     function parseTime(time, format) {

@@ -88,7 +88,7 @@
           },
 
           resolve: {
-            entityData: function($stateParams, asset, FullEntity) {
+            entityData: function($stateParams, asset, FullEntity, HasSensorEntity) {
               var entityID = $stateParams.id;
 
               if(!entityID) {
@@ -99,20 +99,18 @@
                 return new FullEntity(entityData);
               });
             },
-            // mainSensors: function(entityData) {
-            //   // if(!entityData) {
-            //   //   return undefined;
-            //   // }
-            //   // return entityData.getSensors();
-            //   return;
-            // },
-            // compareSensors: function(entityData) {
-            //   // if(!entityData) {
-            //   //   return undefined;
-            //   // }
-            //   // return entityData.getSensors();
-            //   return;
-            // },
+            mainSensors: function(entityData) {
+              if(!entityData) {
+                return undefined;
+              }
+              return entityData.getSensors();
+            },
+            compareSensors: function(entityData) {
+              if(!entityData) {
+                return undefined;
+              }
+              return entityData.getSensors();
+            },
             // ownerentitites: function(entityData, previewEntity, $q, entity) {
             //   // if(!entityData) {
             //   //   return undefined;

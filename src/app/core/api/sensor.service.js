@@ -16,7 +16,6 @@
       ////////////////
 
       function callAPI() {
-        debugger;
         return assetsAPI.all('attibutes').getList(); // Not implemented
       }
 
@@ -25,7 +24,6 @@
         dateFrom = utils.convertTime(dateFrom, false);  //API wants time with no seconds
         dateTo = utils.convertTime(dateTo, false);      //API wants time with no seconds
         sensorID = sensorID.replace(/_/g, ":");
-
         return historicalAPI.one('entities', deviceID).customGET('readings', {'from': dateFrom, 'to': dateTo, 'rollup': rollup, 'attribute_id': sensorID, 'all_intervals': true, 'function': 'avg'});
       }
     }

@@ -81,10 +81,11 @@
       }
 
       function convertTime(time, withSeconds) {
+        var t = new Date(time);
         if(withSeconds) {
-          return moment(time).format('YYYY-MM-DDThh:mm:ss') + 'Z';
+          return moment(t.toISOString()).format('YYYY-MM-DDThh:mm:ss') + 'Z';
         } else {
-          return moment(time).format('YYYY-MM-DDThh:mm') + 'Z';
+          return moment(t.toISOString()).format('YYYY-MM-DDThh:mm') + 'Z';
         }
       }
 
