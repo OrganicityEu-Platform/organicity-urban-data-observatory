@@ -25,7 +25,7 @@
       var picker = initializePicker();
 
       if(entityData){
-        animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: parseInt($stateParams.id) });
+        animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: $stateParams.id });
       }
 
       vm.hasHistorical = false;
