@@ -29,7 +29,6 @@
 
       function initialize() {
         if(areMarkersOld()) {
-          console.log('Data expired: Refreshing markers');
           removeMarkers();
         }
       }
@@ -43,6 +42,7 @@
         removeEntitiesMarkers();
         $window.localStorage.setItem('organicity.assets', JSON.stringify(obj));
         assets = obj.data;
+				return assets;
       }
 
       function setPrevAllEntities() {

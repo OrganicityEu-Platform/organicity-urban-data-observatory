@@ -21,6 +21,7 @@
         this.entityFeature = entityFeature;
         this.popupHtml = markerPopup(entityFeature);
         this.whenClicked = whenClicked;
+        this.focus = false;
       }
       return miniMarker;
 

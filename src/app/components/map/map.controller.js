@@ -48,7 +48,7 @@
 
         animation.viewLoaded();
 
-        $scope.$on('leafletDirectiveMarker.organicityMap.click', function(event, data) {
+      $scope.$on('leafletDirectiveMarker.organicityMap.click', function(event, data) {
           var id = data.leafletEvent.target.options.myData.id;
 
           vm.entityLoading = true;
@@ -84,6 +84,10 @@
            };
        });
 
+       $scope.$watch('vm.center.zoom', function(zoom) {
+           watchZoom(zoom);
+       });
+
        $scope.$on('entityLoaded', function(event, data) {
          console.log(data);
          vm.entityLoading = false;
@@ -92,54 +96,45 @@
              lng: parseFloat(data.lng),
              zoom: 20
          };
+         watchZoom(vm.center.zoom);
 
-        //  if(updateType === 'map') {
-        //    updateType = undefined;
-        //    return;
-        //  }
-
-        //  $timeout(function() {
-        //    leafletData.getMarkers()
-        //      .then(function(markers) {
-        //        var currentMarker = _.find(markers, function(marker) {
-        //          return data.id === marker.options.myData.id;
-        //        });
-         //
-        //        leafletData.getLayers()
-        //          .then(function(layers) {
-        //            layers.overlays.realworld.zoomToShowLayer(currentMarker, function() {
-        //              var selectedMarker = vm.markers[data.id];
-         //
-        //              if(selectedMarker) {
-        //                selectedMarker.focus = true;
-        //              }
-        //              if(!$scope.$$phase) {
-        //                $scope.$digest();
-        //              }
-         //
-        //              entityLoaded = true;
-        //            });
-        //          });
-        //      });
-        //  }, 3000);
-       });
-
-       $scope.$watch('vm.center.zoom', function(zoom) {
-           if (zoom >=8) {
-             var params = { lat: vm.center.lat, long: vm.center.lng, radius: '10' };
-             asset.getGeoJSON(params).then(function(data) {
-               asset.setAllEntities(data);
-               vm.layers = {
-                   baselayers: mapUtils.getBaseLayers(),
-                   overlays: new Overlays(JSON.parse(JSON.stringify(data)), 'Asset Types')
-               };
+         $timeout(function(currentMarker) {
+           leafletData.getLayers('organicityMap')
+             .then(function(layers) {
+               var overlays = layers.overlays;
+               for (var o in overlays) {
+                 var currentMarker = _.find(overlays[o].getLayers(), function(marker) {
+                   if(data.id === marker.feature.properties.id) {
+                     console.log(marker)
+                     marker.focus = true;
+                     marker.openPopup();
+                     return marker;
+                   }
+                 });
+               }
+             entityLoaded = true;
              }, function(error){
                console.log(error);
              });
-           }
-           if (vm.controls.minimap) {
-              vm.controls.minimap.toggleDisplay = (zoom >= 8) ? true : false;
-           }
+         }, 3000);
        });
+
+       function watchZoom(zoom){
+         if (zoom >=8) {
+           var params = { lat: vm.center.lat, long: vm.center.lng, radius: '10' };
+           asset.getGeoJSON(params).then(function(data) {
+             asset.setAllEntities(data);
+             vm.layers = {
+                 baselayers: mapUtils.getBaseLayers(),
+                 overlays: new Overlays(JSON.parse(JSON.stringify(data)), 'Asset Types')
+             };
+           }, function(error){
+             console.log(error);
+           });
+         }
+         if (vm.controls.minimap) {
+            vm.controls.minimap.toggleDisplay = (zoom >= 8) ? true : false;
+         }
+       }
     }
 })();
