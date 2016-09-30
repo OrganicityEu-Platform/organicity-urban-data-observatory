@@ -67,7 +67,10 @@
             var marker = new miniMarker(feature);
             layer.bindPopup(marker.popupHtml);
             layer.on({
-                click: marker.whenClicked
+                click: function() {
+                    console.log(layer.feature.properties.id);
+                    window.location.href = '/assets/' + layer.feature.properties.id;
+                  }
             });
         }
 

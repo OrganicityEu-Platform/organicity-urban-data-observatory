@@ -125,7 +125,8 @@
         }
 
         if(!object.id) {
-          object.id = 'cluster:id'; //tmp.
+          console.log(object);
+          object.id = 'sites/' + object.city.toLowerCase(); //tmp.
         }
         if (object.name.includes('Cluster')) {
           entityName = 'Device cluster';

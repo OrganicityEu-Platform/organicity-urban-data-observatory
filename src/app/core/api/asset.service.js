@@ -99,7 +99,7 @@
 					}
 
 					var data = $q.all(devices).then(function(devices) {
-						return '{ "type": "FeatureCollection", "properties": { "name": "urn:oc:assettype:clusters" }, "features": [' + getGeoDevices(devices) + ']}';
+						return '{ "type": "FeatureCollection", "properties": { "name": "urn:oc:assettype:clusters"}, "features": [' + getGeoDevices(devices) + ']}';
 					});
 					return data;
       }

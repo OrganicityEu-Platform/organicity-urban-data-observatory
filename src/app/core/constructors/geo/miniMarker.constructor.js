@@ -20,7 +20,6 @@
       function miniMarker(entityFeature) {
         this.entityFeature = entityFeature;
         this.popupHtml = markerPopup(entityFeature);
-        this.whenClicked = whenClicked;
         this.focus = false;
       }
       return miniMarker;
@@ -40,10 +39,6 @@
                 createTagsTemplate(markerUtils.parseLabels(entityFeature.properties))+
                 createTagsTemplate(markerUtils.parseUserTags(entityFeature.properties))+
                 '</div><div class="clearfix"></div></div></div>';
-      }
-
-      function whenClicked(e) {
-        console.log(this);
       }
 
       function createTagsTemplate(tagsArr) {

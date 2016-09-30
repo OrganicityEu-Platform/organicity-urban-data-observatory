@@ -29,7 +29,6 @@
 
 
       ///////////////
-
       function parseName(object) {
         if(!object.name) {
           return;

@@ -48,29 +48,30 @@
 
         animation.viewLoaded();
 
-      $scope.$on('leafletDirectiveMarker.organicityMap.click', function(event, data) {
-          var id = data.leafletEvent.target.options.myData.id;
-
-          vm.entityLoading = true;
-          vm.center.lat = data.leafletEvent.latlng.lat;
-          vm.center.lng = data.leafletEvent.latlng.lng;
-
-          if(id === parseInt($state.params.id)) {
-            $timeout(function() {
-              vm.entityLoading = false;
-            }, 0);
-            return;
-          }
-
-          focusedMarkerID = data.leafletEvent.target.options.myData.id;
-
-          updateType = 'map';
-          id = data.leafletEvent.target.options.myData.id;
-          var availability = data.leafletEvent.target.options.myData.labels[0];
+      $scope.$on('click', function(event, data) {
           console.log(data);
-          ga('send', 'event', 'entity Marker', 'click', availability);
-
-          $state.go('layout.home.entity', {id: id});
+          // var id = data.leafletEvent.target.options.myData.id;
+          //
+          // vm.entityLoading = true;
+          // vm.center.lat = data.leafletEvent.latlng.lat;
+          // vm.center.lng = data.leafletEvent.latlng.lng;
+          //
+          // if(id === parseInt($state.params.id)) {
+          //   $timeout(function() {
+          //     vm.entityLoading = false;
+          //   }, 0);
+          //   return;
+          // }
+          //
+          // focusedMarkerID = data.leafletEvent.target.options.myData.id;
+          //
+          // updateType = 'map';
+          // id = data.leafletEvent.target.options.myData.id;
+          // var availability = data.leafletEvent.target.options.myData.labels[0];
+          // console.log(data);
+          // ga('send', 'event', 'entity Marker', 'click', availability);
+          //
+          // $state.go('layout.home.entity', {id: id});
 
         });
 
