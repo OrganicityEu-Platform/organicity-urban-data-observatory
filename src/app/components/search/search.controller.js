@@ -43,8 +43,6 @@
 
 
       function querySearch(query) {
-        console.log(query)
-
         if(query.length < 3) {
           return [];
         }
@@ -123,16 +121,16 @@
                 var keysToSearch = [
                 {
                   category: "name",
-                  match: item.labels
+                  match: item.provider
                 },
                 {
                   category: "name",
-                  scope: item.data.attributes,
+                  scope: item.data.attributes.types,
                   match: "name"
                 },
                 {
                   category: "name",
-                  scope: item.data.attributes,
+                  scope: item.data.attributes.types,
                   match: "unit"
                 }];
 

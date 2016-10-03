@@ -20,9 +20,10 @@
     <img ng-show="item.iconType === 'img'" ng-src="{{ item.icon }}" class="result_icon" />
     <div ng-show="item.iconType === 'div'" class="markerEntitiesOnline result_icon"></div>
     <span ng-class="{'result_name': item.name.length > 0}">{{ item.name }}</span>
+    <span ng-class="{'result_name': item.id.length > 0}">{{ item.id }}</span>
     <span class="result_location">{{ item.location }}</span>
   </md-item-template>
-  <md-not-found>
+  <!-- <md-not-found>
     No matches found. {{ vm.searchText }}
-  </md-not-found>
+  </md-not-found> -->
 </md-autocomplete>
