@@ -14,6 +14,7 @@
 	  	var service = {
         getAllEntities: getAllEntities,
         setAllEntities: setAllEntities,
+				getMetadata: getMetadata,
         getAsset: getAsset,
         createAsset: createAsset,
         updateAsset: updateAsset,
@@ -56,21 +57,13 @@
       }
 
       function getAllEntities() {
-        // if (!areEntitiesMarkersOld()) {
-        //   console.log('Data is cached: Entities are less than 60sec old.');
-        //   var deferred = $q.defer();
-        //   deferred.resolve(assets || ($window.localStorage.getItem('organicity.assets') && JSON.parse($window.localStorage.getItem('organicity.assets') ).data));
-        //   return deferred.promise;
-        // } else {
           console.log('Data expired: Refreshing assets');
-          // setPrevAllEntities();
-          return assetsAPI.all('assets/lightweight').getOne({'page': 'all', 'per': 'all'});
-          //.then(function(data) {
-            // setAllEntities(data);
-            //return data;
-          //});
-        // }
+          return assetsAPI.one('assets').get({'page': '1', 'per': '100'});
       }
+
+			function getMetadata(query) {
+				return assetsAPI.one('assets/metadata/search').get({'page': '1', 'per': '100', 'query': query});
+			}
 
 			function getGeoJSON(params) {
 				var endpoint = 'assets/geo/search';
