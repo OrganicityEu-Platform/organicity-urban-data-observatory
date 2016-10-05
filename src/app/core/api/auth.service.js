@@ -3,9 +3,9 @@
 
   angular.module('app.components')
     .factory('auth', auth);
-    
-    auth.$inject = ['$location', '$window', '$state', 'accountsAPI', '$rootScope', 'AuthUser', '$timeout', 'alert'];
-    function auth($location, $window, $state, accountsAPI, $rootScope, AuthUser, $timeout, alert) {
+
+    auth.$inject = ['$http', '$location', '$rootScope', '$state', '$timeout', '$window', 'accountsAPI', 'alert', 'AuthUser', 'jwtHelper'];
+    function auth($http, $location, $rootScope, $state, $timeout, $window, accountsAPI, alert, AuthUser, jwtHelper) {
 
     	var user = {
         token: null,
@@ -25,13 +25,14 @@
         saveData: saveData,
         login: login,
         logout: logout,
+        callback: callback,
         recoverPassword: recoverPassword,
         getResetPassword: getResetPassword,
         patchResetPassword: patchResetPassword,
         isAdmin: isAdmin
     	};
     	return service;
-      
+
       //////////////////////////
 
       function initialize() {
@@ -40,37 +41,62 @@
       //run on app initialization so that we can keep auth across different sessions
       function setCurrentUser(time) {
         user.token = $window.localStorage.getItem('organicity.token') && JSON.parse( $window.localStorage.getItem('organicity.token') );
+        // Check for user properties
         user.data = $window.localStorage.getItem('organicity.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('organicity.data') ));
         if(!user.token) {
           return;
         }
-        return getCurrentUserInfo()
-          .then(function(data) {
-            $window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
+        var data = JSON.parse(getCurrentUserInfo());
+        $window.localStorage.setItem('organicity.data', JSON.stringify(data) );
+        var newUser = new AuthUser(data);
+        //check sensitive information
+        if(user.data && user.data.role !== newUser.role) {
+          user.data = newUser;
+          $location.path('/');
+        }
+        user.data = newUser;
 
-            var newUser = new AuthUser(data);
-            //check sensitive information
-            if(user.data && user.data.role !== newUser.role) {
-              user.data = newUser;
-              $location.path('/');
-            }
-            user.data = newUser;
-
-            // used for app initialization
-            if(time && time === 'appLoad') {
-              //wait until navbar is loaded to emit event
-              $timeout(function() {
-                $rootScope.$broadcast('loggedIn', {time: 'appLoad'});
-              }, 3000);
-            } else {
-              // used for login
-              $state.reload();
-              $timeout(function() {
-                alert.success('Login was successful');
-                $rootScope.$broadcast('loggedIn', {});
-              }, 2000);
-            }
-          });
+        // used for app initialization
+        if(time && time === 'appLoad') {
+          //wait until navbar is loaded to emit event
+          $timeout(function() {
+            $rootScope.$broadcast('loggedIn', {time: 'appLoad'});
+          }, 3000);
+        } else {
+          // used for login
+          $state.reload();
+          $timeout(function() {
+            alert.success('Login was successful');
+            $rootScope.$broadcast('loggedIn', {});
+          }, 2000);
+        }
+        // return getCurrentUserInfo()
+        //   .then(function(data) {
+        //     $window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
+        //
+        //     var newUser = new AuthUser(data);
+        //     //check sensitive information
+        //     if(user.data && user.data.role !== newUser.role) {
+        //       user.data = newUser;
+        //       $location.path('/');
+        //     }
+        //     user.data = newUser;
+        //
+        //     // used for app initialization
+        //     if(time && time === 'appLoad') {
+        //       //wait until navbar is loaded to emit event
+        //       $timeout(function() {
+        //         $rootScope.$broadcast('loggedIn', {time: 'appLoad'});
+        //       }, 3000);
+        //     } else {
+        //       // used for login
+        //       $state.reload();
+        //       $timeout(function() {
+        //         alert.success('Login was successful');
+        //         $rootScope.$broadcast('loggedIn', {});
+        //       }, 2000);
+        //     }
+        //   });
       }
 
       function updateUser() {
@@ -93,17 +119,55 @@
         setCurrentUser();
       }
 
-      function login(loginData) {
-        return accountsAPI.all('sessions').post(loginData);
+      function login() {
+
+        // Here it should go the logic for the login oauth flow
+        // GET https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://localhost:8080/resources/&scope=&state=
+        // POST https://accounts.organicity.eu/realms/organicity/login-actions/authenticate?code=QZXmSAhIOKkMv1Wqw0qA5j__l-hIWCYdaO6niY5B9Bc.3dd256c6-1ad5-4f87-9ba1-cbdac04a9e2c&execution=7c8382a4-624c-4911-9135-242e1f2b0af1
+
+        console.log('NEW LOGIN!');
+        window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://staging.observatory.organicity.eu/callback&scope=&state=';
+      }
+
+      function callback() {
+        console.log('HALLO!! HALLO!!');
+        console.log($location.$$hash);
+        var token = $location.$$hash.split('&')[1].slice(13);
+        window.localStorage.setItem('organicity.token', JSON.stringify(token) );
+        var jwtDecoded = jwtHelper.decodeToken(token);
+        window.localStorage.setItem('organicity.data', userData(jwtDecoded) );
+
+        return $location.path('/resources');
       }
 
       function logout() {
+        $window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=http://staging.observatory.organicity.eu'
         $window.localStorage.removeItem('organicity.token');
         $window.localStorage.removeItem('organicity.data');
       }
 
       function getCurrentUserInfo() {
-        return accountsAPI.all('').customGET('me');
+        var token = $window.localStorage.getItem('organicity.token');
+        var jwtDecoded = jwtHelper.decodeToken(token);
+        if (jwtHelper.isTokenExpired(token)) {
+          console.log('EXPIRED');
+          return login();
+        } else {
+          return userData(jwtDecoded);
+        }
+      }
+
+      function userData(jwtDecoded) {
+        return JSON.stringify({ id: jwtDecoded.sub,
+                                uuid: jwtDecoded.sub,
+                                role: '',
+                                name: jwtDecoded.name,
+                                username: jwtDecoded.preferred_username,
+                                avatar: './assets/images/avatar.svg',
+                                url: '',
+                                location: { city: 'null', country: 'null', country_code: 'null'},
+                                email: jwtDecoded.email,
+                              });
       }
 
       function recoverPassword(data) {

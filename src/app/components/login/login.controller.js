@@ -4,24 +4,23 @@
   angular.module('app.components')
     .controller('LoginController', LoginController);
 
-  LoginController.$inject = ['$scope', '$mdDialog'];
-  function LoginController($scope, $mdDialog) {
+  LoginController.$inject = ['$scope', '$mdDialog', 'auth'];
+  function LoginController($scope, $mdDialog, auth) {
 
     $scope.showLogin = showLogin;
 
     $scope.$on('showLogin', function() {
       showLogin();
     });
-    
+
     ////////////////
 
     function showLogin() {
-      $mdDialog.show({
-        hasBackdrop: true,
-        controller: 'LoginDialogController',
-        templateUrl: 'app/components/login/loginModal.html',
-        clickOutsideToClose: true
-      });
+      auth.login();
+    }
+
+    function getToken() {
+      auth.getToken();
     }
 
   }

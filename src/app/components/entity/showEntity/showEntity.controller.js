@@ -5,15 +5,18 @@
     .controller('entityController', entityController);
 
     entityController.$inject = ['$state','$scope', '$stateParams', 'entityData',
-      'ownerentitites', 'utils', 'sensor', 'fullEntity', '$mdDialog', 'belongsToUser',
+      // 'ownerEntitites',
+      'utils', 'sensor', '$mdDialog',
+      // 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
-      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'device',
-      'HasSensorEntity', 'geolocation'];
+      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'asset', 'HasSensorEntity', 'geolocation'];
+
     function entityController($state, $scope, $stateParams, entityData,
-      ownerentitites, utils, sensor, fullEntity, $mdDialog, belongsToUser,
+      // ownerEntitites,
+      utils, sensor, $mdDialog,
+      // belongsToUser,
       timeUtils, animation, $location, auth, entityUtils, userUtils,
-      $timeout, mainSensors, compareSensors, alert, $q, device,
-      HasSensorEntity, geolocation) {
+      $timeout, mainSensors, compareSensors, alert, $q, asset, HasSensorEntity, geolocation) {
 
       var vm = this;
       var sensorsData = [];
@@ -22,14 +25,16 @@
       var picker = initializePicker();
 
       if(entityData){
-        animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: parseInt($stateParams.id) });
+        animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: $stateParams.id });
       }
 
       vm.hasHistorical = false;
 
       vm.entity = entityData;
-      vm.ownerentitites = ownerentitites;
-      vm.entityBelongsToUser = belongsToUser;
+      vm.geolocate = geolocate;
+
+      // vm.ownerEntitites = ownerEntitites;
+      // vm.entityBelongsToUser = belongsToUser;
       vm.removeUser = removeUser;
 
       vm.battery = undefined;
@@ -47,9 +52,6 @@
       vm.showSensorOnChart = showSensorOnChart;
       vm.moveChart = moveChart;
       vm.loadingChart = true;
-      
-      vm.geolocate = geolocate;
-
       // event listener on change of value of main sensor selector
       $scope.$watch('vm.selectedSensor', function(newVal, oldVal) {
         vm.selectedSensorToCompare = undefined;
@@ -64,7 +66,7 @@
             }
           });
         }
-        
+
         vm.sensorsToCompare = getSensorsToCompare();
 
         $timeout(function() {
@@ -96,7 +98,7 @@
         }, 100);
 
       });
-      
+
       $scope.$on('hideChartSpinner', function() {
         vm.loadingChart = false;
       });
@@ -116,18 +118,9 @@
         }, 1000);
 
         if(vm.entity){
-          if(vm.entity.state.name === 'never published' || vm.entity.state.name === 'not configured') {
-            if(vm.entityBelongsToUser) {
-              alert.info.noData.owner($stateParams.id);
-            } else {
-              alert.info.noData.visitor();
-            }
-            $timeout(function() {
-              animation.entityWithoutData({belongsToUser: vm.entityBelongsToUser});
-            }, 1000);
-          } else if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
+          if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
             alert.info.longTime();
-          }else{
+          } else {
             if(geolocation.isHTML5GeolocationGranted()){
               geolocate();
             }
@@ -160,7 +153,7 @@
         }) : [];
       }
 
-      function changeChart(sensorsID, options) {
+    function changeChart(sensorsID, options) {
         if(!sensorsID[0]) {
           return;
         }
@@ -191,10 +184,10 @@
         });
       }
       // calls api to get sensor data and saves it to sensorsData array
-      function getChartData(deviceID, sensorID, dateFrom, dateTo, options) {
-        return sensor.getSensorsDataNew(deviceID, sensorID, dateFrom, dateTo)
+      function getChartData(entityID, sensorID, dateFrom, dateTo, options) {
+        return sensor.getSensorsDataNew(entityID, sensorID, dateFrom, dateTo)
           .then(function(data) {
-            sensorsData[sensorID] = data.readings;
+            sensorsData[sensorID] = data.data;
             return data;
           }, function(data) {
             sensorsData[sensorID] = [];
@@ -232,7 +225,7 @@
       function parseSensorData(data, sensorID) {
         if(data[sensorID].length === 0) {
           return [];
-        } 
+        }
         return data[sensorID].map(function(dataPoint) {
           var time = moment(new Date(dataPoint.datetime)).format('YYYY-MM-DD[T]HH:mm:ss[Z]'); //tmp. ensure validation
           var value = Number(dataPoint.value);
@@ -469,16 +462,16 @@
               lat:position.coords.latitude,
               lng:position.coords.longitude
             };
-            device.getDevices(location)
+            entity.getEntities(location)
               .then(function(data){
                 data = data.plain();
-
                 _(data)
                   .chain()
-                  .map(function(device) {
-                    return new HasSensorEntity(device);
+                  .map(function(entity) {
+                    return new HasSensorEntity(entity);
                   })
                   .filter(function(entity) {
+                    console.log(entity);
                     return !!entity.longitude && !!entity.latitude;
                   })
                   .find(function(entity) {

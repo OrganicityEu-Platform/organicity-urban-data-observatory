@@ -1,6 +1,8 @@
 <section class="map" change-map-height>
-  <leaflet center="vm.center" layers="vm.layers" markers="vm.markers" defaults="vm.defaults" event-broadcast="vm.events" width="100%" height="100%"></leaflet> <!-- tiles="vm.tiles" -->
-  <div class="map_legend" layout="row" layout-align="start center" move-filters>
+  <leaflet bounds="vm.bounds" center="vm.center" id="organicityMap" layercontrol="vm.layercontrol" layers="vm.layers" controls="vm.controls" defaults="vm.defaults" event-broadcast="vm.events" width="100%" height="100%" url-hash-center="yes">
+    <!-- <layercontrol md-radio-group  order="normal" auto-hide-opacity="true" show-groups="true" title="Layer Manager" base-title="Base Layers" overlays-title="Overlays Layers"></layercontrol> -->
+  </leaflet> <!-- tiles="vm.tiles" -->
+<!--   <div class="map_legend" layout="row" layout-align="start center" move-filters>
     <md-button ng-click="vm.openFilterPopup()" class="map_filter_button" layout="row" layout-align="center center" aria-label>
       <md-icon md-svg-src="./assets/images/filter_icon.svg"></md-icon>
     </md-button>
@@ -8,15 +10,15 @@
       <div ng-repeat="(filterName, isFilterSelected) in vm.filterData" class="chip map_filter" ng-if="isFilterSelected && !vm.allFiltersSelected" layout="row" layout-align="center center">
         <span class="chip_name">{{ filterName }}</span>
         <button ng-click="vm.removeFilter(filterName)" class="chip_icon" arial-label>
-          <md-icon md-svg-src="./assets/images/close_icon_black.svg"></md-icon>        
+          <md-icon md-svg-src="./assets/images/close_icon_black.svg"></md-icon>
         </button>
       </div>
       <div ng-if="vm.allFiltersSelected" class="map_filter" layout="row" layout-align="center center">
         <div class="chip map_filter">
-          <span class="chip_name">ALL FILTERS</span>          
+          <span class="chip_name">ALL FILTERS</span>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <md-progress-linear ng-show="vm.entityLoading" class="md-hue-3 entity_spinner" md-mode="indeterminate"></md-progress-circular>

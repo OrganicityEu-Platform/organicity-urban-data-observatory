@@ -4,12 +4,13 @@
   angular.module('app.components')
     .factory('markerUtils', markerUtils);
 
-    markerUtils.$inject = ['device', 'entityUtils', 'COUNTRY_CODES', 'MARKER_ICONS'];
-    function markerUtils(device, entityUtils, COUNTRY_CODES, MARKER_ICONS) {
+    markerUtils.$inject = ['asset', 'entityUtils', 'COUNTRY_CODES', 'MARKER_ICONS', '$state'];
+    function markerUtils(asset, entityUtils, COUNTRY_CODES, MARKER_ICONS, $state) {
       var service = {
         parseName: parseName,
         parseType: parseType,
-        parseLocation: parseLocation,
+        parseEntityType: parseEntityType,
+        parseLocation: parseLocation, // Different object with O W N name
         parseLabels: parseLabels,
         parseUserTags: parseUserTags,
         parseCoordinates: parseCoordinates,
@@ -26,27 +27,64 @@
       ///////////////
 
       function parseType(object) {
-        var entityType; 
-        entityType = 'Organicity'; //tmp
-        return entityType; 
+        var entityType;
+        if (!object.name) {
+          entityType = '';
+        }
+        else if (object.name.includes('Cluster')) {
+          entityType = object.name; //tmp
+        }
+        else if (object.properties && object.properties.type) {
+          var typeString = object.properties.type.split(':');
+          entityType = typeString[typeString.length-1]
+        }
+        else if (object.type) {
+          var typeString = object.type.split(':');
+          entityType = typeString[typeString.length-1]
+        }
+        return entityType;
+      }
+
+      function parseEntityType(object) {
+        var entityType;
+        if (object.name.includes('Cluster')) {
+          entityType = object.name; //tmp
+        }
+        else if (object.type) {
+          entityType = object.type.split(':');
+        }
+        else if (object.properties) {
+          entityType = object.properties.type.split(':');
+        }
+        else {
+          entityType = object.name.split(':');
+        }
+        return makeTitle(entityType[entityType.length-1]);
       }
 
       function parseLocation(object) {
+
         var location = '';
         var locationSource = {};
 
-        if(object.data.location.city && object.data.location.country) {
-            locationSource = object.data.location;
-        } else if (object.provider && object.provider.location.city && object.provider.location.country){
-            locationSource = object.provider.location;
+        if(object.context) {
+          if (object.provider && object.context.position.city && object.context.position.country){
+            locationSource = object.context.position;
             locationSource.justOwnerLocation = true;
-        }  
-          
-        /*jshint camelcase: false */
-        var city = locationSource.city;
-        var country_code = locationSource.country_code;
-        var country = COUNTRY_CODES[country_code];
+          } else if (object.context.position.city && object.context.position.country) {
+            locationSource = object.data.location;
+          }
+        }
+        var city = '';
+        var countryCode = '';
+        var country = '';
 
+        if (locationSource) {
+          /*jshint camelcase: false */
+          city = locationSource.city;
+          countryCode = locationSource.country_code;
+          country = COUNTRY_CODES[countryCode];
+        }
 
         if(!!city) {
           location += city;
@@ -55,13 +93,21 @@
           location += ', ' + country;
         }
 
-        if(locationSource.justOwnerLocation) location += ' (provider location)';
+        if (locationSource.justOwnerLocation) {
+          location += ' (provider location)';
+        }
 
         return location;
       }
 
       function isOnline(object) {
-        var time = object['last_reading_at'];
+        var time = Date.now;
+        if (object.last_updated_at) {
+          time = Date.parse(object.last_updated_at);
+        }
+        else {
+          time = Date.parse(object.last_update_at);
+        }
         var timeDifference =  (new Date() - new Date(time))/1000;
         if(!time || timeDifference > 7*24*60*60) { //a week
           return false;
@@ -71,70 +117,75 @@
       }
 
       function parseLabels(object) {
-        var system_tags = [];
+        var systemTags = [];
+        var entityName;
 
-        if(!object.uuid) {
-          object.uuid = object.name || "no:name"; //tmp.
+        if(!object.name) {
+          object.name = object.id || 'no:name'; //tmp.
         }
 
-        system_tags.push((this.isOnline(object)) ? "online" : "offline");
+        if(!object.id) {
+          console.log(object);
+          object.id = 'sites/' + object.city.toLowerCase(); //tmp.
+        }
+        if (object.name.includes('Cluster')) {
+          entityName = 'Device cluster';
+        } else {
+          systemTags.push((this.isOnline(object)) ? 'online' : 'offline');
 
-        var entityName = object.uuid.split(":");
+          entityName = object.id.split(':');
 
-        var source = entityName[3];
-        var origin = entityName[4];
+          var source = entityName[3];
+          var origin = entityName[4];
 
-        if(source) system_tags.push(source);
-        if(origin) system_tags.push(origin);
-
+          if(source) {
+            systemTags.push(source);
+          }
+          if(origin) {
+            systemTags.push(origin);
+          }
+        }
         /*jshint camelcase: false */
-        return system_tags;
+        return systemTags;
       }
 
       function parseUserTags(object) {
-        var user_tags = ["organicity"]; //temp
-        return user_tags;
+        var userTags = [];
+
+        if(!object.type) {
+          return userTags;
+        }
+
+        var entityType = object.type.split(':');
+
+        if(entityType) {
+          userTags.push(entityType[entityType.length-1]);
+        }
+
+        /*jshint camelcase: false */
+        return userTags;
+      }
+
+      function checkLocation(object) {
+        if (object.context && object.context.position !== null && object.context.position.latitude && object.context.position.longitude && object.context.position.latitude !== 0 && object.context.position.longitude !== 0) {
+          return true;
+        }
+
+        else {
+          return false;
+        }
       }
 
       function parseCoordinates(object) {
-        var location = {};
-
-        if(object.data.location.latitude && object.data.location.longitude && object.data.location.latitude != 0 && object.data.location.longitude != 0) {
-            location.lat = object.data.location.latitude;
-            location.lng = object.data.location.longitude;
-        } else if (object.provider.location.city){ //tmp. for unlocated data
-
-            var providerFixture = [
-              {
-                city: "Santander",
-                lat: 43.4647222,
-                lng: -3.8044444
-              },
-              {
-                city: "London",
-                lat: 51.5072,
-                lng: -0.1275
-              },
-              {
-                city: "Aarhus",
-                lat: 56.1572,
-                lng: 10.2107
-              }
-            ];
-
-          var providerLocation = _.find(providerFixture, function(provider) {
-            return provider.city == object.provider.location.city
-          });
-
-          location.lat = providerLocation.lat;
-          location.lng = providerLocation.lng;  
+        if (object.position) {
+          return object.position;
+        } else if (object.geometry.coordinates) {
+          return object.geometry.coordinates;
         }
-
-        return location;
       }
 
       function parseId(object) {
-        return object.id;
+        return object.id.replace(/-/g, '_'); // Angular ids doesn't support hyphens.
       }
 
       function getIcon(labels) {
@@ -144,7 +195,7 @@
           icon = MARKER_ICONS.markerEntitiesOffline;
         } else {
           icon = MARKER_ICONS.markerEntitiesOnline;
-        }  
+        }
         return icon;
       }
 
@@ -155,30 +206,45 @@
       }
 
       function parseName(object) {
-        if(!object.uuid) {
-          object.uuid = object.name; //tmp.
-        }
-
+        var entityName = 'Unknown';
         if(!object.name) {
-        return;
+          return 'Unknown';
         }
-
-        var entityName = object.name.split(":");
-
-        entityName = entityName.slice(4, entityName.length);
-        entityName = _.map(entityName, makeCase);
-
-        object.name = entityName.join(" ");
-
-        return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
+        else if (object.name.includes('Cluster')) {
+          entityName = object.count + ' devices in ' + object.city;
+        }
+        else if (object.context && object.context.name) {
+          var entityNameString = object.context.name.split(':');
+          entityName = entityNameString[entityNameString.length-1]
+        }
+        else {
+          var entityNameString = object.name.split(':');
+          entityName = entityNameString[entityNameString.length-1]
+        }
+        return entityName;
       }
 
       function parseTime(object) {
-        var time = object['last_reading_at'];
+        var time = 'Unknown';
+
+        if (object.context) {
+          time = object.context.last_reading_at;
+        }
+        else if (object.last_updated_at) {
+          time = Date.parse(object.last_updated_at)
+        }
+        else if (object.name && object.name.includes('Cluster')) {
+          time = new Date(Date.now());
+        }
+        else {
+          time = Date.parse(object.last_update_at);
+        }
+
         if(!time) {
           return 'No time';
         }
-        return moment(time).fromNow();
+
+        return 'Last updated ' + moment(time).fromNow();
       }
 
       function getMarkerIcon(marker, state) {
@@ -197,5 +263,8 @@
       function makeCase(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
       }
+
+      function makeTitle(str){
+        return str.replace(/([A-Z])/, ' $1') .replace(/^./, function(str){ return str.toUpperCase(); }); }
     }
 })();

@@ -2,10 +2,9 @@
   'use strict';
 
   angular.module('app.components')
-    .factory('entity', ['Sensor', 'entityUtils', function(Sensor, entityUtils) {
-
+    .factory('Entity', ['Sensor', 'entityUtils', function(Sensor, entityUtils) {
       /**
-       * entity constructor. 
+       * entity constructor.
        * @constructor
        * @param {Object} object - Object with all the data about the entity from the API
        * @property {number} id - ID of the entity
@@ -17,10 +16,11 @@
        * @property {string} state - State of the entity. Ex: Never published
        * @property {Array} userTags - User tags. Ex: ''
        */
-      function entity(object) {
+
+      function Entity(object) {
         this.id = object.id;
         this.name = entityUtils.parseName(object);
-        this.uuid = object.uuid;
+        this.uuid = object.id;
         this.type = entityUtils.parseType(object);
         this.location = entityUtils.parseLocation(object);
         this.avatar = entityUtils.parseAvatar(object, this.type);
@@ -29,6 +29,6 @@
         /*jshint camelcase: false */
         //this.userTags = object.user_tags; //tmp
       }
-      return entity;
+      return Entity;
     }]);
 })();

@@ -7,29 +7,10 @@
     LayoutController.$inject = ['$location', '$state', '$scope', 'auth', 'animation', '$timeout', 'DROPDOWN_OPTIONS_COMMUNITY', 'DROPDOWN_OPTIONS_USER'];
     function LayoutController($location, $state, $scope, auth, animation, $timeout, DROPDOWN_OPTIONS_COMMUNITY, DROPDOWN_OPTIONS_USER) {
       var vm = this;
-
       vm.navRightLayout = 'space-around center';
 
       // listen for any login event so that the navbar can be updated
       $scope.$on('loggedIn', function(ev, options) {
-        // if(options && options.time === 'appLoad') {
-        //   $scope.$apply(function() {
-        //     vm.isLoggedin = true;
-        //     vm.isShown = true;
-        //     angular.element('.nav_right .wrap-dd-menu').css('display', 'initial');
-        //     vm.currentUser = auth.getCurrentUser().data;
-        //     vm.dropdownOptions[0].text = 'Hello, ' + vm.currentUser.username;
-        //     vm.navRightLayout = 'end center';
-        //   });
-        // } else {
-        //   vm.isLoggedin = true;
-        //   vm.isShown = true;
-        //   angular.element('.nav_right .wrap-dd-menu').css('display', 'initial');
-        //   vm.currentUser = auth.getCurrentUser().data;
-        //   vm.dropdownOptions[0].text = 'Hello, ' + vm.currentUser.username;
-        //   vm.navRightLayout = 'end center';
-        // }
-
         vm.isLoggedin = true;
         vm.isShown = true;
         angular.element('.nav_right .wrap-dd-menu').css('display', 'initial');
