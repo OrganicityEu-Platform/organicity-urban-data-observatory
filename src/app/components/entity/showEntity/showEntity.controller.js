@@ -58,7 +58,6 @@
         vm.selectedSensorToCompareData = {};
         vm.chartDataCompare = [];
         compareSensorID = undefined;
-
         if(vm.sensors){
           vm.sensors.forEach(function(sensor) {
             if(sensor.uuid === newVal) {
@@ -128,6 +127,20 @@
         }
       }
 
+      function findHistoricalUri(){
+        var sensorEntity = vm.sensors ? vm.sensors.filter(function(sensorEnt) {
+          return sensorEnt.id === 'urn:oc:attributeType:datasource'
+        }) : [];
+        if(!sensorEntity[0]) {
+          return;
+        }
+        else {
+          console.log(sensorEntity);
+          sensorEntity = sensorEntity.pop();
+          return sensorEntity.value;
+        }
+      }
+
       function removeUser() {
       }
 
@@ -167,15 +180,18 @@
         //show spinner
         vm.loadingChart = true;
         //grab chart data and save it
-
         // it can be either 2 sensors or 1 sensor, so we use $q.all to wait for all
         $q.all(
           _.map(sensorsID, function(sensorID) {
             var id = vm.entity.uuid;//$stateParams.id
-            return getChartData(id, sensorID, options.from, options.to)
+
+            var chartData = getChartData(id, sensorID, options.from, options.to)
+            if(typeof chartData != 'undefined') {
+              return chartData
               .then(function(data) {
-                return data;
+                return data.data;
               });
+            }
           })
         ).then(function() {
           // after all sensors resolve, prepare data and attach it to scope
@@ -185,7 +201,10 @@
       }
       // calls api to get sensor data and saves it to sensorsData array
       function getChartData(entityID, sensorID, dateFrom, dateTo, options) {
-        return sensor.getSensorsDataNew(entityID, sensorID, dateFrom, dateTo)
+        var historicalUri = findHistoricalUri();
+        var sensorsHistoricalData = sensor.getSensorsDataNew(entityID, historicalUri, sensorID, dateFrom, dateTo);
+        if(typeof sensorsHistoricalData != 'undefined') {
+          return sensorsHistoricalData
           .then(function(data) {
             sensorsData[sensorID] = data.data;
             return data;
@@ -193,12 +212,12 @@
             sensorsData[sensorID] = [];
             return data;
           });
+        }
       }
 
       function prepareChartData(sensorsID) {
         var compareSensor;
         var parsedDataMain = parseSensorData(sensorsData, sensorsID[0]);
-
         if(parsedDataMain.length === 0) { //tmp. quick fix
           vm.hasHistorical = false;
         } else {
@@ -223,10 +242,10 @@
       }
 
       function parseSensorData(data, sensorID) {
-        if(data[sensorID].length === 0) {
+        if((typeof data[sensorID] === 'undefined') || (data[sensorID].length === 0)) {
           return [];
         }
-        return data[sensorID].map(function(dataPoint) {
+        return data[sensorID].readings.map(function(dataPoint) {
           var time = moment(new Date(dataPoint.datetime)).format('YYYY-MM-DD[T]HH:mm:ss[Z]'); //tmp. ensure validation
           var value = Number(dataPoint.value);
           var count = value === null ? 0 : value;

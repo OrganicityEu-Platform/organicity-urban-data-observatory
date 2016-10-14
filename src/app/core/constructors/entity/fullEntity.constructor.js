@@ -42,11 +42,23 @@
 
       FullEntity.prototype.getSensors = function() {
         var data = this.data.data;
+        var ignoreData = [
+          'datasource',
+          'origin',
+          'description',
+          'location',
+          'reputation'
+        ]
+
         var sensors = _(this.data.types)
             .chain()
             .map(function(type, i) {
-              return new Sensor(type, data[type], i);
-            }).value();
+              if (ignoreData.indexOf(type) === -1) {
+                return new Sensor(type, data[type], i);
+              }
+            }).value().filter(function( element ) {
+              return element !== undefined;
+            });
             return sensors;
       };
       return FullEntity;

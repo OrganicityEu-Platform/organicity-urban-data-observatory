@@ -23,7 +23,7 @@
 
       function getRollup(dateFrom, dateTo) {
         var rangeDays = timeUtils.getCurrentRange(dateFrom, dateTo, {format: 'd'});
-        
+
         var rollup;
         if(rangeDays <= 1) {
           rollup = '10m';
@@ -67,10 +67,11 @@
 
       function getSensorValue(sensor) {
         var value = sensor.value;
-        if(isNaN(parseInt(value))) {
+        if (sensor.type === 'urn:oc:attributeType:datasource') {
+          value = sensor.value;
+        } else if(isNaN(parseInt(value))) {
           value =  'N/A';
-        }
-        else if(sensor.type === 'coords') {
+        } else if((sensor.type === 'coords') || (sensor.type === 'geo:point')){
           value = sensor.value;
         } else {
           value = value.toString();
