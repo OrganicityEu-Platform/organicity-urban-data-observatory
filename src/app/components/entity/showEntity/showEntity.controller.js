@@ -201,8 +201,7 @@
       }
       // calls api to get sensor data and saves it to sensorsData array
       function getChartData(entityID, sensorID, dateFrom, dateTo, options) {
-        var historicalUri = findHistoricalUri();
-        var sensorsHistoricalData = sensor.getSensorsDataNew(entityID, historicalUri, sensorID, dateFrom, dateTo);
+        var sensorsHistoricalData = sensor.getSensorsDataNew(entityID, sensorID, dateFrom, dateTo);
         if(typeof sensorsHistoricalData != 'undefined') {
           return sensorsHistoricalData
           .then(function(data) {

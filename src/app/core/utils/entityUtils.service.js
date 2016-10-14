@@ -113,7 +113,7 @@
 
       function parseTime(object) {
         /*jshint camelcase: false */
-        return object.data.attributes.data.TimeInstant;
+        return object.context.last_updated_at;
       }
 
       function parseVersion(object) {

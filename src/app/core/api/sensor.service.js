@@ -19,7 +19,7 @@
         return assetsAPI.all('attibutes').getList(); // Not implemented
       }
 
-      function getSensorsDataNew(deviceID, sensorURL, sensorID, dateFrom, dateTo) {
+      function getSensorsDataNew(deviceID, sensorID, dateFrom, dateTo) {
         var ignoreData = [
           'urn_oc_attributeType_datasource',
           'geo_point',
