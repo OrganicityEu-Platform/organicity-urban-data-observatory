@@ -619,9 +619,16 @@ section .entity_menu {
       height: 14px;
       margin-right: 8px;
     }
+
     span {
       vertical-align: middle;
     }
+
+    ul li{
+      list-style: none;
+      float: left;
+    }
+
   }
 
   .entity_battery {
@@ -754,7 +761,7 @@ section .entity_menu {
   font-size: 24px;
  }
 .entity_details_notAuth_subheader {
-  color: #00637C;
+  color: $organicity_pink_5;
   font-size: 14px;
 }
 .entity_details_notAuth_button {

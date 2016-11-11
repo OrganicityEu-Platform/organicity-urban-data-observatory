@@ -24,7 +24,7 @@
           'urn_oc_attributeType_datasource',
           'geo_point',
           'urn_oc_attributeType_description',
-          'urn_oc_attributeType_reputation'
+          'urn_oc_attributeType_reputation',          
         ]
         if (ignoreData.indexOf(sensorID) > -1) {
           return;

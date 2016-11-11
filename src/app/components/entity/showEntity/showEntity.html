@@ -3,13 +3,16 @@
     <section class="overlay" ng-if="!vm.entity"></section>
     <div class="container" layout="row" layout-align="space-between center">
       <div>
+        <!--    
         <div class="entity_user" layout="row" layout-align="start center">
           <img ng-src="{{ vm.entity.owner.avatar || './assets/images/avatar.svg'}}"/>
-          <a href="./users/{{vm.entity.owner.id}}"><span>{{ vm.entity.owner.username}}</span></a>
-        </div>
+          <a href="./provider/{{vm.entity.owner.id}}"><span>{{ vm.entity.owner.username}}</span></a>
+        </div> 
+        -->
         <div class="entity_name" layout="row" layout-align="start center">
           <img ng-src="./assets/images/sensor_icon.svg"/>
           <span>{{ vm.entity.name }}</span>
+          <input-stars max="5"  ng-model="vm.stars" readonly="true" ></input-stars>
         </div>
       </div>
       <div class="entity_time" layout="row" layout-align="start center">
@@ -212,19 +215,6 @@
                     </md-icon>
                     <span>{{ vm.entity.location || 'No location' }}</span>
                   </p>
-
-
-                  <md-radio-group ng-model="vm.like">
-                    <md-radio-button value="true">Like</md-radio-button>
-                    <md-radio-button value="false"> Dislike</md-radio-button>
-                  </md-radio-group>
-                  <input-stars max="5"  ng-model="vm.reputation" readonly="true" ></input-stars>
-                </div>
-                <div class="slider">
-                  <md-slider md-discrete ng-model="vm.reliability" step="1" min="1" max="10"> Reliability</md-slider>
-                  <md-slider md-discrete ng-model="vm.availability" step="1" min="1" max="10"> Availability</md-slider>
-                  <md-slider md-discrete ng-model="vm.usability" step="1" min="1" max="10"> Usability</md-slider>
-                </div>
                 <div class="extra">
                   <p class="entity_details_type">
                     <md-icon class="entity_detailed_icon_content"
@@ -304,6 +294,47 @@
                 other platforms, social media and a growing set of online tools, you can get involved to highlight the
                 ways you think smart technology can help make your city a better place to live, work and play.</p>
               <md-button class="entity_details_notAuth_button">JOIN US</md-button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="entity_details" ng-if="vm.entity">
+        <div class="entity_detailed_content_container">
+          <div class="entity_detailed_title_container">
+            <md-icon class="entity_detailed_icon_title" md-svg-src="./assets/images/entity_details_icon_normal.svg">
+            </md-icon>
+            <h2 class="entity_detailed_title">REPUTATION</h2>
+          </div>
+          <div class="entity_detailed_content_container" layout="row">
+            <div class="entity_details_content_main" flex>
+              <div class="entity_details_content">
+                <div>
+                  <h4>Do you like this?</h4>
+                  <input-stars max="5"  ng-model="vm.stars" readonly="true" ></input-stars>
+                  <md-radio-group ng-model="vm.like">
+                    <md-radio-button value="true">Like</md-radio-button>
+                    <md-radio-button value="false"> Dislike</md-radio-button>
+                  </md-radio-group>
+                </div>
+                <div class="slider">
+                  <h4>Could you help us rate it?</h4>
+                  <md-slider-container>
+                    <span>Reliability</span><md-slider md-discrete ng-model="vm.reliability" step="1" min="1" max="10"></md-slider>
+                  <md-slider-container>
+                  <md-slider-container>
+                    <span>Availability</span><md-slider md-discrete ng-model="vm.availability" step="1" min="1" max="10"></md-slider>
+                  <md-slider-container>
+                  <md-slider-container>
+                    <span>Usability</span><md-slider md-discrete ng-model="vm.usability" step="1" min="1" max="10"></md-slider>
+                  <md-slider-container>
+                </div>
+              </div>
+            </div>
+            <div class="entity_details_notAuth" flex>
+              <h3>Share your opinion about this asset!</h3>
+              <p class="entity_details_notAuth_description">
+                Your opinnion is really important in order to help the Organicity community find the best sources available. Help us by rating this asset!
+              </p>
             </div>
           </div>
         </div>

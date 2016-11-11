@@ -1,3 +1,4 @@
+
 (function() {
   'use strict';
 
@@ -47,7 +48,9 @@
           'origin',
           'description',
           'location',
-          'reputation'
+          // 'reputation',
+          'TimeInstant',
+          'access:scope'
         ]
 
         var sensors = _(this.data.types)

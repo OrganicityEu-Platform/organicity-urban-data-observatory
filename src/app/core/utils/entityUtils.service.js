@@ -30,11 +30,12 @@
 
       ///////////////
       function parseName(object) {
-        if(!object.name) {
+        console.warn(object);
+        if(!object.id) {
           return;
         }
 
-        var entityName = object.name.split(":");
+        var entityName = object.id.split(":");
 
         entityName = entityName.slice(4, entityName.length);
         entityName = _.map(entityName, makeCase);
@@ -113,7 +114,7 @@
 
       function parseTime(object) {
         /*jshint camelcase: false */
-        return object.context.last_updated_at;
+        return new Date (object.context.last_updated_at);
       }
 
       function parseVersion(object) {
@@ -124,10 +125,10 @@
       }
 
       function parseOwner(object) {
-        if (!object.context.provider) return;
+        if (!object.related.site) return;
         return {
-          id: object.context.provider,
-          username: object.context.provider,
+          id: object.related.site.id,
+          username: object.related.site.name,
           /*jshint camelcase: false */
           // entitites: object.provider.entity_ids,
           city: object.context.position.city,
