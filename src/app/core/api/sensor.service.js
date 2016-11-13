@@ -42,7 +42,7 @@
                     },
             //url: 'http://dev.server.organicity.eu:12345/api/v1/entities/' + deviceID + '/readings'
             url: 'http://api.smartphone-experimentation.eu/v1/entities/' + deviceID + '/readings'
-
+            
           }).then(function successCallback(data) {
               return data;
           }, function errorCallback(error) {

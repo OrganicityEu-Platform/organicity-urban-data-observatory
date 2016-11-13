@@ -134,7 +134,7 @@
           city: object.context.position.city,
           country: COUNTRY_CODES[object.context.position.country_code],
           // url: object.provider.url,
-          avatar: './assets/images/avatar.svg'
+          avatar: './mediassets/images/avatar.svg'
         };
       }
 
@@ -155,7 +155,7 @@
       }
 
       function parseAvatar() {
-        return './assets/images/avatar.svg';
+        return './mediassets/images/avatar.svg';
       }
 
       function parseSensorTime(sensor) {

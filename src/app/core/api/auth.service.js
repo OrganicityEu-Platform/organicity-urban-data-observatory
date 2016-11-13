@@ -162,7 +162,7 @@
                                 role: '',
                                 name: jwtDecoded.name,
                                 username: jwtDecoded.preferred_username,
-                                avatar: './assets/images/avatar.svg',
+                                avatar: './mediassets/images/avatar.svg',
                                 url: '',
                                 location: { city: 'null', country: 'null', country_code: 'null'},
                                 email: jwtDecoded.email,

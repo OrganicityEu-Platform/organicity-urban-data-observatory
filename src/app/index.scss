@@ -1529,7 +1529,7 @@ section .stickMenu {
   .store_itemDescription {
     ul {
       padding-left: 18px;
-      list-style-image: url('../assets/images/sucesses_icon.png');
+      list-style-image: url('../mediassets/images/sucesses_icon.png');
       list-style-position: inherit;
       font-size: 14px;
       line-height: 1.8em;
@@ -1569,7 +1569,7 @@ section .stickMenu {
 
   .img_claim {
     height: 270px;
-    background-image: url('../assets/images/beta_claim.jpg');
+    background-image: url('../mediassets/images/beta_claim.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center 260px;

@@ -93,38 +93,38 @@
 
         switch(sensorName) {
           case 'TEMPERATURE':
-            return './assets/images/temperature_icon.svg';
+            return './mediassets/images/temperature_icon.svg';
           case 'TEMPERATURE (AMBIENT)':
-            return './assets/images/temperature_icon.svg';
+            return './mediassets/images/temperature_icon.svg';
           case 'HUMIDITY':
-            return './assets/images/humidity_icon.svg';
+            return './mediassets/images/humidity_icon.svg';
 
           case 'LIGHT':
-            return './assets/images/light_icon.svg';
+            return './mediassets/images/light_icon.svg';
 
           case 'SOUND':
-            return './assets/images/sound_icon.svg';
+            return './mediassets/images/sound_icon.svg';
 
           case 'CO':
-            return './assets/images/co_icon.svg';
+            return './mediassets/images/co_icon.svg';
 
           case 'NO2':
-            return './assets/images/no2_icon.svg';
+            return './mediassets/images/no2_icon.svg';
 
           case 'NETWORKS':
-            return './assets/images/networks_icon.svg';
+            return './mediassets/images/networks_icon.svg';
 
           case 'BATTERY LEVEL':
-            return './assets/images/battery_icon.svg';
+            return './mediassets/images/battery_icon.svg';
 
           case 'BATTERY':
-            return './assets/images/battery_icon.svg';
+            return './mediassets/images/battery_icon.svg';
 
           case 'SOLAR PANEL':
-            return './assets/images/solar_panel_icon.svg';
+            return './mediassets/images/solar_panel_icon.svg';
 
           default:
-            return './assets/images/avatar.svg';
+            return './mediassets/images/avatar.svg';
         }
       }
 
@@ -136,11 +136,11 @@
         }
 
         if(currentValue > prevValue) {
-          return './assets/images/arrow_up_icon.svg';
+          return './mediassets/images/arrow_up_icon.svg';
         } else if(currentValue < prevValue) {
-          return './assets/images/arrow_down_icon.svg';
+          return './mediassets/images/arrow_down_icon.svg';
         } else {
-          return './assets/images/equal_icon.svg';
+          return './mediassets/images/equal_icon.svg';
         }
       }
 

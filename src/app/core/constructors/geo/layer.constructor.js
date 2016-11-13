@@ -71,11 +71,11 @@
                     if(layer.feature.properties.id.indexOf('site') == -1) {
                         // This is an asset, zoom to it.
                         $state.transitionTo('layout.home.entity', { id: layer.feature.properties.id} ,
-                        {
+                        { 
                           reload: false,
                           inherit: true,
                           notify: true
-                        });
+                        });       
                     } else {
                         // This is cluster, zoom to it.
                         var center = {
