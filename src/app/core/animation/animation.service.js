@@ -3,14 +3,14 @@
 
   angular.module('app.components')
     .factory('animation', animation);
-    
+
     /**
-     * Used to emit events from rootscope. 
+     * Used to emit events from rootscope.
      *
      * This events are then listened by $scope on controllers and directives that care about that particular event
      */
-    
-    animation.$inject = ['$rootScope'];
+
+    animation.$inject = ['$rootScope', 'auth'];
     function animation($rootScope) {
 
     	var service = {
@@ -36,7 +36,7 @@
     	return service;
 
       //////////////
-      
+
     	function blur() {
         $rootScope.$broadcast('blur');
     	}

@@ -4,8 +4,8 @@
   angular.module('app.components')
     .factory('entityUtils', entityUtils);
 
-    entityUtils.$inject = ['COUNTRY_CODES', 'device'];
-    function entityUtils(COUNTRY_CODES, device) {
+    entityUtils.$inject = ['asset', 'COUNTRY_CODES'];
+    function entityUtils(asset, COUNTRY_CODES) {
       var service = {
         parseName: parseName,
         parseLocation: parseLocation,
@@ -29,13 +29,13 @@
 
 
       ///////////////
-
       function parseName(object) {
-        if(!object.name) {
+        console.warn(object);
+        if(!object.id) {
           return;
         }
 
-        var entityName = object.name.split(":");
+        var entityName = object.id.split(":");
 
         entityName = entityName.slice(4, entityName.length);
         entityName = _.map(entityName, makeCase);
@@ -49,17 +49,14 @@
         var location = '';
         var locationSource = {};
 
-        if(object.data && object.data.location && object.data.location.city && object.data.location.country) {
-            locationSource = object.data.location;
-        } else if (object.provider && object.provider.location && object.provider.location.city && object.provider.location.country){
-            locationSource = object.provider.location;
-            locationSource.justOwnerLocation = true;
-        }  
-          
+        if(object.context && object.context.position && object.context.position.city && object.context.position.country) {
+            locationSource = object.context.position;
+        }
+
         /*jshint camelcase: false */
         var city = locationSource.city;
         var country_code = locationSource.country_code;
-        var country = COUNTRY_CODES[country_code];
+        var country = locationSource.country;
 
 
         if(!!city) {
@@ -101,11 +98,11 @@
       }
 
       function parseType(object) {
-        var entityType;
-
-        entityType = 'Organicity';
-
-        return entityType; 
+        if(object.type) {
+          return object.type;
+        } else {
+          return 'entity';
+        }
       }
 
       function classify(entityType) {
@@ -117,7 +114,7 @@
 
       function parseTime(object) {
         /*jshint camelcase: false */
-        return object.last_reading_at;
+        return new Date (object.context.last_updated_at);
       }
 
       function parseVersion(object) {
@@ -128,22 +125,22 @@
       }
 
       function parseOwner(object) {
-        if (!object.provider) return;
+        if (!object.related.site) return;
         return {
-          id: object.provider.id,
-          username: object.provider.username,
+          id: object.related.site.id,
+          username: object.related.site.name,
           /*jshint camelcase: false */
-          entitites: object.provider.device_ids,
-          city: object.provider.location.city,
-          country: COUNTRY_CODES[object.provider.location.country_code],
-          url: object.provider.url,
-          avatar: object.provider.avatar
+          // entitites: object.provider.entity_ids,
+          city: object.context.position.city,
+          country: COUNTRY_CODES[object.context.position.country_code],
+          // url: object.provider.url,
+          avatar: './assets/images/avatar.svg'
         };
       }
 
       function parseState(object) {
-        var name = this.parseStateName(object); 
-        var className = classify(name); 
+        var name = this.parseStateName(object);
+        var className = classify(name);
         return {
           name: name,
           className: className
@@ -158,7 +155,7 @@
       }
 
       function parseAvatar() {
-        return './assets/images/organicity-avatar.jpg';
+        return './assets/images/avatar.svg';
       }
 
       function parseSensorTime(sensor) {
@@ -167,7 +164,7 @@
       }
 
       function belongsToUser(entititesArray, entityID) {
-        
+
         return entititesArray;
         // return _.some(entititesArray, function(entity) {
         //   return entity.id === entityID;
@@ -183,7 +180,7 @@
           return true;
         }
       }
-      
+
       function makeCase(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
       }

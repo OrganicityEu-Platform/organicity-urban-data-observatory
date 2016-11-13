@@ -1,9 +1,9 @@
-(function() { 
+(function() {
 	'use strict';
 
 	angular.module('app.components')
 	  .factory('user', user);
-	  
+
 	  user.$inject = ['accountsAPI'];
 	  function user(Restangular) {
       var service = {
@@ -24,7 +24,7 @@
       }
 
       function updateUser(updateData) {
-        return accountsAPI.all('me').customPUT(updateData);
+        return accountsAPI.all('').customPUT(updateData);
       }
 	  }
 })();

@@ -1,8 +1,9 @@
+
 (function() {
   'use strict';
 
   angular.module('app.components')
-    .factory('fullEntity', ['entity', 'Sensor', 'entityUtils', function(entity, Sensor, entityUtils) {
+    .factory('FullEntity', ['Entity', 'Sensor', 'entityUtils', function(Entity, Sensor, entityUtils) {
 
       /**
        * Full entity constructor.
@@ -22,35 +23,47 @@
        * @property {string} macAddress - entity mac address
        * @property {number} elevation
        */
-      function fullEntity(object) {
-
-        entity.call(this, object);
-
-        this.version = "Organicity";
+      function FullEntity(object) {
+        Entity.call(this, object);
+        this.version = 'Organicity';
+        this.name = entityUtils.parseName(object);
         this.time = entityUtils.parseTime(object);
         this.timeParsed = !this.time ? 'No time' : moment(this.time).format('MMMM DD, YYYY - HH:mm');
         this.timeAgo = !this.time ? 'No time' : moment(this.time).fromNow();
-        this.class = entityUtils.classify(entityUtils.parseType(object)); 
-        this.description = "";
+        this.class = entityUtils.classify(entityUtils.parseType(object));
+        this.description = '';
         this.owner = entityUtils.parseOwner(object);
         this.data = object.data.attributes;
-        this.latitude = object.data.location.latitude;
-        this.longitude = object.data.location.longitude;
-
+        this.latitude = object.context.position.latitude;
+        this.longitude = object.context.position.longitude;
       }
 
-      fullEntity.prototype = Object.create(entity.prototype);
-      fullEntity.prototype.constructor = fullEntity;
+      FullEntity.prototype = Object.create(Entity.prototype);
+      FullEntity.prototype.constructor = FullEntity;
 
-      fullEntity.prototype.getSensors = function() {
-        var sensors = _(this.data)
+      FullEntity.prototype.getSensors = function() {
+        var data = this.data.data;
+        var ignoreData = [
+          'datasource',
+          'origin',
+          'description',
+          'location',
+          // 'reputation',
+          'TimeInstant',
+          'access:scope'
+        ]
+
+        var sensors = _(this.data.types)
             .chain()
-            .map(function(sensor, i) {
-              return new Sensor(sensor, i); 
-            })
-            .value();
+            .map(function(type, i) {
+              if (ignoreData.indexOf(type) === -1) {
+                return new Sensor(type, data[type], i);
+              }
+            }).value().filter(function( element ) {
+              return element !== undefined;
+            });
             return sensors;
       };
-      return fullEntity;
-    }]); 
+      return FullEntity;
+    }]);
 })();

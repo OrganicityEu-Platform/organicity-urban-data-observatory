@@ -4,8 +4,8 @@
   angular.module('app.components')
     .controller('MyProfileController', MyProfileController);
 
-    MyProfileController.$inject = ['$scope', '$location', '$q', '$interval', 'userData', 'entititesData', 'AuthUser', 'user', 'auth', 'utils', 'alert', 'COUNTRY_CODES', '$timeout', 'file', 'PROFILE_TOOLS', 'animation', 'DROPDOWN_OPTIONS_entity', '$mdDialog', 'Previewentity', 'device'];
-    function MyProfileController($scope, $location, $q, $interval, userData, entititesData, AuthUser, user, auth, utils, alert, COUNTRY_CODES, $timeout, file, PROFILE_TOOLS, animation, DROPDOWN_OPTIONS_entity, $mdDialog, Previewentity, device) {
+    MyProfileController.$inject = ['$scope', '$location', '$q', '$interval', 'userData', 'entititesData', 'AuthUser', 'user', 'auth', 'utils', 'alert', 'COUNTRY_CODES', '$timeout', 'file', 'PROFILE_TOOLS', 'animation', 'DROPDOWN_OPTIONS_entity', '$mdDialog', 'PreviewEntity', 'entity'];
+    function MyProfileController($scope, $location, $q, $interval, userData, entititesData, AuthUser, user, auth, utils, alert, COUNTRY_CODES, $timeout, file, PROFILE_TOOLS, animation, DROPDOWN_OPTIONS_entity, $mdDialog, PreviewEntity, entity) {
       var vm = this;
 
       vm.highlightIcon = highlightIcon;
@@ -177,9 +177,9 @@
 
         $q.all(
           entityIDs.map(function(id) {
-            return device.getDevice(id)
+            return entity.getEntity(id)
               .then(function(data) {
-                return new Previewentity(data);
+                return new PreviewEntity(data);
               });
           })
         )

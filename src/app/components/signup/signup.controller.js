@@ -4,25 +4,24 @@
   angular.module('app.components')
     .controller('SignupController', SignupController);
     
-    SignupController.$inject = ['$scope', '$mdDialog'];
-    function SignupController($scope, $mdDialog) {
+    SignupController.$inject = ['$scope', '$mdDialog', 'auth'];
+    function SignupController($scope, $mdDialog, auth) {
       var vm = this;
 
-      vm.showSignup = showSignup;
+      vm.showSignup = showLogin;
 
-      $scope.$on('showSignup', function() {
-        showSignup();
+      $scope.$on('showLogin', function() {
+        showLogin();
       });
-      ////////////////////////
 
+      ////////////////
 
-      function showSignup() {
-        $mdDialog.show({
-          hasBackdrop: true,
-          controller: 'SignupDialogController',
-          templateUrl: 'app/components/signup/signupModal.html',
-          clickOutsideToClose: true
-        });
+      function showLogin() {
+        auth.login();
+      }
+
+      function getToken() {
+        auth.getToken();
       }
     }
 })();

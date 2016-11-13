@@ -4,34 +4,37 @@
   angular.module('app.components')
     .factory('utils', utils);
 
-    utils.$inject = ['device', 'Previewentity', '$q'];
-    function utils(device, Previewentity, $q) {
+    utils.$inject = ['asset', 'PreviewEntity', '$q'];
+    function utils(asset, PreviewEntity, $q) {
       var service = {
-        parseentity: parseentity,
-        parseentityTime: parseentityTime,
+        parseEntity: parseEntity,
+        parseEntityTime: parseEntityTime,
         parseSensorTime: parseSensorTime,
         convertTime: convertTime,
         getOwnerentitites: getOwnerentitites
       };
+
+
       return service;
 
       ///////////////////////////
 
-      function parseentity(object) {
-        var parsedentity = {
-          entityName: object.device.name,
-          entityType: parseentityType(object),  
-          entityLastTime: moment(parseentityTime(object)).fromNow(), 
-          entityLocation: parseentityLocation(object), 
-          entityLabels: parseentityLabels(object),
-          entityClass: classify(parseentityType(object))      
+      function parseEntity(object) {
+        console.log(object);
+        var parsedEntity = {
+          entityName: object.entity.name,
+          entityType: parseEntityType(object),
+          entityLastTime: moment(parseEntityTime(object)).fromNow(),
+          entityLocation: parseEntityLocation(object),
+          entityLabels: parseEntityLabels(object),
+          entityClass: classify(parseEntityType(object))
         };
-        return parsedentity;
+        return parsedEntity;
       }
 
-      function parseentityLocation(object) {
+      function parseEntityLocation(object) {
         var location = '';
-        
+
         var city = object.data.location.city;
         var country = object.data.location.country;
 
@@ -45,19 +48,19 @@
         return location;
       }
 
-      function parseentityLabels(object) {
+      function parseEntityLabels(object) {
         return {
           status: object.status,
           exposure: object.data.location.exposure
         };
       }
 
-      function parseentityType(object) {
-        var entityType; 
+      function parseEntityType(object) {
+        var entityType;
 
         entityType = 'Unknown entity';
-        
-        return entityType; 
+
+        return entityType;
       }
 
       function classify(entityType) {
@@ -67,7 +70,7 @@
         return entityType.toLowerCase().split(' ').join('_');
       }
 
-      function parseentityTime(object) {
+      function parseEntityTime(object) {
         /*jshint camelcase: false */
         return object.updated_at;
       }
@@ -78,10 +81,11 @@
       }
 
       function convertTime(time, withSeconds) {
+        var t = new Date(time);
         if(withSeconds) {
-          return moment(time).format('YYYY-MM-DDThh:mm:ss') + 'Z';
+          return moment(t.toISOString()).format('YYYY-MM-DDThh:mm:ss') + 'Z';
         } else {
-          return moment(time).format('YYYY-MM-DDThh:mm') + 'Z';
+          return moment(t.toISOString()).format('YYYY-MM-DDThh:mm') + 'Z';
         }
       }
 
@@ -91,9 +95,9 @@
         var entitites = [];
 
         ids.forEach(function(id, index) {
-          device.getDevice(id)
+          asset.getAsset(id)
             .then(function(data) {
-              entitites[index] = new Previewentity(data);
+              entitites[index] = new PreviewEntity(data);
               entititesResolved++;
 
               if(ids.length === entititesResolved) {

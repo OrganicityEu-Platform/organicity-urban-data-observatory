@@ -50,8 +50,7 @@
         Abstract state, it only activates when there's a child state activated
         */
         .state('layout.home', {
-          url: '/resources',
-          abstract: true,
+          url: '/assets',
           views: {
             '': {
               templateUrl: 'app/components/home/template.html'
@@ -64,28 +63,41 @@
             }
           },
           resolve: {
-            markers: function($state, device, utils, entity, Marker) {
-              // It could be refactor to use HTTP caching instead of holding them in localstorage
-              var worldMarkers = device.getWorldMarkers();
-              if(worldMarkers && worldMarkers.length) {
-                return worldMarkers;
-              }
-              return device.getAllDevices().then(function(data) {
-                return _.chain(data)
-                  .tap(function(data) {
-                    device.setAllDevices(data);
-                  })
-                  .map(function(device) {
-                    return new Marker(device);
-                  })
-                  .filter(function(marker) {
-                    return !!marker.lng && !!marker.lat;
-                  })
-                  .tap(function(data) {
-                    device.setWorldMarkers(data);
-                  })
-                  .value();
-              });
+            entitiesLayers: function($state, asset) {
+                return asset.getClusterGeoJSON().then(function(data) {
+                  return JSON.parse(data);
+                }, function(error){
+                  console.log(error);
+                });
+            }
+          }
+        })
+        /*
+        -- Show site state --
+        Nested inside layout and home state
+        It's the state that displays all the data related to a site below the map
+        */
+        .state('layout.home.site', {
+          url: '/assets/sites/:site',
+          views: {
+            '': {
+              templateUrl: 'app/components/home/template.html'
+            },
+
+            'map@layout.home': {
+              templateUrl: 'app/components/map/map.html',
+              controller: 'MapController',
+              controllerAs: 'vm'
+            }
+          },
+          resolve: {
+            entitiesLayers: function($state, asset) {
+                var site = $stateParams.site;
+                return asset.getGeoJSONSite(site).then(function(data) {
+                  return JSON.parse(data);
+                }, function(error){
+                  console.log(error);
+                });
             }
           }
         })
@@ -105,18 +117,16 @@
           },
 
           resolve: {
-            entityData: function($stateParams, device, fullEntity) {
-              
+            entityData: function($stateParams, asset, FullEntity, HasSensorEntity) {
               var entityID = $stateParams.id;
 
               if(!entityID) {
                 return undefined;
               }
-              
-              return device.getDevice(entityID).then(function(deviceData) {
-                return new fullEntity(deviceData);
-              });
 
+              return asset.getAsset(entityID).then(function(entityData) {
+                return new FullEntity(entityData);
+              });
             },
             mainSensors: function(entityData) {
               if(!entityData) {
@@ -130,33 +140,34 @@
               }
               return entityData.getSensors();
             },
-            ownerentitites: function(entityData, Previewentity, $q, device) {
-              if(!entityData) {
-                return undefined;
-              }
-              var entityIDs = entityData.owner.entitites;
-
-              return $q.all(
-                entityIDs.map(function(id) {
-                  return device.getDevice(id)
-                    .then(function(data) {
-                      return new Previewentity(data);
-                    });
-                })
-              );
-            },
-            belongsToUser: function($window, $stateParams, auth, AuthUser, entityUtils, userUtils) {
-              return false;
-              // if(!auth.isAuth() || !$stateParams.id) {
-              //   return false;
-              // }
-              // var entityID = parseInt($stateParams.id);
-              // var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('organicity.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('organicity.data') )));
-              // var belongsToUser = entityUtils.belongsToUser(userData.entitites, entityID);
-              // var isAdmin = userUtils.isAdmin(userData);
-
-              // return isAdmin || belongsToUser;
-            }
+            // ownerentitites: function(entityData, previewEntity, $q, entity) {
+            //   // if(!entityData) {
+            //   //   return undefined;
+            //   // }
+            //   // var entityIDs = entityData.owner.entitites;
+            //   //
+            //   // return $q.all(
+            //   //   entityIDs.map(function(id) {
+            //   //     return device.getDevice(id)
+            //   //       .then(function(data) {
+            //   //         return new previewEntity(data);
+            //   //       });
+            //   //   })
+            //   // );
+            //
+            // },
+            // belongsToUser: function($window, $stateParams, auth, AuthUser, assetUtils, userUtils) {
+            //   return false;
+            //   // if(!auth.isAuth() || !$stateParams.id) {
+            //   //   return false;
+            //   // }
+            //   // var entityID = parseInt($stateParams.id);
+            //   // var userData = ( auth.getCurrentUser().data ) || ($window.localStorage.getItem('organicity.data') && new AuthUser( JSON.parse( $window.localStorage.getItem('organicity.data') )));
+            //   // var belongsToUser = assetUtils.belongsToUser(userData.entitites, entityID);
+            //   // var isAdmin = userUtils.isAdmin(userData);
+            //
+            //   // return isAdmin || belongsToUser;
+            // }
           }
         })
         /*
@@ -306,7 +317,7 @@
               if(auth.isAuth()) {
                 return $location.path('/');
               }
-              $location.path('/resources');
+              $location.path('/assets');
               $location.search('login', 'true');
             }
           }
@@ -325,6 +336,19 @@
               }
               $location.path('/entitites/667');
               $location.search('signup', 'true');
+            }
+          }
+        })
+        /*
+        -- Callback --
+        It saves token from accounts organicity
+        */
+        .state('callback', {
+          url: '/callback',
+          authenticate: false,
+          resolve: {
+            callback: function($location, $state, auth, $rootScope) {
+              auth.callback();
             }
           }
         })
@@ -368,7 +392,7 @@
         });
 
       /* Default state */
-      $urlRouterProvider.otherwise('/resources');
+      $urlRouterProvider.otherwise('/assets');
 
       $locationProvider.html5Mode({
         enabled: true,

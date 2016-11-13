@@ -619,9 +619,16 @@ section .entity_menu {
       height: 14px;
       margin-right: 8px;
     }
+
     span {
       vertical-align: middle;
     }
+
+    ul li{
+      list-style: none;
+      float: left;
+    }
+
   }
 
   .entity_battery {
@@ -754,7 +761,7 @@ section .entity_menu {
   font-size: 24px;
  }
 .entity_details_notAuth_subheader {
-  color: #00637C;
+  color: $organicity_pink_5;
   font-size: 14px;
 }
 .entity_details_notAuth_button {
@@ -938,12 +945,28 @@ section .entity_menu {
   .entity_details {
     height: 348px;
     color: $font_color_blue_grey;
+    display: inline-table;
   }
   .entity_details_content {
-    float: left;
+    display: block;
 
+    .details {
+      display: block;
+    }
     h3, h4, p {
       line-height: 0.4em;
+    }
+    ul {
+      list-style: none;
+      li {
+        display: inline-block;
+      }
+    }
+    .slider {
+      display: block;
+    }
+    .extra {
+      display: block;
     }
   }
   .entity_details_name {
@@ -961,10 +984,10 @@ section .entity_menu {
     span {
       color: $font_color_blue_grey;
       font-weight: normal;
-      font-size: 12px; 
+      font-size: 12px;
     }
     .entity_details_uuid {
-        font-size: 12px;   
+        font-size: 12px;
     }
   }
   .entity_details_id {
@@ -1545,11 +1568,11 @@ section .stickMenu {
   }
 
   .img_claim {
-    height: 270px; 
+    height: 270px;
     background-image: url('../assets/images/beta_claim.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: center 260px; 
+    background-position: center 260px;
   }
 }
 
@@ -1860,7 +1883,6 @@ section .stickMenu {
 
 .popup {
   width: 101%;;
-  height: 135px;
   color: $font_color_blue_dark;
   font-family: 'Roboto Condensed'
 }
@@ -1892,7 +1914,7 @@ section .stickMenu {
 }
 
 .popup_bottom {
-  height: 68px;
+  min-height: 68px;
 
   .popup_location {
     padding: 5px 0 0 8px;
@@ -1908,11 +1930,14 @@ section .stickMenu {
     padding: 8px 0 0 8px;
     font-size: 12px;
 
-    span {
+    span, tag {
       border-radius: 20px;
       background-color: $background_blue_light;
       margin-right: 10px;
       padding: 3px 8px;
+      margin-bottom: 8px;
+      float: left;
+      text-transform: uppercase;
     }
   }
 }
@@ -1925,6 +1950,12 @@ section .stickMenu {
 }
 .organicity {
   background-color: $organicity_pink;
+}
+
+// Paths
+
+path {
+  fill: $organicity_pink;
 }
 
 /**
@@ -2866,6 +2897,46 @@ button#doorbell-button {
   a {
     color: $organicity_pink;
   }
+}
+
+ .angular-leaflet-control-layers {
+    position: absolute;
+    background: white;
+    z-index: 100;
+    left: 10px;
+    top: 100px;
+    width: 200px;
+    box-shadow: 1px 1px 5px #333;
+    padding: 5px;
+}
+
+.angular-leaflet-control-layers .lf-row label {
+  cursor: pointer;
+  width: 75%;
+}
+
+.angular-leaflet-control-layers .lf-row .lf-icon-ol {
+  padding-left: 8px;
+}
+
+.angular-leaflet-control-layers .lf-row .lf-icon {
+  cursor: pointer;
+  float: left;
+  margin-right: 5px;
+  padding-top: 2px;
+  width: 10px;
+}
+
+.angular-leaflet-control-layers .lf-row label .lf-text {
+  float: left;
+}
+
+.angular-leaflet-control-layers .lf-row .lf-icon-ol-group {
+  color: #00650a;
+}
+
+.angular-leaflet-control-layers .lf-row .lf-icons {
+  float: right;
 }
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject

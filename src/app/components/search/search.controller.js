@@ -4,8 +4,8 @@
   angular.module('app.components')
     .controller('SearchController', SearchController);
 
-    SearchController.$inject = ['$scope', 'search', 'SearchResult', '$location', 'animation', 'SearchResultLocation', 'device', 'entityUtils', '$http', '$q'];
-    function SearchController($scope, search, SearchResult, $location, animation, SearchResultLocation, device, entityUtils, $http, $q) {
+    SearchController.$inject = ['$scope', 'search', 'SearchResult', '$location', 'animation', 'SearchResultLocation', 'asset', 'entityUtils', '$http', '$q'];
+    function SearchController($scope, search, SearchResult, $location, animation, SearchResultLocation, asset, entityUtils, $http, $q) {
       var vm = this;
 
       vm.searchTextChange = searchTextChange;
@@ -33,7 +33,7 @@
 
       function selectedItemChange(result) {
           if(result.type !== "location"){
-            $location.path('/resources/' + result.id);
+            $location.path('/assets/' + result.id);
           } else {
             animation.goToLocation({lat: result.lat, lng: result.lng, type: result.type});
           }
@@ -43,12 +43,11 @@
 
 
       function querySearch(query) {
-
         if(query.length < 3) {
           return [];
         }
 
-        return $q.all([device.getAllDevices(), getPlacesMapzen(query)])
+        return $q.all([asset.getMetadata(query.toLowerCase()), getPlacesMapzen(query)])
           .then(function(data) {
 
             if(data.length === 0) {
@@ -89,7 +88,7 @@
           location: {
             longitude: place.geometry.coordinates[0],
             latitude: place.geometry.coordinates[1]
-          } 
+          }
         };
         return new SearchResultLocation(searchResult);
       }
@@ -102,14 +101,14 @@
             location: {
               longitude: place.geometry.coordinates[0],
               latitude: place.geometry.coordinates[1]
-            } 
+            }
         }
         }
         return new SearchResultLocation(searchResult);
       }
 
       function filterEntities(query, entities){
-        return _.chain(entities).filter(function(item){ 
+        return _.chain(entities).filter(function(item){
 
                 item.searchMatches = [];
 
@@ -122,16 +121,16 @@
                 var keysToSearch = [
                 {
                   category: "name",
-                  match: item.labels
+                  match: item.provider
                 },
                 {
                   category: "name",
-                  scope: item.data.attributes,
+                  scope: item.data.attributes.types,
                   match: "name"
                 },
                 {
                   category: "name",
-                  scope: item.data.attributes,
+                  scope: item.data.attributes.types,
                   match: "unit"
                 }];
 
@@ -142,14 +141,14 @@
                           if(elementToSearch[keyToSearch.match].toLowerCase().indexOf(query.toLowerCase()) > -1) {
                             matches.push(elementToSearch);
                             item.searchMatches.push(keyToSearch.category);
-                          } 
+                          }
                         }
                      });
                   } else {
                     if(keyToSearch.match.toLowerCase().indexOf(query.toLowerCase()) > -1) {
                       matches.push(keysToSearch);
                       item.searchMatches.push(keyToSearch.category);
-                    } 
+                    }
                   }
                 });
                 return (matches.length > 0) ? true : false;

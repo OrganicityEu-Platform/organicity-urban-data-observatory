@@ -36,58 +36,56 @@
       }
 
       function getSensorName(sensor) {
-        var nameParts = sensor.name.split(":");
+        var nameParts = sensor.split(':');
         var mainName = nameParts.length > 0 ? nameParts[0] : sensor.name;
 
         var sensorName = (mainName.toUpperCase() === mainName) ? mainName : mainName.replace(/([A-Z])/g, ' $1').toUpperCase();
 
-        if (nameParts.length > 1) { 
+        if (nameParts.length > 1) {
           nameParts.shift();
-          var sensorExtra = nameParts.join(" ");
+          var sensorExtra = nameParts.join(' ');
           sensorExtra = (sensorExtra.toUpperCase() === sensorExtra) ? sensorExtra : sensorExtra.replace(/([A-Z])/g, ' $1').toUpperCase();
-          sensorName += (" (" + sensorExtra + ")");
+          sensorName += (' (' + sensorExtra + ')');
         }
-
         return sensorName;
       }
 
-      function getSensorUnit(sensor) {
-        if(sensor.unit) {
+      function getSensorUnit(sensor, sensorData) {
+        if(sensorData.unit) {
           return sensor.unit.replace(/([A-Z])/g, ' $1').toLowerCase();
-        } else if(sensor.name) {
-        /*          
-          var nameParts = sensor.name.split(":");
+        } else if(sensorData.type) {
+          var nameParts = sensor.split(':');
           if (nameParts.length > 1) {
             var sensorExtra = nameParts[nameParts.length-1]
             sensorExtra = (sensorExtra.toUpperCase() === sensorExtra) ? sensorExtra : sensorExtra.replace(/([A-Z])/g, ' $1').toUpperCase();
             return sensorExtra;
           }
-        */
-          return "Units not defined";
         } else {
-          return "No name";
+          return 'No name';
         }
       }
 
       function getSensorValue(sensor) {
         var value = sensor.value;
-
-        if(isNaN(parseInt(value))) {
+        if (sensor.type === 'urn:oc:attributeType:datasource') {
+          value = sensor.value;
+        } else if(isNaN(parseInt(value))) {
           value =  'N/A';
+        } else if((sensor.type === 'coords') || (sensor.type === 'geo:point')){
+          value = sensor.value;
         } else {
           value = value.toString();
           if(value.indexOf('.') !== -1) {
             value = value.slice(0, value.indexOf('.') + 3);
-          }          
+          }
         }
-
         return value;
       }
 
 
       function getSensorPrevValue(sensor) {
         /*jshint camelcase: false */
-        var prevValue = sensor.prev_value; 
+        var prevValue = sensor.prev_value;
         return (prevValue && prevValue.toString() ) || 0;
       }
 
@@ -95,54 +93,62 @@
 
         switch(sensorName) {
           case 'TEMPERATURE':
-            return './assets/images/temperature_icon.svg';            
-            
+            return './assets/images/temperature_icon.svg';
+          case 'TEMPERATURE (AMBIENT)':
+            return './assets/images/temperature_icon.svg';
           case 'HUMIDITY':
             return './assets/images/humidity_icon.svg';
-            
+
           case 'LIGHT':
             return './assets/images/light_icon.svg';
-            
-          case 'SOUND': 
+
+          case 'SOUND':
             return './assets/images/sound_icon.svg';
-            
+
           case 'CO':
             return './assets/images/co_icon.svg';
-            
+
           case 'NO2':
             return './assets/images/no2_icon.svg';
-          
-          case 'NETWORKS': 
+
+          case 'NETWORKS':
             return './assets/images/networks_icon.svg';
 
-          case 'BATTERY': 
+          case 'BATTERY LEVEL':
             return './assets/images/battery_icon.svg';
 
-          case 'SOLAR PANEL': 
+          case 'BATTERY':
+            return './assets/images/battery_icon.svg';
+
+          case 'SOLAR PANEL':
             return './assets/images/solar_panel_icon.svg';
 
-          default: 
-            return './assets/images/avatar.svg';                      
+          default:
+            return './assets/images/avatar.svg';
         }
       }
 
       function getSensorArrow(currentValue, prevValue) {
         currentValue = parseInt(currentValue) || 0;
 
-        if (!parseInt(prevValue)) return null;
+        if (!parseInt(prevValue)) {
+          return null;
+        }
 
         if(currentValue > prevValue) {
-          return './assets/images/arrow_up_icon.svg';          
+          return './assets/images/arrow_up_icon.svg';
         } else if(currentValue < prevValue) {
           return './assets/images/arrow_down_icon.svg';
         } else {
-          return './assets/images/equal_icon.svg';        
+          return './assets/images/equal_icon.svg';
         }
       }
 
       function getSensorColor(sensor, collectionID) {
         var colors = ['#00FFA8','#4fc3f7','#ffee58','#f06292','#ef4070', '#ffc107','#8bc34a','#9575cd','#fff9c4'];
-        if(collectionID > colors.length) collectionID = 0;
+        if(collectionID > colors.length) {
+          collectionID = 0;
+        }
         return colors[collectionID];
       }
 
