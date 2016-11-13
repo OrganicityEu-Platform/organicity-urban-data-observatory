@@ -126,11 +126,10 @@
         // POST https://accounts.organicity.eu/realms/organicity/login-actions/authenticate?code=QZXmSAhIOKkMv1Wqw0qA5j__l-hIWCYdaO6niY5B9Bc.3dd256c6-1ad5-4f87-9ba1-cbdac04a9e2c&execution=7c8382a4-624c-4911-9135-242e1f2b0af1
 
         console.log('NEW LOGIN!');
-        window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://observatory.organicity.eu/callback&scope=&state=';
+        window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://staging.observatory.organicity.eu/callback&scope=&state=';
       }
 
       function callback() {
-        console.log('HALLO!! HALLO!!');
         console.log($location.$$hash);
         var token = $location.$$hash.split('&')[1].slice(13);
         window.localStorage.setItem('organicity.token', JSON.stringify(token) );
@@ -141,7 +140,7 @@
       }
 
       function logout() {
-        $window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=http://observatory.organicity.eu'
+        $window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=http://staging.observatory.organicity.eu'
         $window.localStorage.removeItem('organicity.token');
         $window.localStorage.removeItem('organicity.data');
       }
