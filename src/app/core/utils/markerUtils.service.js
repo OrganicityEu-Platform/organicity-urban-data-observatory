@@ -63,28 +63,31 @@
       }
 
       function parseLocation(object) {
+        if(!object.site) return;
 
         var location = '';
-        var locationSource = {};
+        // var locationSource = {};
 
-        if(object.context) {
-          if (object.provider && object.context.position.city && object.context.position.country){
-            locationSource = object.context.position;
-            locationSource.justOwnerLocation = true;
-          } else if (object.context.position.city && object.context.position.country) {
-            locationSource = object.data.location;
-          }
-        }
+        // if(object.context) {
+        //   if (object.provider && object.context.position.city && object.context.position.country){
+        //     locationSource = object.context.position;
+        //     locationSource.justOwnerLocation = true;
+        //   } else if (object.context.position.city && object.context.position.country) {
+        //     locationSource = object.data.location;
+        //   }
+        // }
         var city = '';
         var countryCode = '';
         var country = '';
 
-        if (locationSource) {
+        console.log(object.site);
+
+        // if (locationSource) {
           /*jshint camelcase: false */
-          city = locationSource.city;
-          countryCode = locationSource.country_code;
-          country = COUNTRY_CODES[countryCode];
-        }
+          city = makeTitle(object.site);
+          // countryCode = locationSource.country_code;
+          // country = COUNTRY_CODES[countryCode];
+        // }
 
         if(!!city) {
           location += city;
@@ -93,9 +96,9 @@
           location += ', ' + country;
         }
 
-        if (locationSource.justOwnerLocation) {
-          location += ' (provider location)';
-        }
+        // if (locationSource.justOwnerLocation) {
+        //   location += ' (provider location)';
+        // }
 
         return location;
       }

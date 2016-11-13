@@ -21,7 +21,8 @@
         getWorldMarkers: getWorldMarkers,
         setWorldMarkers: setWorldMarkers,
 				getClusterGeoJSON: getClusterGeoJSON,
-        getGeoJSON: getGeoJSON
+        getGeoJSON: getGeoJSON,
+        getGeoJSONSite: getGeoJSONSite
 	  	};
 
 	  	return service;
@@ -66,16 +67,13 @@
 			}
 
 			function getGeoJSONSite(site) {
-				console.log(site);
 				var endpoint = 'assets/sites/' + site + '/geo';
-				console.log(endpoint);
-        return assetsAPI.one(endpoint).get({});
+        return assetsAPI.one(endpoint).get();
 			}
 
 			function getGeoJSON(params) {
 				var endpoint = 'assets/geo/search';
 				return  assetsAPI.one(endpoint).get(params);
-
 			}
 
       function getClusterGeoJSON() {

@@ -64,11 +64,11 @@
           },
           resolve: {
             entitiesLayers: function($state, asset) {
-                return asset.getClusterGeoJSON().then(function(data) {
-                  return JSON.parse(data);
-                }, function(error){
-                  console.log(error);
-                });
+              return asset.getClusterGeoJSON().then(function(data) {
+                return JSON.parse(data);
+              }, function(error){
+                console.log(error);
+              });
             }
           }
         })
@@ -78,7 +78,7 @@
         It's the state that displays all the data related to a site below the map
         */
         .state('layout.home.site', {
-          url: '/assets/sites/:site',
+          url: '/sites/:site',
           views: {
             '': {
               templateUrl: 'app/components/home/template.html'
@@ -91,9 +91,11 @@
             }
           },
           resolve: {
-            entitiesLayers: function($state, asset) {
+            entitiesLayers: function($stateParams, asset) {
                 var site = $stateParams.site;
+                console.log(asset);
                 return asset.getGeoJSONSite(site).then(function(data) {
+                  console.log(data);
                   return JSON.parse(data);
                 }, function(error){
                   console.log(error);

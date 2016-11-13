@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    angular.module('app.components').factory('Layer', ['miniMarker', 'markerUtils', function(miniMarker, markerUtils) {
+    angular.module('app.components').factory('Layer', ['miniMarker', 'markerUtils', '$state', '$rootScope', function(miniMarker, markerUtils, $state, $rootScope) {
         /**
          * Layer constructor
          * @constructor
@@ -68,8 +68,23 @@
             layer.bindPopup(marker.popupHtml);
             layer.on({
                 click: function() {
-                    console.log(layer.feature.properties.id);
-                    window.location.href = '/assets/' + layer.feature.properties.id;
+                    if(layer.feature.properties.id.indexOf('site') == -1) {
+                        // This is an asset, zoom to it.
+                        $state.transitionTo('layout.home.entity', { id: layer.feature.properties.id} ,
+                        {
+                          reload: false,
+                          inherit: true,
+                          notify: true
+                        });
+                    } else {
+                        // This is cluster, zoom to it.
+                        var center = {
+                            lat: layer.feature.geometry.coordinates[1],
+                            lng: layer.feature.geometry.coordinates[0],
+                            zoom: 9
+                        }
+                        $rootScope.$broadcast('centerMap', {center: center});
+                    }
                   }
             });
         }

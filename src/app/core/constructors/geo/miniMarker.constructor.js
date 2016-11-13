@@ -31,7 +31,7 @@
                 markerUtils.parseName(entityFeature.properties)+
                 '</p><p class="popup_type">'+
                 markerUtils.parseType(entityFeature)+
-                '</p><p class="popup_time"><md-icon class="popup_icon" md-svg-src="./assets / images / update_icon.svg "></md-icon>'+
+                '</p><p class="popup_time"><md-icon class="popup_icon" md-svg-src="./assets/images/update_icon.svg"></md-icon>'+
                 markerUtils.parseTime(entityFeature.properties)+
                 '</p></div><div class="popup_bottom"><p class="popup_location"><md-icon class="popup_icon" md-svg-src="./assets/images/location_icon_dark.svg"></md-icon>'+
                 markerUtils.parseLocation(entityFeature.properties)+
