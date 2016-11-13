@@ -25,17 +25,21 @@
       return miniMarker;
 
       function markerPopup(entityFeature){
+        var location = (markerUtils.parseLocation(entityFeature.properties)) ? '<p class="popup_location"><md-icon class="popup_icon" md-svg-src="./mediassets/images/location_icon_dark.svg"></md-icon>'+
+                markerUtils.parseLocation(entityFeature.properties)+
+                '</p>' : '';
         return  '<div class="popup"><div class="popup_top '+
                 markerUtils.classify(markerUtils.parseType(entityFeature.properties))+
                 '"><p class="popup_name">'+
                 markerUtils.parseName(entityFeature.properties)+
                 '</p><p class="popup_type">'+
                 markerUtils.parseType(entityFeature)+
-                '</p><p class="popup_time"><md-icon class="popup_icon" md-svg-src="./mediassets/images/update_icon.svg"></md-icon>'+
+                //'</p><p class="popup_time"><md-icon class="popup_icon" md-svg-src="./mediassets/images/update_icon.svg"></md-icon>'+ // md-icon fails?
+                '</p><p class="popup_time">'+
                 markerUtils.parseTime(entityFeature.properties)+
-                '</p></div><div class="popup_bottom"><p class="popup_location"><md-icon class="popup_icon" md-svg-src="./mediassets/images/location_icon_dark.svg"></md-icon>'+
-                markerUtils.parseLocation(entityFeature.properties)+
-                '</p><div class="popup_labels">'+
+                '</p></div><div class="popup_bottom">'+
+                location+
+                '<div class="popup_labels">'+
                 createTagsTemplate(markerUtils.parseLabels(entityFeature.properties))+
                 createTagsTemplate(markerUtils.parseUserTags(entityFeature.properties))+
                 '</div><div class="clearfix"></div></div></div>';

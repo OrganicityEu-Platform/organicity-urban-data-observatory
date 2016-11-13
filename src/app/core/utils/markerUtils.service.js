@@ -63,7 +63,7 @@
       }
 
       function parseLocation(object) {
-        if(!object.site) return;
+        if(!object.site || object.split == null) return;
 
         var location = '';
         // var locationSource = {};
@@ -207,7 +207,8 @@
           return label === targetLabel;
         });
       }
-
+      
+      /*
       function parseName(object) {
         var entityName = 'Unknown';
         if(!object.name) {
@@ -226,6 +227,24 @@
         }
         return entityName;
       }
+      */
+
+      function parseName(object) {
+        console.warn(object);
+        if(!object.id) {
+          return;
+        }
+
+        var entityName = object.id.split(":");
+
+        entityName = entityName.slice(4, entityName.length);
+        entityName = _.map(entityName, makeCase);
+
+        object.name = entityName.join(" ");
+
+        return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
+      }
+
 
       function parseTime(object) {
         var time = 'Unknown';
