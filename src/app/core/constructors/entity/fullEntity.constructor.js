@@ -50,7 +50,8 @@
           'location',
           // 'reputation',
           'TimeInstant',
-          'access:scope'
+          'access:scope',
+          'name'
         ]
 
         var sensors = _(this.data.types)
