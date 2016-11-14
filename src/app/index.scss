@@ -409,7 +409,7 @@ md-backdrop.md-noDataBackdrop {
     font-weight: 300;
   }
   a {
-    color: #35C2E5;
+    color: $organicity_pink;
     text-decoration: none;
   }
 }
@@ -2174,7 +2174,7 @@ path {
     }
     li.divider {
       background-color: white;
-      color: #35C2E5;
+      color: $organicity_pink;
       font-weight: bold;
       margin-left: 8px;
       margin-right: 38px;
