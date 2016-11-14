@@ -30,7 +30,6 @@
 
       ///////////////
       function parseName(object) {
-        console.warn(object);
         if(!object.id) {
           return;
         }
