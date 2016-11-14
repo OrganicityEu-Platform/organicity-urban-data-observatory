@@ -204,54 +204,44 @@
           </div>
           <div class="entity_detailed_content_container" layout="row">
             <div class="entity_detailed_avatar">
-              <img ng-src="{{ vm.entity.avatar || './mediassets/images/avatar.svg' }}"/>
+              <img ng-src="{{ vm.entity.avatar || './mediassets/images/avatar.svg' }}" />
             </div>
             <div class="entity_details_content_main" flex>
               <div class="entity_details_content">
-                <div class="details">
-                  <h3 class="entity_detailed_name entity_details_name">{{ vm.entity.name }}</h3>
-                  <p class="entity_details_location">
-                    <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/location_icon_normal.svg">
-                    </md-icon>
-                    <span>{{ vm.entity.location || 'No location' }}</span>
-                  </p>
-                <div class="extra">
-                  <p class="entity_details_type">
-                    <md-icon class="entity_detailed_icon_content"
-                             md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
-                    </md-icon>
-                    <span>{{ vm.entity.type }}</span>
-                    <span class="entity_details_id">
-                        <span>UUID:</span> <span class="entity_details_uuid">{{ vm.entity.uuid }}</span>
-                    </span>
-                  </p>
-                  <p class="entity_details_lastTime">
-                    <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/update_icon.svg">
-                    </md-icon>
-                    <span>{{ vm.entity.timeAgo }}</span>
-                  </p>
-                  <p class="entity_details_labels">
-                    <span ng-repeat="label in vm.entity.labels">{{ label }}</span>
-                    <span ng-repeat='tag in vm.entity.userTags'>{{ tag }}</span>
-                  </p>
-                  <div class="entity_details_description">
-                    <h4 class="entity_details_description_title">Resource description:</h4>
-                    <p class="entity_details_description_content">{{ vm.entity.description || 'This is a resource
-                      provided
-                      by ' + vm.entity.owner.username + '.'}}</p>
-                  </div>
+                <h3 class="entity_detailed_name entity_details_name">{{ vm.entity.name }}</h3>
+                <p class="entity_details_location">
+                  <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/location_icon_normal.svg">
+                  </md-icon>
+                  <span>{{ vm.entity.location || 'No location' }}</span>
+                </p>
+                <p class="entity_details_type">
+                  <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
+                  </md-icon>
+                  <span>{{ vm.entity.type }}</span>
+                  <span class="entity_details_id">
+                      <span>UUID:</span> <span class="entity_details_uuid">{{ vm.entity.uuid }}</span>
+                  </span>
+                </p>
+                <p class="entity_details_lastTime">
+                  <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/update_icon.svg">
+                  </md-icon>
+                  <span>Last updated {{ vm.entity.timeAgo }}</span>
+                </p>
+                <p class="entity_details_labels">
+                  <span ng-repeat="label in vm.entity.labels">{{ label }}</span>
+                  <span ng-repeat='tag in vm.entity.userTags'>{{ tag }}</span>
+                </p>
+                <div class="entity_details_description">
+                  <h4 class="entity_details_description_title">Resource description:</h4>
+                  <p class="entity_details_description_content">{{ vm.entity.description || 'This is a resource provided by ' + vm.entity.owner.username + '.'}}</p>
                 </div>
               </div>
             </div>
             <div class="entity_details_manage" ng-if="vm.entityBelongsToUser" flex>
               <div class="entity_details_manage_buttons">
-                <md-button ng-href="/entitites/new?step=2" class="entity_details_button_setup" aria-label="">SET UP
-                </md-button>
-                <md-button ng-href="/entitites/edit/{{vm.entity.id}}" class="entity_details_button_edit" aria-label="">
-                  EDIT
-                </md-button>
-                <md-button ng-click="vm.removeUser()" class="entity_details_button_delete" aria-label="">DELETE
-                </md-button>
+                <md-button ng-href="/entitites/new?step=2" class="entity_details_button_setup" aria-label="">SET UP</md-button>
+                <md-button ng-href="/entitites/edit/{{vm.entity.id}}" class="entity_details_button_edit" aria-label="">EDIT</md-button>
+                <md-button ng-click="vm.removeUser()" class="entity_details_button_delete" aria-label="">DELETE</md-button>
               </div>
               <div class="entity_details_manage_data">
                 <div class="entity_details_macaddress data_container">
@@ -286,10 +276,10 @@
               </div>
             </div>
             <div class="entity_details_notAuth" ng-if="!vm.entityBelongsToUser" flex>
-              <h3 class="entity_details_notAuth_title">Co-creating smart cities of the future</h3>
-              <small class="entity_details_notAuth_subheader">You're part of them? Join us!</small>
-              <p class="entity_details_notAuth_description">OrganiCity is a platform for interaction between everyone in the city. Citizens, activists, researchers, businesses, city government – everyone in the city can contribute. Through workshops, meetups, conferences and events, and online via discussion boards and other platforms, social media and a growing set of online tools, you can get involved to highlight the ways you think smart technology can help make your city a better place to live, work and play.</p> 
-              <md-button class="entity_details_notAuth_button">JOIN US</md-button>
+            <h3 class="entity_details_notAuth_title">Co-creating smart cities of the future</h3>
+            <small class="entity_details_notAuth_subheader">You're part of them? Join us!</small>
+            <p class="entity_details_notAuth_description">OrganiCity is a platform for interaction between everyone in the city. Citizens, activists, researchers, businesses, city government – everyone in the city can contribute. Through workshops, meetups, conferences and events, and online via discussion boards and other platforms, social media and a growing set of online tools, you can get involved to highlight the ways you think smart technology can help make your city a better place to live, work and play.</p>
+            <md-button class="entity_details_notAuth_button">JOIN US</md-button>
             </div>
           </div>
         </div>
@@ -361,10 +351,8 @@
                     <span ng-if="!vm.entity.owner.city && !vm.entity.owner.country">No location</span>
                   </span>
                 </p>
-                <p class="entity_owner_url">
-                  <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/url_icon_normal.svg">
-                  </md-icon>
-                  <a ng-href="{{ vm.entity.owner.url }}">{{ vm.entity.owner.url || 'No URL'}}</a>
+                <p style="line-height: 22px">
+                  {{ vm.entity.owner.description }}
                 </p>
               </div>
               <div ng-if="vm.ownerEntitites.length > 0" class="entity_owner_entitites">

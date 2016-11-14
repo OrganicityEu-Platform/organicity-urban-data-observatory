@@ -71,25 +71,25 @@
       }
 
       function parseLabels(object) {
-        var system_tags = [];
+        var systemTags = [];
+        var entityName;
 
-        if(!object.uuid) {
-          object.uuid = object.name || "no:name"; //tmp.
+        if(!object.name) {
+          object.name = object.id || 'no:name'; //tmp.
         }
 
-        system_tags.push((this.isOnline(object)) ? "online" : "offline");
+        systemTags.push((this.isOnline(object)) ? 'online' : 'offline');
 
-        var entityName = object.uuid.split(":");
+        entityName = object.id.split(':');
 
-        var source = entityName[3];
-        var origin = entityName[4];
+        var entityName = entityName.splice(3, entityName.length-1); // Remove urn header
+        var entityName = entityName.splice(0, entityName.length-1); // Remove urn entity name
 
-        // if(source) system_tags.push(source);
-        if(origin) system_tags.push(origin);
+        systemTags = systemTags.concat(entityName);
+
         /*jshint camelcase: false */
-        return system_tags;
+        return systemTags;
       }
-
 
       function parseUserTags(object) {
         var user_tags = ["organicity"]; //temp
@@ -128,11 +128,13 @@
         return {
           id: object.related.site.id,
           username: object.related.site.name,
+          description: object.related.site.description,
+
           /*jshint camelcase: false */
           // entitites: object.provider.entity_ids,
           city: object.context.position.city,
           country: COUNTRY_CODES[object.context.position.country_code],
-          // url: object.provider.url,
+          //url: object.provider.url,
           avatar: './mediassets/images/avatar.svg'
         };
       }
