@@ -138,15 +138,11 @@
 
           entityName = object.id.split(':');
 
-          var source = entityName[3];
-          var origin = entityName[4];
+          var entityName = entityName.splice(3, entityName.length-1); // Remove urn header
+          var entityName = entityName.splice(0, entityName.length-1); // Remove urn entity name
 
-          if(source) {
-            systemTags.push(source);
-          }
-          if(origin) {
-            systemTags.push(origin);
-          }
+          systemTags = systemTags.concat(entityName);
+
         }
         /*jshint camelcase: false */
         return systemTags;
@@ -155,6 +151,7 @@
       function parseUserTags(object) {
         var userTags = [];
 
+        /*
         if(!object.type) {
           return userTags;
         }
@@ -164,6 +161,7 @@
         if(entityType) {
           userTags.push(entityType[entityType.length-1]);
         }
+        */
 
         /*jshint camelcase: false */
         return userTags;

@@ -40,7 +40,7 @@
       }
 
       function callAPI() {
-	      return $http.jsonp('http://ipinfo.io/?callback=JSON_CALLBACK');
+	      return $http.jsonp('//ipinfo.io/?callback=JSON_CALLBACK');
       }
 
 			function grantHTML5Geolocation(){
