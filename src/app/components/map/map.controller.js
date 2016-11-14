@@ -135,7 +135,18 @@
            }, function(error){
              console.log(error);
            });
-         }
+         } else {
+            // This is tmp.
+            asset.getClusterGeoJSON().then(function(data) {
+                asset.setAllEntities(data);
+                vm.layers = {
+                   baselayers: mapUtils.getBaseLayers(),
+                   overlays: new Overlays(entitiesLayers, 'Asset Types')
+                };
+            }, function(error){
+              console.log(error);
+            });
+          }
          if (vm.controls.minimap) {
             vm.controls.minimap.toggleDisplay = (zoom >= 8) ? true : false;
          }

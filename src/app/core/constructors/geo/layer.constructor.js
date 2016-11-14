@@ -34,18 +34,25 @@
              myScope.$apply();
         }
 
-        function pointTolayer(obj) {
-            var icon = L.divIcon(markerUtils.getIcon(markerUtils.parseLabels(obj.properties)));
-            var c = obj.geometry.coordinates;
+        function pointTolayer(point) {
+            var c = point.geometry.coordinates;
             var d = [];
             d[0] = c[1];
             d[1] = c[0];
             return L.marker(d, {
-                icon: icon
+                icon: makeIcon(point)
             });
         }
 
-        function iconCreateFunction(cluster) {
+        function makeIcon(feature) {
+            if (isCluster(feature)) {  
+                return L.divIcon({html: '<div><span>' + feature.properties.count + '</span></div>', className: 'marker-cluster  marker-cluster-large', iconSize: new L.Point(40, 40) });
+            } else {
+                return L.divIcon(markerUtils.getIcon(markerUtils.parseLabels(feature.properties)));
+            }
+        }
+        
+        function iconCreateFunction(cluster) { // This is just for the auto-markers
             var childCount = cluster.getChildCount();
             var a = cluster.getAllChildMarkers();
             var c = ' marker-cluster-';
@@ -64,29 +71,38 @@
         }
 
         function onEachFeature(feature, layer) {
-            var marker = new miniMarker(feature);
-            layer.bindPopup(marker.popupHtml);
-            layer.on({
-                click: function() {
-                    if(layer.feature.properties.id.indexOf('site') == -1) {
+            if (isCluster(feature)) {  
+                layer.icon = 'tag';       
+                layer.on({
+                    click: function() {
+                        // This is cluster, zoom to it.
+                        var center = {
+                            lat: layer.feature.geometry.coordinates[1],
+                            lng: layer.feature.geometry.coordinates[0],
+                            zoom: 11
+                        }
+                        $rootScope.$broadcast('centerMap', {center: center});
+                    }
+                });
+            } else {
+                var marker = new miniMarker(feature);
+                layer.bindPopup(marker.popupHtml);  
+                layer.on({
+                    click: function() {
                         // This is an asset, zoom to it.
                         $state.transitionTo('layout.home.entity', { id: layer.feature.properties.id} ,
                         { 
                           reload: false,
                           inherit: true,
                           notify: true
-                        });       
-                    } else {
-                        // This is cluster, zoom to it.
-                        var center = {
-                            lat: layer.feature.geometry.coordinates[1],
-                            lng: layer.feature.geometry.coordinates[0],
-                            zoom: 9
-                        }
-                        $rootScope.$broadcast('centerMap', {center: center});
+                        });  
                     }
-                  }
-            });
+                });
+            }
+        }
+
+        function isCluster(feature) {
+            return (feature.properties.id.indexOf('site') == -1) ? false : true;
         }
 
         function camelize(str) {

@@ -27,7 +27,8 @@
       function markerPopup(entityFeature){
         var location = (markerUtils.parseLocation(entityFeature.properties)) ? '<p class="popup_location"><md-icon class="popup_icon" md-svg-src="./mediassets/images/location_icon_dark.svg"></md-icon>'+
                 markerUtils.parseLocation(entityFeature.properties)+
-                '</p>' : '';
+                '</p>' : ''; // This is tmp. We need a better constructor.
+                
         return  '<div class="popup"><div class="popup_top '+
                 markerUtils.classify(markerUtils.parseType(entityFeature.properties))+
                 '"><p class="popup_name">'+
