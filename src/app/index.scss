@@ -1104,9 +1104,12 @@ section .entity_menu {
     margin: 0 auto;
     padding-bottom: 30px;
   }
+  .entity_reputation {
+    background-color: #F5F5F5;
+  }
   .entity_owner {
     color: $font_color_blue_grey;
-    background-color: #F5F5F5;
+    background-color: #FFFFFF;
 
     .container {
       width: 95%;

@@ -33,6 +33,8 @@
       vm.entity = entityData;
       vm.geolocate = geolocate;
 
+      vm.isAuth = auth.isAuth();
+
       // vm.ownerEntitites = ownerEntitites;
       // vm.entityBelongsToUser = belongsToUser;
       vm.removeUser = removeUser;
