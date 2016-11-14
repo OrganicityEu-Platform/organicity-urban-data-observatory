@@ -1,13 +1,13 @@
 <div class="navbar_container">
   <md-toolbar layout="row" layout-align="end center" class="stickNav">
     <a href="/" class="logo_link">
-      <md-icon md-svg-src="./assets/images/organicity-pink.svg"
+      <md-icon md-svg-src="./mediassets/images/organicity-pink.svg"
                alt="Insert Drive Icon" class="logo_icon">
       </md-icon>
     </a>
     <section layout="row" class="nav_left" layout-align="space-around center">
       <md-button ng-show="vm.isShown" href="/" class="md-flat full_height map">
-        <md-icon md-svg-src="./assets/images/map_icon.svg" class="nav_icon">
+        <md-icon md-svg-src="./mediassets/images/map_icon.svg" class="nav_icon">
         </md-icon>
         <span>Map</span>
       </md-button>
@@ -15,7 +15,7 @@
           dropdown-menu="vm.dropdownOptionsCommunity"
           dropdown-model="vm.dropdownSelectedCommunity"
           dropdown-item-label="text" layout="row" layout-align="center center">
-        <md-icon md-svg-src="./assets/images/community_icon.svg" class="nav_icon">
+        <md-icon md-svg-src="./mediassets/images/community_icon.svg" class="nav_icon">
         </md-icon>
         <span>Community</span>
       </md-button>
@@ -32,7 +32,7 @@
       <md-button ng-show="vm.isShown && vm.isLoggedin" class="md-flat navbar_avatar_button" aria-label="" dropdown-menu="vm.dropdownOptions"
           dropdown-model="vm.dropdownSelected"
           dropdown-item-label="text">
-        <img class="navbar_avatar_icon" ng-src="{{ vm.currentUser.avatar || './assets/images/avatar.svg' }}" />
+        <img class="navbar_avatar_icon" ng-src="{{ vm.currentUser.avatar || './mediassets/images/avatar.svg' }}" />
       </md-button>
     </section>
   </md-toolbar>

@@ -4,7 +4,7 @@
   angular.module('app.components')
     .factory('historicalAPI', function(Restangular) {
       return Restangular.withConfig(function(RestangularConfigurer) {
-        RestangularConfigurer.setBaseUrl('http://dev.server.organicity.eu:12345/api/v1');
+        RestangularConfigurer.setBaseUrl('http://london.site.organicity.eu:8081/api/v1/');
       });
     });
 

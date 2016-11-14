@@ -1,11 +1,11 @@
 <section class="myProfile_state">
   <div class="profile_header myProfile_header">
     <div class="myProfile_header_container" layout="row">
-      <img ng-src="{{ vm.user.avatar || './assets/images/avatar.svg' }}" class="profile_header_avatar myProfile_header_avatar" />
+      <img ng-src="{{ vm.user.avatar || './mediassets/images/avatar.svg' }}" class="profile_header_avatar myProfile_header_avatar" />
       <div class="profile_header_content">
         <div class="profile_header_name">{{ vm.user.username || 'No data' }}</div>
         <div class="profile_header_location">
-          <md-icon md-svg-src="./assets/images/location_icon_light.svg" class="profile_header_content_avatar"></md-icon>
+          <md-icon md-svg-src="./mediassets/images/location_icon_light.svg" class="profile_header_content_avatar"></md-icon>
           <span>
             <span ng-if="vm.user.city">{{ vm.user.city }}</span>
             <span ng-if="vm.user.city && vm.user.country">,</span>
@@ -14,7 +14,7 @@
           </span>
         </div>
         <div class="profile_header_url">
-          <md-icon md-svg-src="./assets/images/url_icon_light.svg" class="profile_header_content_avatar"></md-icon>
+          <md-icon md-svg-src="./mediassets/images/url_icon_light.svg" class="profile_header_content_avatar"></md-icon>
           <a ng-href="{{ vm.user.url ||  'http://example.com' }}">{{ vm.user.url ||  'No data' }}</a>
         </div>
       </div>
@@ -25,7 +25,7 @@
       <md-tab label md-on-select="vm.highlightIcon(0)" analytics-on="click"
         analytics-event="Profile" analytics-action="profile">
         <md-tab-label>
-          <md-icon md-svg-src="./assets/images/user_details_icon.svg" class="myProfile_tab_icon"></md-icon>
+          <md-icon md-svg-src="./mediassets/images/user_details_icon.svg" class="myProfile_tab_icon"></md-icon>
           <span>PROFILE</span>
         </md-tab-label>
         <md-tab-body>
@@ -36,18 +36,18 @@
                 A complete profile helps us to bring to you a better experience. Please, take your time completing all fields.
               </p>
               <md-button ng-click="" class="profile_sidebar_button myProfile_sidebar_button">
-                <md-icon md-svg-src="./assets/images/support_icon_blue.svg" class="profile_sidebar_avatar"></md-icon>
+                <md-icon md-svg-src="./mediassets/images/support_icon_blue.svg" class="profile_sidebar_avatar"></md-icon>
                 <span>Support</span>
               </md-button>
               <md-button ng-click="" class="profile_sidebar_button myProfile_sidebar_button">
-                <md-icon md-svg-src="./assets/images/community_icon_blue.svg" class="profile_sidebar_avatar"></md-icon>
+                <md-icon md-svg-src="./mediassets/images/community_icon_blue.svg" class="profile_sidebar_avatar"></md-icon>
                 <span>Community</span>
               </md-button>
             </div>
             <div class="profile_content_main" flex>
               <div class="myProfile_content_form">
                 <div class="myProfile_form_avatar" layout="row" layout-align="start center">
-                  <img ng-src="{{ vm.user.avatar || './assets/images/avatar.svg' }}" class="myProfile_form_avatarImage" />
+                  <img ng-src="{{ vm.user.avatar || './mediassets/images/avatar.svg' }}" class="myProfile_form_avatarImage" />
                   <md-button class="myProfile_form_avatarButton" ngf-select ngf-change="vm.uploadAvatar($files)">CHANGE AVATAR</md-button>
                 </div>
                 <form ng-submit="vm.updateUser(vm.formUser)">
@@ -129,11 +129,11 @@
                 </form>
                 <div class="clearfix"></div>
                 <div class="myProfile_apiKey" layout="row" layout-align="start center">
-                  <md-icon md-svg-src="./assets/images/key_icon.svg" class="myProfile_tab_icon"></md-icon>
+                  <md-icon md-svg-src="./mediassets/images/key_icon.svg" class="myProfile_tab_icon"></md-icon>
                   <span class="myProfile_apiKey_text">API Key:</span>
                   <div class="myProfile_apiKey_number">{{ vm.user.key }}</div>
                   <md-button class="myProfile_apiKey_refreshButton md-flat" type="button" aria-label>
-                    <md-icon md-svg-src="./assets/images/refresh_icon_white.svg" class="profile_sidebar_avatar"></md-icon>
+                    <md-icon md-svg-src="./mediassets/images/refresh_icon_white.svg" class="profile_sidebar_avatar"></md-icon>
                   </md-button>
                 </div>
                 <div class="clearfix"></div>
@@ -147,7 +147,7 @@
       <md-tab label md-on-select="vm.highlightIcon(1)" analytics-on="click"
         analytics-event="Profile" analytics-action="entitites">
         <md-tab-label>
-          <md-icon md-svg-src="./assets/images/entity_details_icon_light.svg" class="myProfile_tab_icon"></md-icon>
+          <md-icon md-svg-src="./mediassets/images/entity_details_icon_light.svg" class="myProfile_tab_icon"></md-icon>
           <span>entitites</span>
         </md-tab-label>
         <md-tab-body>
@@ -181,15 +181,15 @@
                 <md-button ng-href="./entitites/{{entity.id}}" class="entityList entityList_secondary" ng-class="{entityList_borderBottom: $last}" layout="row" layout-align="start center">
                   <div class="entityList_container" layout="row" layout-align="start center">
                     <div class="">
-                      <img class="entityList_avatar" ng-src="{{ entity.avatar || './assets/images/avatar.svg' }}" />
+                      <img class="entityList_avatar" ng-src="{{ entity.avatar || './mediassets/images/avatar.svg' }}" />
                     </div>
                     <div class="entityList_content">
                       <div class="entityList_name">{{ entity.name || 'No name' }}</div>
                       <div class="entityList_data">
-                        <md-icon class="entityList_icon" md-svg-src="./assets/images/location_icon_light.svg">
+                        <md-icon class="entityList_icon" md-svg-src="./mediassets/images/location_icon_light.svg">
                         </md-icon>
                         <span>{{ entity.location || 'No location' }}</span>
-                        <md-icon class="entityList_icon" md-svg-src="./assets/images/sensor_icon.svg">
+                        <md-icon class="entityList_icon" md-svg-src="./mediassets/images/sensor_icon.svg">
                         </md-icon>
                         <span>{{ entity.type }}</span>
                       </div>
@@ -212,7 +212,7 @@
                     dropdown-menu="entity.dropdownOptions"
                     dropdown-model="vm.dropdownSelected"
                     dropdown-item-label="text">
-                      <img src="./assets/images/config_icon.svg" />
+                      <img src="./mediassets/images/config_icon.svg" />
                   </md-button>
                 </div>
               </div>
@@ -230,7 +230,7 @@
       <md-tab label md-on-select="vm.highlightIcon(2)" analytics-on="click"
         analytics-event="Profile" analytics-action="tools">  <!-- md-on-deselect="vm.unhighlightIcon(2)" -->
         <md-tab-label>
-          <md-icon md-svg-src="./assets/images/support_icon_white.svg" class="myProfile_tab_icon"></md-icon>
+          <md-icon md-svg-src="./mediassets/images/support_icon_white.svg" class="myProfile_tab_icon"></md-icon>
           <span>TOOLS</span>
         </md-tab-label>
         <md-tab-body>
@@ -253,7 +253,7 @@
                   <md-button ng-href="{{tool.href}}" class="entityList entityList_primary" layout="row" layout-align="start center">
                     <div class="entityList_container" layout="row" layout-align="start center">
                       <div class="">
-                        <md-icon class="entityList_avatar" md-svg-src="{{ tool.avatar || './assets/images/user_details_icon.svg'}}">
+                        <md-icon class="entityList_avatar" md-svg-src="{{ tool.avatar || './mediassets/images/user_details_icon.svg'}}">
                         </md-icon>
                       </div>
                       <div class="entityList_content">

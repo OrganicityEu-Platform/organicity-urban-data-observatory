@@ -409,7 +409,7 @@ md-backdrop.md-noDataBackdrop {
     font-weight: 300;
   }
   a {
-    color: #35C2E5;
+    color: $organicity_pink;
     text-decoration: none;
   }
 }
@@ -619,9 +619,16 @@ section .entity_menu {
       height: 14px;
       margin-right: 8px;
     }
+
     span {
       vertical-align: middle;
     }
+
+    ul li{
+      list-style: none;
+      float: left;
+    }
+
   }
 
   .entity_battery {
@@ -754,7 +761,7 @@ section .entity_menu {
   font-size: 24px;
  }
 .entity_details_notAuth_subheader {
-  color: #00637C;
+  color: $organicity_pink_5;
   font-size: 14px;
 }
 .entity_details_notAuth_button {
@@ -1097,9 +1104,12 @@ section .entity_menu {
     margin: 0 auto;
     padding-bottom: 30px;
   }
+  .entity_reputation {
+    background-color: #F5F5F5;
+  }
   .entity_owner {
     color: $font_color_blue_grey;
-    background-color: #F5F5F5;
+    background-color: #FFFFFF;
 
     .container {
       width: 95%;
@@ -1522,7 +1532,7 @@ section .stickMenu {
   .store_itemDescription {
     ul {
       padding-left: 18px;
-      list-style-image: url('../assets/images/sucesses_icon.png');
+      list-style-image: url('../mediassets/images/sucesses_icon.png');
       list-style-position: inherit;
       font-size: 14px;
       line-height: 1.8em;
@@ -1562,7 +1572,7 @@ section .stickMenu {
 
   .img_claim {
     height: 270px;
-    background-image: url('../assets/images/beta_claim.jpg');
+    background-image: url('../mediassets/images/beta_claim.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center 260px;
@@ -1883,6 +1893,7 @@ section .stickMenu {
 .popup_top {
   height: 72px;
   border-radius: 2px 2px 0 0;
+  background: $organicity_pink;
 
   .popup_name {
     padding: 0 0 1px 8px;
@@ -2163,7 +2174,7 @@ path {
     }
     li.divider {
       background-color: white;
-      color: #35C2E5;
+      color: $organicity_pink;
       font-weight: bold;
       margin-left: 8px;
       margin-right: 38px;

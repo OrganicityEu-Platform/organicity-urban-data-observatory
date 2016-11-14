@@ -9,14 +9,14 @@
       'utils', 'sensor', '$mdDialog',
       // 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
-      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'asset', 'HasSensorEntity', 'geolocation'];
+      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'asset', 'HasSensorEntity', 'geolocation', 'annotation'];
 
     function entityController($state, $scope, $stateParams, entityData,
       // ownerEntitites,
       utils, sensor, $mdDialog,
       // belongsToUser,
       timeUtils, animation, $location, auth, entityUtils, userUtils,
-      $timeout, mainSensors, compareSensors, alert, $q, asset, HasSensorEntity, geolocation) {
+      $timeout, mainSensors, compareSensors, alert, $q, asset, HasSensorEntity, geolocation, annotation) {
 
       var vm = this;
       var sensorsData = [];
@@ -32,6 +32,8 @@
 
       vm.entity = entityData;
       vm.geolocate = geolocate;
+
+      vm.isAuth = auth.isAuth();
 
       // vm.ownerEntitites = ownerEntitites;
       // vm.entityBelongsToUser = belongsToUser;
@@ -58,7 +60,6 @@
         vm.selectedSensorToCompareData = {};
         vm.chartDataCompare = [];
         compareSensorID = undefined;
-
         if(vm.sensors){
           vm.sensors.forEach(function(sensor) {
             if(sensor.uuid === newVal) {
@@ -125,6 +126,22 @@
               geolocate();
             }
           }
+          console.log(vm.entity);
+          initReputation();
+        }
+      }
+
+      function findHistoricalUri(){
+        var sensorEntity = vm.sensors ? vm.sensors.filter(function(sensorEnt) {
+          return sensorEnt.id === 'urn:oc:attributeType:datasource'
+        }) : [];
+        if(!sensorEntity[0]) {
+          return;
+        }
+        else {
+          console.log(sensorEntity);
+          sensorEntity = sensorEntity.pop();
+          return sensorEntity.value;
         }
       }
 
@@ -167,15 +184,18 @@
         //show spinner
         vm.loadingChart = true;
         //grab chart data and save it
-
         // it can be either 2 sensors or 1 sensor, so we use $q.all to wait for all
         $q.all(
           _.map(sensorsID, function(sensorID) {
             var id = vm.entity.uuid;//$stateParams.id
-            return getChartData(id, sensorID, options.from, options.to)
+
+            var chartData = getChartData(id, sensorID, options.from, options.to)
+            if(typeof chartData != 'undefined') {
+              return chartData
               .then(function(data) {
-                return data;
+                return data.data;
               });
+            }
           })
         ).then(function() {
           // after all sensors resolve, prepare data and attach it to scope
@@ -185,7 +205,9 @@
       }
       // calls api to get sensor data and saves it to sensorsData array
       function getChartData(entityID, sensorID, dateFrom, dateTo, options) {
-        return sensor.getSensorsDataNew(entityID, sensorID, dateFrom, dateTo)
+        var sensorsHistoricalData = sensor.getSensorsDataNew(entityID, sensorID, dateFrom, dateTo);
+        if(typeof sensorsHistoricalData != 'undefined') {
+          return sensorsHistoricalData
           .then(function(data) {
             sensorsData[sensorID] = data.data;
             return data;
@@ -193,12 +215,12 @@
             sensorsData[sensorID] = [];
             return data;
           });
+        }
       }
 
       function prepareChartData(sensorsID) {
         var compareSensor;
         var parsedDataMain = parseSensorData(sensorsData, sensorsID[0]);
-
         if(parsedDataMain.length === 0) { //tmp. quick fix
           vm.hasHistorical = false;
         } else {
@@ -223,10 +245,10 @@
       }
 
       function parseSensorData(data, sensorID) {
-        if(data[sensorID].length === 0) {
+        if((typeof data[sensorID] === 'undefined') || (data[sensorID].length === 0)) {
           return [];
         }
-        return data[sensorID].map(function(dataPoint) {
+        return data[sensorID].readings.map(function(dataPoint) {
           var time = moment(new Date(dataPoint.datetime)).format('YYYY-MM-DD[T]HH:mm:ss[Z]'); //tmp. ensure validation
           var value = Number(dataPoint.value);
           var count = value === null ? 0 : value;
@@ -489,5 +511,203 @@
           });
         }
       }
+
+      /* Reputation Module */
+
+      vm.reputation=undefined; //todo load reputation asset attribute to vm object
+      vm.stars=5;
+      vm.like = undefined;
+      vm.reliability = undefined;
+      vm.availability = undefined;
+      vm.usability = undefined;
+
+      function initReputation() {
+        setTimeout(function() {
+          // getReliability();
+          // getAvailability();
+          // getUsability();
+          // getLike();
+          updateReputation();    
+        }, 750);
+      }
+
+      function watchReliability() {
+        $scope.$watch('vm.reliability', function (newVal, oldVal) {
+          if (oldVal == newVal) return;
+          if (newVal == undefined) return;
+          var annotationObject = {
+            annotationId: null,
+            application: 'urn:oc:application:reputation',
+            assetUrn: vm.entity.uuid,
+            datetime: null,
+            numericValue: vm.reliability,
+            tagUrn: 'urn:oc:tag:Reliability:Score',
+            textValue: 'No Text Value',
+            user: 'UserA'
+          }
+          annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
+            function (response) {
+              console.log("annotation completed");
+            },
+            function (response) {
+              console.log("failed");
+            });
+        });
+      }
+
+      function getReliability() {
+        annotation.getAnnotation(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tag:Reliability:Score').then( //todo fix user
+          function (response) {
+            console.log(response);
+            if (response.numericValue != undefined) {
+              vm.reliability = response.numericValue;
+            }
+            watchReliability();
+          },
+          function (response) {
+            console.log(response);
+            watchReliability()
+          });
+      }
+
+      function watchAvailability() {
+        $scope.$watch('vm.availability', function (newVal, oldVal) {
+          if (oldVal == newVal) return;
+          if (newVal == undefined) return;
+          var annotationObject = {
+            annotationId: null,
+            application: 'urn:oc:application:reputation',
+            assetUrn: vm.entity.uuid,
+            datetime: null,
+            numericValue: vm.availability,
+            tagUrn: 'urn:oc:tag:Availability:Score',
+            textValue: 'No Text Value',
+            user: 'UserA'
+          }
+          annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
+            function (response) {
+              console.log("annotation completed");
+            },
+            function (response) {
+              console.log("failed");
+            });
+        });
+      }
+
+      function getAvailability() {
+        annotation.getAnnotation(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tag:Availability:Score').then( //todo fix user
+          function (response) {
+            console.log(response);
+            if (response.numericValue != undefined) {
+              vm.availability = response.numericValue;
+            }
+            watchAvailability();
+          },
+          function (response) {
+            console.log(response);
+            watchAvailability()
+          });
+      }
+
+      function watchUsability() {
+        $scope.$watch('vm.usability', function (newVal, oldVal) {
+          if (oldVal == newVal) return;
+          if (newVal == undefined) return;
+          var annotationObject = {
+            annotationId: null,
+            application: 'urn:oc:application:reputation',
+            assetUrn: vm.entity.uuid,
+            datetime: null,
+            numericValue: vm.usability,
+            tagUrn: 'urn:oc:tag:Usability:Score',
+            textValue: 'No Text Value',
+            user: 'UserA'
+          }
+          annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
+            function () {
+              console.log("annotation completed");
+            },
+            function () {
+              console.log("failed");
+            });
+        });
+      }
+
+      function getUsability() {
+        annotation.getAnnotation(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tag:Usability:Score').then( //todo fix user
+          function (response) {
+            console.log(response);
+            if (response.numericValue != undefined) {
+              vm.usability = response.numericValue;
+            }
+            watchUsability();
+          },
+          function (response) {
+            console.log(response);
+            watchUsability()
+          });
+      }
+
+      function watchLike() {
+        $scope.$watch('vm.like', function (newVal, oldVal) {
+          if (oldVal == newVal) return;
+          if (newVal == undefined) return;
+          var tag = 'urn:oc:tag:DirectFeedback:Like';
+          if (newVal == 'false') {
+            tag = 'urn:oc:tag:DirectFeedback:Dislike';
+          }
+          var annotationObject = {
+            annotationId: null,
+            application: 'urn:oc:application:reputation',
+            assetUrn: vm.entity.uuid,
+            datetime: null,
+            numericValue: undefined,
+            tagUrn: tag,
+            textValue: 'No Text Value',
+            user: 'UserA'
+          }
+          annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
+            function (response) {
+              console.log("annotation completed");
+            },
+            function (response) {
+              console.log("failed" + response);
+            });
+        });
+      }
+
+      function getLike() {
+        annotation.getAnnotationForApplication(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tagDomain:DirectFeedback').then( //todo fix user
+          function (response) {
+            console.log(response);
+            if (response.tagUrn != undefined) {
+              if (response.tagUrn == 'urn:oc:tag:DirectFeedback:Dislike')
+                vm.like = 'false';
+              else
+                vm.like = 'true';
+            }
+            watchLike();
+          },
+          function (response) {
+            console.log(response);
+            vm.like = undefined;
+            watchLike();
+          });
+      }
+
+      function updateReputation(){
+        if (vm.sensors) {
+          for (var sensor in vm.sensors) {
+            if (vm.sensors[sensor].uuid == 'urn_oc_attributeType_reputation') {
+                vm.reputation=vm.sensors[sensor].value;
+                vm.stars= Math.floor(vm.reputation/5);
+                console.log(vm.stars);
+            }
+          }
+        }
+      }
+
+      /* ENDS Reputation Module */
+
     }
 })();

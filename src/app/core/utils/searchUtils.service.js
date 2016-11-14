@@ -63,9 +63,9 @@
       function parseIcon(object, type) {
         switch(type) {
           case 'name':
-            return 'assets/images/entity.svg';
+            return 'mediassets/images/entity.svg';
           case 'location':
-            return 'assets/images/location_icon_normal.svg';
+            return 'mediassets/images/location_icon_normal.svg';
         }
       }
 

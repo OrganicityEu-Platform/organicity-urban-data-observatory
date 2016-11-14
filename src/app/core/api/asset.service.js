@@ -21,7 +21,8 @@
         getWorldMarkers: getWorldMarkers,
         setWorldMarkers: setWorldMarkers,
 				getClusterGeoJSON: getClusterGeoJSON,
-        getGeoJSON: getGeoJSON
+        getGeoJSON: getGeoJSON,
+        getGeoJSONSite: getGeoJSONSite
 	  	};
 
 	  	return service;
@@ -65,10 +66,14 @@
 				return assetsAPI.one('assets/metadata/search').get({'page': '1', 'per': '100', 'query': query});
 			}
 
+			function getGeoJSONSite(site) {
+				var endpoint = 'assets/sites/' + site + '/geo';
+        return assetsAPI.one(endpoint).get();
+			}
+
 			function getGeoJSON(params) {
 				var endpoint = 'assets/geo/search';
 				return  assetsAPI.one(endpoint).get(params);
-
 			}
 
       function getClusterGeoJSON() {
@@ -94,6 +99,7 @@
 					var data = $q.all(devices).then(function(devices) {
 						return '{ "type": "FeatureCollection", "properties": { "name": "urn:oc:assettype:clusters"}, "features": [' + getGeoDevices(devices) + ']}';
 					});
+					console.log(data);
 					return data;
       }
 

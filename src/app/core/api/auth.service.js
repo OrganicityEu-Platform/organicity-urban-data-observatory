@@ -130,7 +130,6 @@
       }
 
       function callback() {
-        console.log('HALLO!! HALLO!!');
         console.log($location.$$hash);
         var token = $location.$$hash.split('&')[1].slice(13);
         window.localStorage.setItem('organicity.token', JSON.stringify(token) );
@@ -163,7 +162,7 @@
                                 role: '',
                                 name: jwtDecoded.name,
                                 username: jwtDecoded.preferred_username,
-                                avatar: './assets/images/avatar.svg',
+                                avatar: './mediassets/images/avatar.svg',
                                 url: '',
                                 location: { city: 'null', country: 'null', country_code: 'null'},
                                 email: jwtDecoded.email,

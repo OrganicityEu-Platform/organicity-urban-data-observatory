@@ -3,13 +3,16 @@
     <section class="overlay" ng-if="!vm.entity"></section>
     <div class="container" layout="row" layout-align="space-between center">
       <div>
+        <!--    
         <div class="entity_user" layout="row" layout-align="start center">
-          <img ng-src="{{ vm.entity.owner.avatar || './assets/images/avatar.svg'}}"/>
-          <a href="./users/{{vm.entity.owner.id}}"><span>{{ vm.entity.owner.username}}</span></a>
-        </div>
+          <img ng-src="{{ vm.entity.owner.avatar || './mediassets/images/avatar.svg'}}"/>
+          <a href="./provider/{{vm.entity.owner.id}}"><span>{{ vm.entity.owner.username}}</span></a>
+        </div> 
+        -->
         <div class="entity_name" layout="row" layout-align="start center">
-          <img ng-src="./assets/images/sensor_icon.svg"/>
+          <img ng-src="./mediassets/images/sensor_icon.svg"/>
           <span>{{ vm.entity.name }}</span>
+          <input-stars max="5"  ng-model="vm.stars" readonly="true" ></input-stars>
         </div>
       </div>
       <div class="entity_time" layout="row" layout-align="start center">
@@ -20,35 +23,35 @@
         <md-button href="#" class="md-flat chart_icon" aria-label=""
                    analytics-on="click" analytics-category="entity Detail Section Button"
                    analytics-event="click" analytics-label="Chart">
-          <md-icon md-svg-src="./assets/images/chart_icon.svg">
+          <md-icon md-svg-src="./mediassets/images/chart_icon.svg">
           </md-icon>
         </md-button>
 
         <md-button href="#" class="md-flat entity_details_icon" aria-label=""
                    analytics-on="click" analytics-category="entity Detail Section Button"
                    analytics-event="click" analytics-label="entity">
-          <md-icon md-svg-src="./assets/images/entity_details_icon_light.svg">
+          <md-icon md-svg-src="./mediassets/images/entity_details_icon_light.svg">
           </md-icon>
         </md-button>
 
         <md-button href="#" class="md-flat user_details" aria-label=""
                    analytics-on="click" analytics-category="entity Detail Section Button"
                    analytics-event="click" analytics-label="User">
-          <md-icon md-svg-src="./assets/images/user_details_icon.svg">
+          <md-icon md-svg-src="./mediassets/images/user_details_icon.svg">
           </md-icon>
         </md-button>
 
         <md-button href="#" class="md-flat discussion_icon" aria-label=""
                    analytics-on="click" analytics-category="entity Detail Section Button"
                    analytics-event="click" analytics-label="Comments">
-          <md-icon md-svg-src="./assets/images/discussion_icon.svg">
+          <md-icon md-svg-src="./mediassets/images/discussion_icon.svg">
           </md-icon>
         </md-button>
 
         <!--<md-button href="" class="md-flat shape_icon entity_owner_dropdown_button" aria-label="" dropdown-menu="vm.dropdownOptions"
             dropdown-model="vm.dropdownSelected"
             dropdown-item-label="text">
-          <md-icon md-svg-src="./assets/images/shape_icon.svg">
+          <md-icon md-svg-src="./mediassets/images/shape_icon.svg">
           </md-icon>
         </md-button>-->
 
@@ -74,7 +77,7 @@
     <section class="entity_overview">
       <md-button ng-click="vm.slide('right')" class="md-flat button_scroll button_scroll_left" layout="column"
                  layout-align="center center" aria-label="">
-        <md-icon md-svg-src="./assets/images/arrow_left_icon.svg">
+        <md-icon md-svg-src="./mediassets/images/arrow_left_icon.svg">
         </md-icon>
       </md-button>
       <div class="sensors_container" layout="row" layout-align="center center" horizontal-scroll>
@@ -94,7 +97,7 @@
       </div>
       <md-button ng-click="vm.slide('left')" class="md-flat button_scroll button_scroll_right" layout="column"
                  layout-align="center center" aria-label="">
-        <md-icon md-svg-src="./assets/images/arrow_right_icon.svg">
+        <md-icon md-svg-src="./mediassets/images/arrow_right_icon.svg">
         </md-icon>
       </md-button>
     </section>
@@ -119,7 +122,7 @@
             <div style="color: {{ vm.selectedSensorData.color }};" class="sensor_data" show-popup-info>
               <span class="sensor_value">{{ vm.selectedSensorData.value }}</span>
               <span class="sensor_unit">{{ vm.selectedSensorData.unit }}</span>
-              <!--                 <md-icon md-svg-src="./assets/images/alert_icon.svg" alt="Insert Drive Icon" class="sensor_data_icon" show-popup-info></md-icon> -->
+              <!--                 <md-icon md-svg-src="./mediassets/images/alert_icon.svg" alt="Insert Drive Icon" class="sensor_data_icon" show-popup-info></md-icon> -->
             </div>
             <div class="sensor_data_description" hide-popup-info>This is the latest value received</div>
             <div class="sensor_description">
@@ -150,7 +153,7 @@
           <div class="entity_chart_right" flex>
             <div class="chart_navigation" layout="row" layout-align="end center">
               <span class="entity_time" layout="row" layout-align="center center">
-                <md-icon class="entity_time_icon" md-svg-src="./assets/images/update_icon.svg"></md-icon>
+                <md-icon class="entity_time_icon" md-svg-src="./mediassets/images/update_icon.svg"></md-icon>
                 <span>{{ vm.entity.timeAgo }}</span>
               </span>
               <div class="picker_container" layout="row" layout-align="center center">
@@ -164,12 +167,12 @@
               <div class="chart_move" layout="row" layout-align="center center">
                 <md-button href="#" ng-click="vm.moveChart('left')" class="chart_move_button chart_move_left"
                            aria-label="" layout="row" layout-align="center center">
-                  <md-icon md-svg-src="./assets/images/arrow_left_icon.svg">
+                  <md-icon md-svg-src="./mediassets/images/arrow_left_icon.svg">
                   </md-icon>
                 </md-button>
                 <md-button href="#" ng-click="vm.moveChart('right')" class="chart_move_button chart_move_right"
                            aria-label="" layout="row" layout-align="center center">
-                  <md-icon md-svg-src="./assets/images/arrow_right_icon.svg"> <!-- ng-disabled="vm.toPickerDisabled" -->
+                  <md-icon md-svg-src="./mediassets/images/arrow_right_icon.svg"> <!-- ng-disabled="vm.toPickerDisabled" -->
                   </md-icon>
                 </md-button>
               </div>
@@ -195,40 +198,27 @@
       <section class="entity_details" ng-if="vm.entity">
         <div class="entity_detailed_content_container">
           <div class="entity_detailed_title_container">
-            <md-icon class="entity_detailed_icon_title" md-svg-src="./assets/images/entity_details_icon_normal.svg">
+            <md-icon class="entity_detailed_icon_title" md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
             </md-icon>
             <h2 class="entity_detailed_title">DETAILS</h2>
           </div>
           <div class="entity_detailed_content_container" layout="row">
             <div class="entity_detailed_avatar">
-              <img ng-src="{{ vm.entity.avatar || './assets/images/avatar.svg' }}"/>
+              <img ng-src="{{ vm.entity.avatar || './mediassets/images/avatar.svg' }}"/>
             </div>
             <div class="entity_details_content_main" flex>
               <div class="entity_details_content">
                 <div class="details">
                   <h3 class="entity_detailed_name entity_details_name">{{ vm.entity.name }}</h3>
                   <p class="entity_details_location">
-                    <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/location_icon_normal.svg">
+                    <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/location_icon_normal.svg">
                     </md-icon>
                     <span>{{ vm.entity.location || 'No location' }}</span>
                   </p>
-
-
-                  <md-radio-group ng-model="vm.like">
-                    <md-radio-button value="true">Like</md-radio-button>
-                    <md-radio-button value="false"> Dislike</md-radio-button>
-                  </md-radio-group>
-                  <input-stars max="5"  ng-model="vm.reputation" readonly="true" ></input-stars>
-                </div>
-                <div class="slider">
-                  <md-slider md-discrete ng-model="vm.reliability" step="1" min="1" max="10"> Reliability</md-slider>
-                  <md-slider md-discrete ng-model="vm.availability" step="1" min="1" max="10"> Availability</md-slider>
-                  <md-slider md-discrete ng-model="vm.usability" step="1" min="1" max="10"> Usability</md-slider>
-                </div>
                 <div class="extra">
                   <p class="entity_details_type">
                     <md-icon class="entity_detailed_icon_content"
-                             md-svg-src="./assets/images/entity_details_icon_normal.svg">
+                             md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
                     </md-icon>
                     <span>{{ vm.entity.type }}</span>
                     <span class="entity_details_id">
@@ -236,7 +226,7 @@
                     </span>
                   </p>
                   <p class="entity_details_lastTime">
-                    <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/update_icon.svg">
+                    <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/update_icon.svg">
                     </md-icon>
                     <span>{{ vm.entity.timeAgo }}</span>
                   </p>
@@ -265,30 +255,30 @@
               </div>
               <div class="entity_details_manage_data">
                 <div class="entity_details_macaddress data_container">
-                  <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/mac_address_icon.svg">
+                  <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/mac_address_icon.svg">
                   </md-icon>
                   <span class="entity_details_manage_data_name">Organicity UUID:</span>
                   <span>{{ vm.entity.uuid }}</span>
                 </div>
                 <div class="entity_details_debug data_container">
-                  <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/debug_icon.svg">
+                  <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/debug_icon.svg">
                   </md-icon>
                   <span class="entity_details_manage_data_name">Debug mode:</span>
                   <span>Enabled</span>
                 </div>
                 <div class="entity_details_key" layout="row" layout-align="start center">
-                  <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/key_icon.svg">
+                  <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/key_icon.svg">
                   </md-icon>
                   <span class="entity_details_manage_data_name">API Key:</span>
                   <div class="entity_details_key_number">{{ 32323 }}</div>
                   <md-button class="entity_details_key_refreshButton" aria-label>
-                    <md-icon class="" md-svg-src="./assets/images/refresh_icon_white.svg">
+                    <md-icon class="" md-svg-src="./mediassets/images/refresh_icon_white.svg">
                     </md-icon>
                   </md-button>
                 </div>
                 <div class="clearfix"></div>
                 <div class="entity_details_download data_container">
-                  <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/download_icon.svg">
+                  <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/download_icon.svg">
                   </md-icon>
                   <span class="entity_details_manage_data_name">Download Data</span>
                   <span>Choose your format</span>
@@ -298,12 +288,49 @@
             <div class="entity_details_notAuth" ng-if="!vm.entityBelongsToUser" flex>
               <h3 class="entity_details_notAuth_title">Co-creating smart cities of the future</h3>
               <small class="entity_details_notAuth_subheader">You're part of them? Join us!</small>
-              <p class="entity_details_notAuth_description">OrganiCity is a platform for interaction between everyone in
-                the city. Citizens, activists, researchers, businesses, city government – everyone in the city can
-                contribute. Through workshops, meetups, conferences and events, and online via discussion boards and
-                other platforms, social media and a growing set of online tools, you can get involved to highlight the
-                ways you think smart technology can help make your city a better place to live, work and play.</p>
+              <p class="entity_details_notAuth_description">OrganiCity is a platform for interaction between everyone in the city. Citizens, activists, researchers, businesses, city government – everyone in the city can contribute. Through workshops, meetups, conferences and events, and online via discussion boards and other platforms, social media and a growing set of online tools, you can get involved to highlight the ways you think smart technology can help make your city a better place to live, work and play.</p> 
               <md-button class="entity_details_notAuth_button">JOIN US</md-button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section  class="entity_reputation" ng-if="vm.entity && vm.isAuth">
+        <div class="entity_detailed_content_container">
+          <div class="entity_detailed_title_container">
+            <md-icon class="entity_detailed_icon_title" md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
+            </md-icon>
+            <h2 class="entity_detailed_title">REPUTATION</h2>
+          </div>
+          <div class="entity_detailed_content_container" layout="row">
+            <div class="entity_details_content_main" flex>
+              <div class="entity_details_content">
+                <div>
+                  <h4>Do you like this?</h4>
+                  <input-stars max="5"  ng-model="vm.stars" readonly="true" ></input-stars>
+                  <md-radio-group ng-model="vm.like">
+                    <md-radio-button value="true">Like</md-radio-button>
+                    <md-radio-button value="false"> Dislike</md-radio-button>
+                  </md-radio-group>
+                </div>
+                <div class="slider">
+                  <h4>Could you help us rate it?</h4>
+                  <md-slider-container>
+                    <span>Reliability</span><md-slider md-discrete ng-model="vm.reliability" step="1" min="1" max="10"></md-slider>
+                  <md-slider-container>
+                  <md-slider-container>
+                    <span>Availability</span><md-slider md-discrete ng-model="vm.availability" step="1" min="1" max="10"></md-slider>
+                  <md-slider-container>
+                  <md-slider-container>
+                    <span>Usability</span><md-slider md-discrete ng-model="vm.usability" step="1" min="1" max="10"></md-slider>
+                  <md-slider-container>
+                </div>
+              </div>
+            </div>
+            <div class="entity_details_notAuth" flex>
+              <h3>Share your opinion about this asset!</h3>
+              <p class="entity_details_notAuth_description">
+                Your opinnion is really important in order to help the Organicity community find the best sources available. Help us by rating this asset!
+              </p>
             </div>
           </div>
         </div>
@@ -311,13 +338,13 @@
       <section class="entity_owner" ng-if="vm.entity">
         <div class="entity_detailed_content_container">
           <div class="entity_detailed_title_container">
-            <md-icon class="entity_detailed_icon_title" md-svg-src="./assets/images/user_details_icon.svg">
+            <md-icon class="entity_detailed_icon_title" md-svg-src="./mediassets/images/user_details_icon.svg">
             </md-icon>
             <h2 class="entity_detailed_title">PROVIDER</h2>
           </div>
           <div class="entity_detailed_content_container" layout="row">
             <div class="entity_detailed_avatar">
-              <img ng-src="{{ vm.entity.owner.avatar || './assets/images/avatar.svg' }}"/>
+              <img ng-src="{{ vm.entity.owner.avatar || './mediassets/images/avatar.svg' }}"/>
             </div>
             <div class="entity_owner_content">
               <div class="entity_owner_info">
@@ -325,7 +352,7 @@
                   <h3 class="entity_owner_usernameText">{{ vm.entity.owner.username }}</h3>
                 </a>
                 <p class="entity_owner_location">
-                  <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/location_icon_normal.svg">
+                  <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/location_icon_normal.svg">
                   </md-icon>
                   <span>
                     <span ng-if="vm.entity.owner.city">{{ vm.entity.owner.city }}</span>
@@ -335,7 +362,7 @@
                   </span>
                 </p>
                 <p class="entity_owner_url">
-                  <md-icon class="entity_detailed_icon_content" md-svg-src="./assets/images/url_icon_normal.svg">
+                  <md-icon class="entity_detailed_icon_content" md-svg-src="./mediassets/images/url_icon_normal.svg">
                   </md-icon>
                   <a ng-href="{{ vm.entity.owner.url }}">{{ vm.entity.owner.url || 'No URL'}}</a>
                 </p>
@@ -346,16 +373,16 @@
                   <md-button ng-href="./entitites/{{entity.id}}" class="entityList" ng-class="{entityList_primary: !vm.entityBelongsToUser, entityList_secondary: vm.entityBelongsToUser, entityList_borderBottom: $last}" layout="row" layout-align="start center">
                     <div class="entityList_container" layout="row" layout-align="start center">
                       <div class="">
-                        <img class="entityList_avatar" ng-src="{{ entity.avatar || './assets/images/avatar.svg' }}"/>
+                        <img class="entityList_avatar" ng-src="{{ entity.avatar || './mediassets/images/avatar.svg' }}"/>
                         </md-icon>
                       </div>
                       <div class="entityList_content">
                         <p class="entityList_name">{{ entity.name || 'No name' }}</p>
                         <p class="entityList_data">
-                          <md-icon class="entityList_icon" md-svg-src="./assets/images/location_icon_light.svg">
+                          <md-icon class="entityList_icon" md-svg-src="./mediassets/images/location_icon_light.svg">
                           </md-icon>
                           <span>{{ entity.location || 'No location' }}</span>
-                          <md-icon class="entityList_icon" md-svg-src="./assets/images/sensor_icon.svg">
+                          <md-icon class="entityList_icon" md-svg-src="./mediassets/images/sensor_icon.svg">
                           </md-icon>
                           <span>{{ entity.type || 'Unknown entity'}}</span>
                         </p>
@@ -383,7 +410,7 @@
                                dropdown-menu="entity.dropdownOptions"
                                dropdown-model="vm.dropdownSelected"
                                dropdown-item-label="text">
-                      <img src="./assets/images/config_icon.svg"/>
+                      <img src="./mediassets/images/config_icon.svg"/>
                     </md-button>
                   </div>
                 </div>
@@ -397,7 +424,7 @@
       <section class="entity_comments" ng-if="vm.entity">
         <div class="entity_detailed_content_container">
           <div class="entity_detailed_title_container">
-            <md-icon class="entity_detailed_icon_title" md-svg-src="./assets/images/discussion_icon.svg">
+            <md-icon class="entity_detailed_icon_title" md-svg-src="./mediassets/images/discussion_icon.svg">
             </md-icon>
             <h2 class="entity_detailed_title">DISCUSSION</h2>
           </div>

@@ -4,7 +4,6 @@
     MapController.$inject = ['$scope', '$state', '$timeout', '$location', 'entitiesLayers', 'Overlays', 'asset', '$mdDialog', 'leafletData', 'mapUtils', 'markerUtils', 'alert', 'animation'];
 
     function MapController($scope, $state, $timeout, $location, entitiesLayers, Overlays, asset, $mdDialog, leafletData, mapUtils, markerUtils, alert, animation) {
-
         var vm = this;
         var updateType;
         var mapMoved = false;
@@ -89,6 +88,10 @@
            watchZoom(zoom);
        });
 
+       $scope.$on('centerMap', function(event, data) {
+          vm.center = data.center;
+       });
+
        $scope.$on('entityLoaded', function(event, data) {
          console.log(data);
          vm.entityLoading = false;
@@ -122,7 +125,7 @@
 
        function watchZoom(zoom){
          if (zoom >=8) {
-           var params = { lat: vm.center.lat, long: vm.center.lng, radius: '10' };
+           var params = { lat: vm.center.lat, long: vm.center.lng, radius: '10'};
            asset.getGeoJSON(params).then(function(data) {
              asset.setAllEntities(data);
              vm.layers = {
@@ -132,7 +135,18 @@
            }, function(error){
              console.log(error);
            });
-         }
+         } else {
+            // This is tmp.
+            asset.getClusterGeoJSON().then(function(data) {
+                asset.setAllEntities(data);
+                vm.layers = {
+                   baselayers: mapUtils.getBaseLayers(),
+                   overlays: new Overlays(entitiesLayers, 'Asset Types')
+                };
+            }, function(error){
+              console.log(error);
+            });
+          }
          if (vm.controls.minimap) {
             vm.controls.minimap.toggleDisplay = (zoom >= 8) ? true : false;
          }

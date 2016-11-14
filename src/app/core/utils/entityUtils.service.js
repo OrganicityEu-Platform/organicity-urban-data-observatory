@@ -30,11 +30,11 @@
 
       ///////////////
       function parseName(object) {
-        if(!object.name) {
+        if(!object.id) {
           return;
         }
 
-        var entityName = object.name.split(":");
+        var entityName = object.id.split(":");
 
         entityName = entityName.slice(4, entityName.length);
         entityName = _.map(entityName, makeCase);
@@ -113,7 +113,7 @@
 
       function parseTime(object) {
         /*jshint camelcase: false */
-        return object.data.attributes.data.TimeInstant;
+        return new Date (object.context.last_updated_at);
       }
 
       function parseVersion(object) {
@@ -124,16 +124,16 @@
       }
 
       function parseOwner(object) {
-        if (!object.context.provider) return;
+        if (!object.related.site) return;
         return {
-          id: object.context.provider,
-          username: object.context.provider,
+          id: object.related.site.id,
+          username: object.related.site.name,
           /*jshint camelcase: false */
           // entitites: object.provider.entity_ids,
           city: object.context.position.city,
           country: COUNTRY_CODES[object.context.position.country_code],
           // url: object.provider.url,
-          avatar: './assets/images/avatar.svg'
+          avatar: './mediassets/images/avatar.svg'
         };
       }
 
@@ -154,7 +154,7 @@
       }
 
       function parseAvatar() {
-        return './assets/images/avatar.svg';
+        return './mediassets/images/avatar.svg';
       }
 
       function parseSensorTime(sensor) {

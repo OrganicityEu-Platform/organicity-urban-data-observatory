@@ -5,6 +5,7 @@ bower_components/
 .idea/
 .publish/
 dist/
+log/
 
 **/*.DS_Store
 **/npm-debug.log

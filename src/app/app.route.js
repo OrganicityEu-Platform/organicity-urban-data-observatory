@@ -64,7 +64,38 @@
           },
           resolve: {
             entitiesLayers: function($state, asset) {
-                return asset.getClusterGeoJSON().then(function(data) {
+              return asset.getClusterGeoJSON().then(function(data) {
+                return JSON.parse(data);
+              }, function(error){
+                console.log(error);
+              });
+            }
+          }
+        })
+        /*
+        -- Show site state --
+        Nested inside layout and home state
+        It's the state that displays all the data related to a site below the map
+        */
+        .state('layout.home.site', {
+          url: '/sites/:site',
+          views: {
+            '': {
+              templateUrl: 'app/components/home/template.html'
+            },
+
+            'map@layout.home': {
+              templateUrl: 'app/components/map/map.html',
+              controller: 'MapController',
+              controllerAs: 'vm'
+            }
+          },
+          resolve: {
+            entitiesLayers: function($stateParams, asset) {
+                var site = $stateParams.site;
+                console.log(asset);
+                return asset.getGeoJSONSite(site).then(function(data) {
+                  console.log(data);
                   return JSON.parse(data);
                 }, function(error){
                   console.log(error);
