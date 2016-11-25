@@ -125,7 +125,7 @@
 
        function watchZoom(zoom){
          if (zoom >=8) {
-           var params = { lat: vm.center.lat, long: vm.center.lng, radius: '10'};
+           var params = { lat: vm.center.lat, long: vm.center.lng, radius: '100', km: 'true'};
            asset.getGeoJSON(params).then(function(data) {
              asset.setAllEntities(data);
              vm.layers = {
