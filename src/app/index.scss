@@ -563,6 +563,55 @@ section.map {
   }
 }
 
+.entity_annotation {
+  .entity_annotation_ask {
+    background-color: #eee;
+    padding: 30px;
+  }
+  .annotation_highlight_text {
+    background-color: $organicity_pink;
+    color: white;
+    margin-right: 5px;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .entity_annotion_labels {
+    span {
+      background-color: #bbb;
+      text-transform: uppercase;
+      color: white;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      padding: 3px 8px;
+      border-radius: 20px; 
+      display: block;
+    }
+    span:hover {
+      background-color: $organicity_pink;
+    }
+    float: left;
+    
+  }
+  .entity_annotion_filter {
+ 
+  }
+
+  .add_annotation {
+    text-align: right; 
+    margin-right: 50px;
+
+    .md-button {
+      color: white;
+      background-color: $organicity_pink;
+      border-radius: 20px;
+      padding: 8px 31px;  
+    }
+
+  }
+
+
+}
+
 /*
   entity MENU MODULE
  */

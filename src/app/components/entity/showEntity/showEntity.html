@@ -284,6 +284,28 @@
           </div>
         </div>
       </section>
+      <section  class="entity_annotation" ng-if="vm.entity">
+        <div class="entity_detailed_content_container">
+          <div class="entity_detailed_title_container">
+            <md-icon class="entity_detailed_icon_title" md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
+            </md-icon>
+            <h2 class="entity_detailed_title">ANNOTATIONS</h2>
+          </div>
+          <div class="entity_detailed_content_container" layout="row">
+            <div class="entity_details_content_main" flex>
+              <div annotation></div>
+            </div>
+            <div class="entity_annotation_ask" flex>
+              <h3>Do you think this looks <span class="annotation_highlight_text">rainy</span>?</h3>
+              <md-button class="call-to-action">Yes</md-button>
+              <md-button class="call-to-action">No</md-button>
+              <p>
+                Your feedback will help to improve our automated annotation service.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
       <section  class="entity_reputation" ng-if="vm.entity && vm.isAuth">
         <div class="entity_detailed_content_container">
           <div class="entity_detailed_title_container">
