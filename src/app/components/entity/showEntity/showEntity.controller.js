@@ -70,41 +70,41 @@
 
         vm.sensorsToCompare = getSensorsToCompare();
 
-        $timeout(function() {
-          colorSensorMainIcon();
-          colorSensorCompareName();
+        // $timeout(function() {
+        //   colorSensorMainIcon();
+        //   colorSensorCompareName();
 
-          setSensor({type: 'main', value: newVal});
-          changeChart([mainSensorID]);
-        }, 100);
+        //   setSensor({type: 'main', value: newVal});
+        //   changeChart([mainSensorID]);
+        // }, 100);
 
       });
 
       // event listener on change of value of compare sensor selector
-      $scope.$watch('vm.selectedSensorToCompare', function(newVal, oldVal) {
-        vm.sensorsToCompare.forEach(function(sensor) {
-          if(sensor.uuid === newVal) {
-            _.extend(vm.selectedSensorToCompareData, sensor);
-          }
-        });
+      // $scope.$watch('vm.selectedSensorToCompare', function(newVal, oldVal) {
+      //   vm.sensorsToCompare.forEach(function(sensor) {
+      //     if(sensor.uuid === newVal) {
+      //       _.extend(vm.selectedSensorToCompareData, sensor);
+      //     }
+      //   });
 
-        $timeout(function() {
-          colorSensorCompareName();
-          setSensor({type: 'compare', value: newVal});
+      //   $timeout(function() {
+      //     colorSensorCompareName();
+      //     setSensor({type: 'compare', value: newVal});
 
-          if(oldVal === undefined && newVal === undefined) {
-            return;
-          }
-          changeChart([compareSensorID]);
-        }, 100);
+      //     if(oldVal === undefined && newVal === undefined) {
+      //       return;
+      //     }
+      //     changeChart([compareSensorID]);
+      //   }, 100);
 
-      });
+      // });
 
       $scope.$on('hideChartSpinner', function() {
         vm.loadingChart = false;
       });
 
-      initialize();
+      // initialize();
 
       ///////////////
 
@@ -185,7 +185,7 @@
         vm.loadingChart = true;
         //grab chart data and save it
         // it can be either 2 sensors or 1 sensor, so we use $q.all to wait for all
-        $q.all(
+/*        $q.all(
           _.map(sensorsID, function(sensorID) {
             var id = vm.entity.uuid;//$stateParams.id
 
@@ -201,7 +201,7 @@
           // after all sensors resolve, prepare data and attach it to scope
           // the variable on the scope will pass the data to the chart directive
           vm.chartDataMain = prepareChartData([mainSensorID, compareSensorID]);
-        });
+        });*/
       }
       // calls api to get sensor data and saves it to sensorsData array
       function getChartData(entityID, sensorID, dateFrom, dateTo, options) {

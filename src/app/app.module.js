@@ -15,5 +15,6 @@ angular.module('app', [
   'angulartics',
   'angulartics.google.analytics',
   'ngCookies',
-  'angular-input-stars'
+  'angular-input-stars',
+  '720kb.tooltips'
 ]);
