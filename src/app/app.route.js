@@ -65,7 +65,9 @@
           resolve: {
             entitiesLayers: function($state, asset) {
               return asset.getClusterGeoJSON().then(function(data) {
-                return JSON.parse(data);
+                var clusters = JSON.parse(data)
+                asset.setAllClusters(clusters);
+                return clusters;
               }, function(error){
                 console.log(error);
               });
@@ -119,7 +121,7 @@
           },
 
           resolve: {
-            entityData: function($stateParams, asset, FullEntity, HasSensorEntity) {
+            entityData: function($stateParams, asset, FullEntity, HasSensorEntity, alert) {
               var entityID = $stateParams.id;
 
               if(!entityID) {
@@ -128,6 +130,8 @@
 
               return asset.getAsset(entityID).then(function(entityData) {
                 return new FullEntity(entityData);
+              }, function(){
+                alert.error('Sorry, there was a problem loading the asset...')
               });
             },
             mainSensors: function(entityData) {

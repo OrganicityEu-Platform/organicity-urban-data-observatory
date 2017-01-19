@@ -7,13 +7,15 @@
     asset.$inject = ['assetsAPI', '$window', 'timeUtils', '$filter', '$q'];
 	  function asset(assetsAPI, $window, timeUtils, $filter, $q) {
 
-      var worldMarkers, assets, assetsPrevious;
+      var worldMarkers, assets, assetsPrevious, worldClusters;
 
       initialize();
 
 	  	var service = {
         getAllEntities: getAllEntities,
         setAllEntities: setAllEntities,
+        getAllClusters: getAllClusters,
+        setAllClusters: setAllClusters,
 				getMetadata: getMetadata,
         getAsset: getAsset,
         createAsset: createAsset,
@@ -45,6 +47,14 @@
         $window.localStorage.setItem('organicity.assets', JSON.stringify(obj));
         assets = obj.data;
 				return assets;
+      }
+
+      function setAllClusters(data) {
+        worldClusters = data;
+      }
+
+      function getAllClusters() {
+        return (worldClusters) ? worldClusters : false;
       }
 
       function setPrevAllEntities() {
