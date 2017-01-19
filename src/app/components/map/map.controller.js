@@ -104,9 +104,9 @@
 
     function updateMarkers() {
       if (vm.center.zoom >= 8) {
-        safeFunction(updateAreaMarkers, vm.lastMarkersUpdate, 1000);
+        safeFunction(updateAreaMarkers, "lastMarkersUpdate", 1500);
       } else {
-        safeFunction(updateClusters, vm.lastClustersUpdate, 1000);
+        safeFunction(updateClusters, "lastClustersUpdate", 1500);
       }
 
       if (vm.controls.minimap) {
@@ -116,10 +116,10 @@
     }
 
     function safeFunction(fn, time, interval) {
-      if (!time || new Date().getTime() - time > interval) {
+      if (!vm[time] || new Date().getTime() - vm[time] > interval) {
         fn();
-        time = new Date().getTime();
-      }
+        vm[time] = new Date().getTime();
+      } 
     }
 
     function updateAreaMarkers() {
