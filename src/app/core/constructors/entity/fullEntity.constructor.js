@@ -31,11 +31,12 @@
         this.timeParsed = !this.time ? 'No time' : moment(this.time).format('MMMM DD, YYYY - HH:mm');
         this.timeAgo = !this.time ? 'No time' : moment(this.time).fromNow();
         this.class = entityUtils.classify(entityUtils.parseType(object));
-        this.description = '';
+        this.description = entityUtils.parseDescription(object);
         this.owner = entityUtils.parseOwner(object);
         this.data = object.data.attributes;
         this.latitude = object.context.position.latitude;
         this.longitude = object.context.position.longitude;
+        this.typeURN = entityUtils.parseTypeURN(object);
       }
 
       FullEntity.prototype = Object.create(Entity.prototype);
@@ -51,7 +52,7 @@
           'latitude',
           'longitude',
           'geometry',
-          // 'reputation',
+          'reputation',
           'TimeInstant',
           'access:scope',
           'name'

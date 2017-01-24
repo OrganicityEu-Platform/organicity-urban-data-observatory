@@ -2,7 +2,7 @@
   <md-icon md-svg-src="./mediassets/images/alert_icon.svg"
            alt="Insert Drive Icon" class="alert_typeIcon">
   </md-icon>
-  <span flex>{{ vm.message }}</span>
+  <span flex ng-bind-html="vm.message"></span>
   <md-button ng-click="vm.close()" aria-label>
     <md-icon md-svg-src="./mediassets/images/close_icon_black.svg"
              alt="Insert Drive Icon" class="alert_closeIcon">
