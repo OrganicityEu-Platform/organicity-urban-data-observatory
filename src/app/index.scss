@@ -312,8 +312,8 @@ md-toast.md-top {
 
   .alert_button {
     margin-left: 5px;
-    color: #53460B;
-    background-color: #C1A212;
+    color: $organicity_pink;
+    background-color: $extra_color;
     height: 26px;
     border-radius: 13px;
     font-size: 12px;
@@ -338,6 +338,11 @@ md-toast.blue {
 md-toast.yellow {
   z-index: 6;
   background-color: #f1c40f;
+}
+
+md-toast.pink {
+  z-index: 6;
+  background-color: $organicity_pink;
 }
 
 /**
@@ -1052,12 +1057,14 @@ section .entity_menu {
   .entity_details_labels {
     margin-top: 20px;
     color: white;
-    font-size: 13px;
+    font-size: 14px;
     span {
       background-color: $font_color_blue_grey;
-      margin-right: 16px;
-      padding: 3px 8px;
+      margin-right: 6px;
+      margin-bottom: 6px;
+      padding: 9px;
       border-radius: 20px;
+      float: left;
     }
   }
   .entity_details_description {
@@ -1068,7 +1075,7 @@ section .entity_menu {
     margin-bottom: 15px;
   }
   .entity_details_description_content {
-    font-size: 12px;
+    font-size: 14px;
   }
   .entity_details_manage {
   }
@@ -1174,6 +1181,10 @@ section .entity_menu {
       h3 {
         color: $font_color_blue_grey;
         font-size: 18px;
+      }
+      a {
+        color: $font_color_blue_grey;
+        text-decoration: none;
       }
     }
     .entity_owner_info {
@@ -2865,6 +2876,38 @@ button#doorbell-button {
 
 .emoji{
   font-weight:400;
+}
+
+div[urn]{
+  display: flex;
+  flex-direction: row;
+  margin: 0 40px 0 0;
+
+  .urn_number {
+    flex:1;
+    margin-left: 5px;
+    background-color: #F2F2F2;
+    padding: 2px 10px;
+    display: inline-block;
+    height: inherit;
+    word-wrap: break-word;
+    flex-wrap: wrap;
+    width: 110px;
+
+  }
+  .urn_refresh_button {
+    height: inherit;
+    background-color: #DBDBDB;
+    border-radius: 0 4px 4px 0;
+    md-icon {
+      height: 15px;
+      width: 15px;
+      display: block;
+    }
+  }
+  md-icon {
+    opacity: .5;
+  }
 }
 
 /*
