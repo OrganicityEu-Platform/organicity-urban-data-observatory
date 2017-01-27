@@ -37,6 +37,8 @@
         this.latitude = object.context.position.latitude;
         this.longitude = object.context.position.longitude;
         this.typeURN = entityUtils.parseTypeURN(object);
+        this.json = entityUtils.parseJSON(object);
+        this.ADSurl = entityUtils.parseADSurl(this);
       }
 
       FullEntity.prototype = Object.create(Entity.prototype);

@@ -87,7 +87,14 @@
 			}
 
       function getClusterGeoJSON() {
-          console.log('Get ClusterGeoJSON');
+
+            /* 
+
+            This implementation is completly temporary to support first
+            Open Call while the cluster service on the Asset Discovery Backend 
+            is finalized.
+
+            */
 
 					var devices = [];
 
@@ -109,7 +116,6 @@
 					var data = $q.all(devices).then(function(devices) {
 						return '{ "type": "FeatureCollection", "properties": { "name": "urn:oc:assettype:clusters"}, "features": [' + getGeoDevices(devices) + ']}';
 					});
-					console.log(data);
 					return data;
       }
 
@@ -128,9 +134,8 @@
       }
 
       function getAsset(id) {
-				console.log(id);
+				console.log("Loading asset: ", id);
 				var endpoint = 'assets/' + id;
-				console.log(endpoint);
         return assetsAPI.one(endpoint).get({});
       }
 

@@ -47,7 +47,10 @@
 
       function parseEntityType(object) {
         var entityType;
-        if (object.name.includes('Cluster')) {
+        if (!object.name) {
+          entityType = '';
+        }
+        else if (object.name.includes('Cluster')) {
           entityType = object.name; //tmp
         }
         else if (object.type) {
@@ -59,35 +62,27 @@
         else {
           entityType = object.name.split(':');
         }
-        return makeTitle(entityType[entityType.length-1]);
+        return unfoldCase(entityType[entityType.length-1]);
+      }
+
+      function parseLocation(object) {
+          /* We do not support it on the ADS GEOJson*/
+          var location = '';
+          return location;
       }
 
       function parseLocation(object) {
         if(!object.site || object.split == null) return;
 
         var location = '';
-        // var locationSource = {};
 
-        // if(object.context) {
-        //   if (object.provider && object.context.position.city && object.context.position.country){
-        //     locationSource = object.context.position;
-        //     locationSource.justOwnerLocation = true;
-        //   } else if (object.context.position.city && object.context.position.country) {
-        //     locationSource = object.data.location;
-        //   }
-        // }
         var city = '';
         var countryCode = '';
         var country = '';
 
-        console.log(object.site);
 
-        // if (locationSource) {
-          /*jshint camelcase: false */
-          city = makeTitle(object.site);
-          // countryCode = locationSource.country_code;
-          // country = COUNTRY_CODES[countryCode];
-        // }
+
+        city = unfoldCase(object.site);
 
         if(!!city) {
           location += city;
@@ -119,59 +114,15 @@
         }
       }
 
-      function parseLabels(object) {
-        var systemTags = [];
-        var entityName;
-
-        if(!object.name) {
-          object.name = object.id || 'no:name'; //tmp.
-        }
-
-        if(!object.id) {
-          console.log(object);
-          object.id = 'sites/' + object.city.toLowerCase(); //tmp.
-        }
-        if (object.name.includes('Cluster')) {
-          entityName = 'Device cluster';
-        } else {
-          systemTags.push((this.isOnline(object)) ? 'online' : 'offline');
-
-          entityName = object.id.split(':');
-
-          var entityName = entityName.splice(3, entityName.length-1); // Remove urn header
-          var entityName = entityName.splice(0, entityName.length-1); // Remove urn entity name
-
-          systemTags = systemTags.concat(entityName);
-
-        }
-        /*jshint camelcase: false */
-        return systemTags;
-      }
-
       function parseUserTags(object) {
-        var userTags = [];
-
-        /*
-        if(!object.type) {
-          return userTags;
-        }
-
-        var entityType = object.type.split(':');
-
-        if(entityType) {
-          userTags.push(entityType[entityType.length-1]);
-        }
-        */
-
-        /*jshint camelcase: false */
-        return userTags;
+          var user_tags = ["organicity"]; //temp
+          return user_tags;
       }
 
       function checkLocation(object) {
         if (object.context && object.context.position !== null && object.context.position.latitude && object.context.position.longitude && object.context.position.latitude !== 0 && object.context.position.longitude !== 0) {
           return true;
         }
-
         else {
           return false;
         }
@@ -206,26 +157,6 @@
         });
       }
       
-      /*
-      function parseName(object) {
-        var entityName = 'Unknown';
-        if(!object.name) {
-          return 'Unknown';
-        }
-        else if (object.name.includes('Cluster')) {
-          entityName = object.count + ' devices in ' + object.city;
-        }
-        else if (object.context && object.context.name) {
-          var entityNameString = object.context.name.split(':');
-          entityName = entityNameString[entityNameString.length-1]
-        }
-        else {
-          var entityNameString = object.name.split(':');
-          entityName = entityNameString[entityNameString.length-1]
-        }
-        return entityName;
-      }
-      */
 
       function parseName(object) {
         if(!object.id) {
@@ -240,6 +171,45 @@
         object.name = entityName.join(" ");
 
         return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
+      }
+
+      function parseLabels(object) {
+          var systemTags = [];
+          var entityName;
+
+          if (!object.name) {
+              object.name = object.id || 'no:name'; //tmp.
+          }
+
+          systemTags.push((this.isOnline(object)) ? 'online' : 'offline');
+
+          var entityTypeComp = parseTypeComponents(object);
+
+          systemTags = systemTags.concat(entityTypeComp);
+
+          entityName = object.id.split(':');
+
+          var entityName = entityName.splice(3, entityName.length - 1); // Remove urn header
+          var entityName = entityName.splice(0, entityName.length - 1); // Remove urn entity name
+
+          systemTags = systemTags.concat(entityName);
+
+          systemTags = _.uniq(_.map(systemTags, lowerCase));
+          /*jshint camelcase: false */
+          return systemTags;
+      }
+
+      function parseTypeComponents(object) {
+          if (object.type) {
+              var entityTypeComp = object.type.split(':');
+              if (entityTypeComp && entityTypeComp.length <= 0) return false;
+              entityTypeComp = _.reject(entityTypeComp, function(a) {
+                  return ["oc", "urn", "entitytype"].indexOf(a.toLowerCase()) >= 0
+              });
+              return entityTypeComp;
+          } else {
+              return false;
+          }
       }
 
 
@@ -279,11 +249,20 @@
         return marker;
       }
 
-      function makeCase(str) {
-        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+      function unfoldCase(str) {
+          return str.replace(/([A-Z][a-z])/g, ' $1').replace(/^./, function(str) {
+              return str.toUpperCase();
+          })
       }
 
-      function makeTitle(str){
-        return str.replace(/([A-Z])/, ' $1') .replace(/^./, function(str){ return str.toUpperCase(); }); }
+      function lowerCase(str) {
+          return str.toLowerCase();
+      }
+
+      function makeCase(str) {
+          return str.replace(/\w\S*/g, function(txt) {
+              return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          });
+      }
     }
 })();

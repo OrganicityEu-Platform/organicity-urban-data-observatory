@@ -1024,6 +1024,7 @@ section .entity_menu {
     }
   }
   .entity_details_name {
+    line-height: 1.2em !important;
     margin: 5px 0 20px 0;
   }
   .entity_details_location {
@@ -1160,6 +1161,18 @@ section .entity_menu {
     margin: 0 auto;
     padding-bottom: 30px;
   }
+  .entity_social_icon {
+    width: 35px;
+    height: 35px;
+    margin-right: 8px;
+    position: relative;
+    top: -2px;
+  }
+  .entity_social_icon:hover {
+    transform: scale(1.25);
+    transition: background-color .5s, transform .5s ease-out;
+  }
+
   .entity_reputation {
     background-color: #F5F5F5;
   }

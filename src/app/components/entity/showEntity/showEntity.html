@@ -227,6 +227,18 @@
                 <p class="entity_details_description_content" ng-bind-html="vm.entity.description | linky:'_blank'" style="line-height: 22px">
 
               </div>
+              <div class="entity_details_description">
+                <h4 class="entity_details_description_title">Share this asset:</h4>
+                <a ng-click="vm.twitter()">
+                  <md-icon class="entity_social_icon" md-svg-src="./mediassets/images/social_twitter.svg">
+                </a>
+                <a ng-click="vm.facebook()">
+                  <md-icon class="entity_social_icon" md-svg-src="./mediassets/images/social_facebook.svg">
+                </a>
+                <a ng-click="vm.email()">
+                  <md-icon class="entity_social_icon" md-svg-src="./mediassets/images/social_email.svg">
+                </a>
+              </div>
             </div>
           </div>
           <div class="entity_details_notAuth" flex>
@@ -262,6 +274,28 @@
       </div>
     </section>
     -->
+<!--     <section  class="entity_reputation" ng-if="vm.entity">
+      <div class="entity_detailed_content_container">
+        <div class="entity_detailed_title_container">
+          <md-icon class="entity_detailed_icon_title" md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
+          </md-icon>
+          <h2 class="entity_detailed_title">RAW</h2>
+        </div>
+        <div class="entity_detailed_content_container" layout="row">
+          <div class="jsonViewer" flex>
+            <json-formatter json="vm.entity.json" open="1"></json-formatter>
+          </div>
+          <div class="entity_details_notAuth" flex>
+            <h3>Learn how to use the API!</h3>
+            <p class="entity_details_notAuth_description">
+              Everything you are seeing is built using the Organicity API's. Learn how to use them and
+              start making your experiments!
+            </p>
+            <md-button class="call-to-action">Learn +</md-button>
+          </div>
+        </div>
+      </div>
+    </section> -->
     <section  class="entity_reputation" ng-if="vm.entity && vm.isAuth">
       <div class="entity_detailed_content_container">
         <div class="entity_detailed_title_container">

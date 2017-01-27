@@ -18,5 +18,7 @@ angular.module('app', [
   'angular-input-stars',
   '720kb.tooltips',
   'angular-clipboard',
-  'ngSanitize'
+  'ngSanitize',
+  '720kb.socialshare',
+  'jsonFormatter'
 ]);

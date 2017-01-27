@@ -9,14 +9,14 @@
       'utils', 'sensor', '$mdDialog',
       // 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
-      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'asset', 'HasSensorEntity', 'geolocation', 'annotation'];
+      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'asset', 'HasSensorEntity', 'geolocation', 'annotation', 'socialSharing'];
 
     function entityController($state, $scope, $stateParams, entityData,
       // ownerEntitites,
       utils, sensor, $mdDialog,
       // belongsToUser,
       timeUtils, animation, $location, auth, entityUtils, userUtils,
-      $timeout, mainSensors, compareSensors, alert, $q, asset, HasSensorEntity, geolocation, annotation) {
+      $timeout, mainSensors, compareSensors, alert, $q, asset, HasSensorEntity, geolocation, annotation, socialSharing) {
 
       var vm = this;
       var sensorsData = [];
@@ -35,11 +35,20 @@
 
       vm.isAuth = auth.isAuth();
 
+      vm.twitter = socialSharing.twitter;
+      vm.facebook = socialSharing.facebook;
+      vm.email = socialSharing.email;
+
+      vm.snippetOptions = {
+          lineWrapping: false,
+          lineNumbers: true,
+          mode: 'json',
+      };
+
       // vm.ownerEntitites = ownerEntitites;
       // vm.entityBelongsToUser = belongsToUser;
       vm.removeUser = removeUser;
 
-      vm.battery = undefined;
       vm.sensors = mainSensors ? mainSensors : undefined;
       vm.sensorsToCompare = compareSensors;
 

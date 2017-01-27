@@ -4,9 +4,9 @@
     angular.module('app.components')
         .factory('entityUtils', entityUtils);
 
-    entityUtils.$inject = ['asset', 'COUNTRY_CODES'];
+    entityUtils.$inject = ['asset', 'COUNTRY_CODES', 'Restangular'];
 
-    function entityUtils(asset, COUNTRY_CODES) {
+    function entityUtils(asset, COUNTRY_CODES, Restangular) {
         var service = {
             parseName: parseName,
             parseLocation: parseLocation,
@@ -26,6 +26,8 @@
             parseStateName: parseStateName,
             parseTypeURN: parseTypeURN,
             parseDescription: parseDescription,
+            parseADSurl: parseADSurl,
+            parseJSON: parseJSON
         };
 
         return service;
@@ -44,7 +46,7 @@
 
             object.name = entityName.join(" ");
 
-            return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
+            return object.name;
         }
 
         function parseLocation(object) {
@@ -94,6 +96,7 @@
 
             systemTags = systemTags.concat(entityName);
 
+            systemTags = _.uniq(_.map(systemTags, lowerCase));
             /*jshint camelcase: false */
             return systemTags;
         }
@@ -125,7 +128,7 @@
                 var entityTypeComp = object.type.split(':');
                 if (entityTypeComp && entityTypeComp.length <= 0) return false;
                 entityTypeComp = _.reject(entityTypeComp, function(a) {
-                    return ["oc", "urn", "entityType"].indexOf(a) >= 0
+                    return ["oc", "urn", "entitytype"].indexOf(a.toLowerCase()) >= 0
                 });
                 return entityTypeComp;
             } else {
@@ -236,6 +239,14 @@
             return object.state.replace('_', ' ');
         }
 
+        function parseADSurl(object) {
+            return 'https://discovery.organicity.eu/v0/assets/' + object.uuid
+        }
+
+        function parseJSON(object) {
+            return Restangular.stripRestangular(object)
+        }
+
         function parseAvatar() {
             return './mediassets/images/avatar.svg';
         }
@@ -267,6 +278,10 @@
             return str.replace(/([A-Z][a-z])/g, ' $1').replace(/^./, function(str) {
                 return str.toUpperCase();
             })
+        }
+
+        function lowerCase(str) {
+            return str.toLowerCase();
         }
 
         function makeCase(str) {

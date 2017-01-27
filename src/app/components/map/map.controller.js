@@ -57,6 +57,14 @@
       };
     });
 
+    $scope.$on("centerUrlHash", function(event, centerHash) {
+        $location.search({ map: centerHash });
+    });
+
+    $scope.changeLocation = function(centerHash) {
+        $location.search({ map: centerHash });
+    };
+
     $scope.$watch('vm.center.zoom', function() {
       updateMarkers();
     });

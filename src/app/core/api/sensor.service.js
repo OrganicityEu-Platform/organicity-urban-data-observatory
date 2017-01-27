@@ -30,6 +30,9 @@
           return;
         }
         else {
+          
+          // This is for tests purposes:
+
           dateFrom = utils.convertTime(dateFrom, false);  //API wants time with no seconds
           dateTo = utils.convertTime(dateTo, false);      //API wants time with no seconds
           sensorID = sensorID.replace(/_/g, ":");
