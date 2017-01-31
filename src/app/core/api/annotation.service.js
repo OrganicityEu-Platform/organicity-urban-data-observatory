@@ -10,9 +10,11 @@
     initialize();
 
     var service = { //todo define here the methods pushing annotation
-      pushAnnotation: pushAnnotation,
-      getAnnotation: getAnnotation,
-      getAnnotationForApplication: getAnnotationForApplication
+      pushAnnotation: pushAnnotation, 
+      getAnnotation: getAnnotation, // Check this method related to reputation and the new getAssetAnnotations
+      getAnnotationForApplication: getAnnotationForApplication,
+      getAssetAnnotations: getAssetAnnotations,
+      getTag: getTag
     };
 
     return service;

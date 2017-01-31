@@ -16,9 +16,9 @@
 
       var entity = $scope.$parent.vm.entity;
 
-      var entityProcessed = getAssetAnnotation(entity);
+      displayAssetAnnotations(entity);
 
-      function getAssetAnnotation(entity){
+      function displayAssetAnnotations(entity){
         annotation.getAssetAnnotations(entity.id).then(
           function (response) {
 
@@ -42,13 +42,10 @@
             });
 
             vm.annotation.tags = tags;
-
             vm.annotation.filters = filters;
-
 
           })
 
-        return entityProcessed;
       }
 
 
