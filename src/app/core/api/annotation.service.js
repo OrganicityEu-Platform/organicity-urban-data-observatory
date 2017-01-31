@@ -45,5 +45,13 @@
       }
       return annotationAPI.all('annotations/' + tagDomainUrn).get("", params);
     }
+
+    function getAssetAnnotations(asset) {
+      return annotationAPI.all('annotations/' + asset + '/all').get("");
+    }
+
+    function getTag(tagUrn) {
+      return annotationAPI.all('tags/' + tagUrn).get("");
+    }
   }
 })();
