@@ -22,7 +22,6 @@
         this.location = searchUtils.parseLocation(object);
         this.icon = searchUtils.parseIcon(object, this.type);
         this.iconType = searchUtils.parseIconType(this.type);
-        this.lastUpdated = searchUtils.parseTime(object);
       }
       return SearchResult;
     }]);

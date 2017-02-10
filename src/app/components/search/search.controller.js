@@ -39,15 +39,8 @@
           }
       }
 
-      // WARNING: All the code below is a temporary "quick code" for demo!
-
-
       function querySearch(query) {
-        if(query.length < 3) {
-          return [];
-        }
-
-        return $q.all([asset.getMetadata(query.toLowerCase()), getPlacesMapzen(query)])
+        return $q.all([getMetadata(query), getPlacesMapzen(query)])
           .then(function(data) {
 
             if(data.length === 0) {
@@ -59,14 +52,14 @@
             //disable scrolling on body if dropdown is present
             angular.element(document.body).css('overflow', 'hidden');
 
-            return joinSearches(data, query); //tmp. limit 10 results
+            return joinSearches(data);
 
           });
       }
 
-     function getMapboxPlaces(location){
-          location = location.replace(" ", "+");
-          return $http.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+ location + '.json?access_token=pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImNpaDN5aXlzZDAwdG9ybGx5ajB4bjBob2gifQ.tG2iuCSdCelgkoSy6pEvaA');
+     function getMetadata(keywords){
+          keywords = keywords.replace(" ", "+");
+          return asset.getMetadata(keywords);
       }
 
       function getPlacesMapzen(location){
@@ -80,94 +73,27 @@
         return _.map(places, getMapzenPlaceReadyForModel);
       }
 
-      function getMapboxPlaceReadyForModel(place){
-        var searchResult = {}
-        searchResult.type = "location";
-        searchResult.name = place.place_name;
-        searchResult.data = {
-          location: {
-            longitude: place.geometry.coordinates[0],
-            latitude: place.geometry.coordinates[1]
-          }
-        };
-        return new SearchResultLocation(searchResult);
+      function filterEntities(assets){
+        if (!assets || assets.length === 0) return [];
+        return _.map(assets, getMetadataReadyForModel);
       }
 
       function getMapzenPlaceReadyForModel(place){
         var searchResult = {
           type: "location",
           name: place.properties.label,
-          data: {
-            location: {
-              longitude: place.geometry.coordinates[0],
-              latitude: place.geometry.coordinates[1]
-            }
-        }
+          longitude: place.geometry.coordinates[0],
+          latitude: place.geometry.coordinates[1]
         }
         return new SearchResultLocation(searchResult);
       }
 
-      function filterEntities(query, entities){
-        return _.chain(entities).filter(function(item){
-
-                item.searchMatches = [];
-
-                var search = new RegExp(query, "gi")
-
-                var matches = [];
-
-                item.labels = entityUtils.parseLabels(item).join(" ");
-
-                var keysToSearch = [
-                {
-                  category: "name",
-                  match: item.provider
-                },
-                {
-                  category: "name",
-                  scope: item.data.attributes.types,
-                  match: "name"
-                },
-                {
-                  category: "name",
-                  scope: item.data.attributes.types,
-                  match: "unit"
-                }];
-
-                _.each(keysToSearch, function(keyToSearch){
-                  if (keyToSearch.scope && _.isArray(keyToSearch.scope)) {
-                     _.each(keyToSearch.scope, function(elementToSearch){
-                        if(elementToSearch[keyToSearch.match]){
-                          if(elementToSearch[keyToSearch.match].toLowerCase().indexOf(query.toLowerCase()) > -1) {
-                            matches.push(elementToSearch);
-                            item.searchMatches.push(keyToSearch.category);
-                          }
-                        }
-                     });
-                  } else {
-                    if(keyToSearch.match.toLowerCase().indexOf(query.toLowerCase()) > -1) {
-                      matches.push(keysToSearch);
-                      item.searchMatches.push(keyToSearch.category);
-                    }
-                  }
-                });
-                return (matches.length > 0) ? true : false;
-
-              }).map(function(object) {
-                  object.type = "name"; //tmp hack!
-                  return new SearchResultLocation(object);
-              }).sortBy(function(result){
-                var d = new Date(result.lastUpdated);
-                return -d.getTime();
-              }).tap(function(data){
-                if(data.length === 0) {
-                  angular.element(document.body).css('overflow', 'auto');
-                }
-              }).slice(0, 10).value() //tmp. reduce to 10 results.
+      function getMetadataReadyForModel(asset){
+        return new SearchResult(asset);
       }
 
-      function joinSearches(data, query){
-        var e = filterEntities(query, data[0]);
+      function joinSearches(data){
+        var e = filterEntities(data[0]);
         var p = filterPlaces(data[1]);
         return p.concat(e);;
       }

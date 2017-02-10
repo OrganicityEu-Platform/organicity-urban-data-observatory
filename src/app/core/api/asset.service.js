@@ -73,7 +73,7 @@
       }
 
 			function getMetadata(query) {
-				return assetsAPI.one('assets/metadata/search').get({'page': '1', 'per': '100', 'query': query});
+				return assetsAPI.one('assets/metadata/search').get({'page': '1', 'per': '20', 'query': query});
 			}
 
 			function getGeoJSONSite(site) {

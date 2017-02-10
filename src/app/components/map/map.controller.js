@@ -57,6 +57,10 @@
       };
     });
 
+    $scope.$on('goToLocation', function(event, data) {
+      goToLocation(event, data);
+    });
+
     $scope.$on("centerUrlHash", function(event, centerHash) {
         $location.search({ map: centerHash });
     });
@@ -174,6 +178,23 @@
         });
       }
 
+    }
+
+    function goToLocation(event, data){
+      vm.center.lat = data.lat;
+      vm.center.lng = data.lng;
+      vm.center.zoom = getZoomLevel(data);
+    }
+
+    function getZoomLevel(data) {
+      console.log(data);
+      var LAYER_ZOOMS = [{name:'venue', zoom:18}, {name:'address', zoom:18}, {name:'neighbourhood', zoom:13}, {name:'locality', zoom:13}, {name:'localadmin', zoom:10}, {name:'county', zoom:10}, {name:'region', zoom:8}, {name:'country', zoom:7}, {name:'coarse', zoom:7}];
+      if (!data.layer) {
+        return 10;
+      }
+      return _.find(LAYER_ZOOMS, function(layer) {
+        return layer.name === data.layer;
+      }).zoom;
     }
 
     function getDistanceInKm(pointA, pointB) {
