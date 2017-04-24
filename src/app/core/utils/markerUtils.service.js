@@ -36,11 +36,11 @@
         }
         else if (object.properties && object.properties.type) {
           var typeString = object.properties.type.split(':');
-          entityType = typeString[typeString.length-1]
+          entityType = typeString[typeString.length-1];
         }
         else if (object.type) {
           var typeString = object.type.split(':');
-          entityType = typeString[typeString.length-1]
+          entityType = typeString[typeString.length-1];
         }
         return entityType;
       }
@@ -72,7 +72,7 @@
       }
 
       function parseLocation(object) {
-        if(!object.site || object.split == null) return;
+        if(!object.site || object.split === null){ return; }
 
         var location = '';
 
@@ -115,7 +115,7 @@
       }
 
       function parseUserTags(object) {
-          var user_tags = ["organicity"]; //temp
+          var user_tags = ['organicity']; //temp
           return user_tags;
       }
 
@@ -163,12 +163,12 @@
           return;
         }
 
-        var entityName = object.id.split(":");
+        var entityName = object.id.split(':');
 
         entityName = entityName.slice(4, entityName.length);
         entityName = _.map(entityName, makeCase);
 
-        object.name = entityName.join(" ");
+        object.name = entityName.join(' ');
 
         return object.name.length <= 41 ? object.name : object.name.slice(0, 35).concat(' ... ');
       }
@@ -202,9 +202,9 @@
       function parseTypeComponents(object) {
           if (object.type) {
               var entityTypeComp = object.type.split(':');
-              if (entityTypeComp && entityTypeComp.length <= 0) return false;
+              if (entityTypeComp && entityTypeComp.length <= 0){ return false; }
               entityTypeComp = _.reject(entityTypeComp, function(a) {
-                  return ["oc", "urn", "entitytype"].indexOf(a.toLowerCase()) >= 0
+                  return ['oc', 'urn', 'entitytype'].indexOf(a.toLowerCase()) >= 0;
               });
               return entityTypeComp;
           } else {
@@ -220,7 +220,7 @@
           time = object.context.last_reading_at;
         }
         else if (object.last_updated_at) {
-          time = Date.parse(object.last_updated_at)
+          time = Date.parse(object.last_updated_at);
         }
         else if (object.name && object.name.includes('Cluster')) {
           time = new Date(Date.now());
@@ -252,7 +252,7 @@
       function unfoldCase(str) {
           return str.replace(/([A-Z][a-z])/g, ' $1').replace(/^./, function(str) {
               return str.toUpperCase();
-          })
+          });
       }
 
       function lowerCase(str) {

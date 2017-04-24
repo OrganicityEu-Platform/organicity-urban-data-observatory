@@ -31,7 +31,7 @@
         this.uuid = sensorData.type.replace(/:/g, '_');
 
         var description = sensor; //sensorUtils.getSensorDescription(this.id, sensorTypes);
-        description = (description) ? description : "Description not available";
+        description = (description) ? description : 'Description not available';
         this.fullDescription = description;
         this.previewDescription = description.length > 140 ? description.slice(0, 140).concat(' ... ') : description;
       }

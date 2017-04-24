@@ -134,7 +134,7 @@
       }
 
       function getAsset(id) {
-				console.log("Loading asset: ", id);
+				console.log('Loading asset: ', id);
 				var endpoint = 'assets/' + id;
         return assetsAPI.one(endpoint).get({});
       }

@@ -20,7 +20,7 @@
                 data: {
                     longUrl: url.toString()
                 }
-            })
+            });
         }
 
     }

@@ -31,29 +31,29 @@
 
     function getAnnotation(asset, user, application, tagUrn) { //todo async call
       var params = {
-        "assetUrn": asset,
-        "user": user,
-        "applicationUrn": application,
-        "tagUrn": tagUrn
-      }
-      return annotationAPI.all('annotations/').get("", params);
+        'assetUrn': asset,
+        'user': user,
+        'applicationUrn': application,
+        'tagUrn': tagUrn
+      };
+      return annotationAPI.all('annotations/').get('', params);
     }
 
     function getAnnotationForApplication(asset, user, application, tagDomainUrn) { //todo async call
       var params = {
-        "assetUrn": asset,
-        "user": user,
-        "applicationUrn": application
-      }
-      return annotationAPI.all('annotations/' + tagDomainUrn).get("", params);
+        'assetUrn': asset,
+        'user': user,
+        'applicationUrn': application
+      };
+      return annotationAPI.all('annotations/' + tagDomainUrn).get('', params);
     }
 
     function getAssetAnnotations(asset) {
-      return annotationAPI.all('annotations/' + asset + '/all').get("");
+      return annotationAPI.all('annotations/' + asset + '/all').get('');
     }
 
     function getTag(tagUrn) {
-      return annotationAPI.all('tags/' + tagUrn).get("");
+      return annotationAPI.all('tags/' + tagUrn).get('');
     }
   }
 })();

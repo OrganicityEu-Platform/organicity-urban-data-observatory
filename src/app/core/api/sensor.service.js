@@ -24,18 +24,18 @@
           'urn_oc_attributeType_datasource',
           'geo_point',
           'urn_oc_attributeType_description',
-          'urn_oc_attributeType_reputation',          
-        ]
+          'urn_oc_attributeType_reputation',
+        ];
         if (ignoreData.indexOf(sensorID) > -1) {
           return;
         }
         else {
-          
+
           // This is for tests purposes:
 
           dateFrom = utils.convertTime(dateFrom, false);  //API wants time with no seconds
           dateTo = utils.convertTime(dateTo, false);      //API wants time with no seconds
-          sensorID = sensorID.replace(/_/g, ":");
+          sensorID = sensorID.replace(/_/g, ':');
           return $http({
             method: 'GET',
             params: {

@@ -1,3 +1,4 @@
+/*jshint sub:true*/
 (function() {
   'use strict';
 
@@ -28,15 +29,15 @@
 
             angular.forEach(response, function(value, key){
 
-              var splitName = value["tagUrn"].split(":")
+              var splitName = value["tagUrn"].split(":");
               annotation.getTag(value["tagUrn"]).then(function(result) {
                 var tag = {
                   "name": splitName.slice(4).join(" "),
                   "tooltip":  result.name
-                }
-                tags.push(tag)
+                };
+                tags.push(tag);
 
-              })
+              });
 
               filters = filterUsers(value["user"]);
             });
@@ -44,7 +45,7 @@
             vm.annotation.tags = tags;
             vm.annotation.filters = filters;
 
-          })
+          });
 
       }
 
@@ -54,7 +55,7 @@
     function filterUsers(username) {
       var users = [];
       var distinctUser = {};
-      if(username == "jamaica" ){
+      if(username === 'jamaica' ){
         distinctUser = {
           "id": 0,
           "name" : "Automated"
@@ -65,7 +66,7 @@
           "name" : "Experimenters"
         };
       }
-      if (users.indexOf(distinctUser) == -1) {
+      if (users.indexOf(distinctUser) === -1) {
         users.push(distinctUser);
       }
 

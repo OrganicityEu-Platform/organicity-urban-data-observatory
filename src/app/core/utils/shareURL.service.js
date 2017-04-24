@@ -63,18 +63,18 @@
         }
 
         function getURL() {
-            if ($location.absUrl().indexOf("?") > 0) {
-                return $location.absUrl().substring(0, $location.absUrl().indexOf("?"));
+            if ($location.absUrl().indexOf('?') > 0) {
+                return $location.absUrl().substring(0, $location.absUrl().indexOf('?'));
             } else {
-                $location.absUrl()
+                $location.absUrl();
             }
         }
 
         function share(fn) {
-            if (assetShortURL) return fn(assetShortURL)
+            if (assetShortURL){ return fn(assetShortURL); }
             shortURL.shorten(getURL()).then(function(res) {
                 assetShortURL = res.data.id;
-                fn(assetShortURL)
+                fn(assetShortURL);
             }, function() {
                 alert.error('Sorry, there was a problem generating the shared url');
             });

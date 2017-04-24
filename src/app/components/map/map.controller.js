@@ -61,7 +61,7 @@
       goToLocation(event, data);
     });
 
-    $scope.$on("centerUrlHash", function(event, centerHash) {
+    $scope.$on('centerUrlHash', function(event, centerHash) {
         $location.search({ map: centerHash });
     });
 
@@ -99,7 +99,7 @@
             for (var o in overlays) {
               var currentMarker = _.find(overlays[o].getLayers(), function(marker) {
                 if (data.id === marker.feature.properties.id) {
-                  console.log(marker)
+                  console.log(marker);
                   marker.focus = true;
                   marker.openPopup();
                   return marker;
@@ -116,9 +116,9 @@
 
     function updateMarkers() {
       if (vm.center.zoom >= 8) {
-        safeFunction(updateAreaMarkers, "lastMarkersUpdate", 1500);
+        safeFunction(updateAreaMarkers, 'lastMarkersUpdate', 1500);
       } else {
-        safeFunction(updateClusters, "lastClustersUpdate", 1500);
+        safeFunction(updateClusters, 'lastClustersUpdate', 1500);
       }
 
       if (vm.controls.minimap) {
@@ -211,7 +211,7 @@
     }
 
     function deg2rad(deg) {
-      return deg * (Math.PI / 180)
+      return deg * (Math.PI / 180);
     }
 
   }

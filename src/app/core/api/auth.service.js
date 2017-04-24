@@ -140,7 +140,7 @@
       }
 
       function logout() {
-        $window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=https://observatory.organicity.eu'
+        $window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=https://observatory.organicity.eu';
         $window.localStorage.removeItem('organicity.token');
         $window.localStorage.removeItem('organicity.data');
       }
