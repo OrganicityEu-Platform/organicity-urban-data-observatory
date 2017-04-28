@@ -20,27 +20,27 @@
       /////////////////
 
       function parseType(object) {  
-        if (object.type) return object.type;      
+        if (object.type){ return object.type; }
         //return object.searchMatches[0]; // tmp. single Type
       }
 
       function parseName(object) {
           // This is tmp
-          if (object.type == "location") return object.name;          
+          if (object.type === 'location'){ return object.name; }
 
-          var entityName = object.id.split(":");
+          var entityName = object.id.split(':');
 
           entityName = entityName.slice(4, entityName.length);
           entityName = _.map(entityName, unfoldCase);
 
-          object.name = entityName.join(" ");
+          object.name = entityName.join(' ');
 
           return object.name;
       }
 
       function parseLocation(object) {
           // This is tmp
-          if (object.type == "location") return "";
+          if (object.type === 'location'){ return ''; }
 
           var location = '';
           var locationSource = {};
@@ -62,7 +62,7 @@
           }
 
           // This is tmp
-          if (isExperimenter(object)) location = 'Experiment'
+          if (isExperimenter(object)){ location = 'Experiment'; }
 
           return location;
       }
@@ -97,7 +97,7 @@
       function unfoldCase(str) {
           return str.replace(/([A-Z][a-z])/g, ' $1').replace(/^./, function(str) {
               return str.toUpperCase();
-          })
+          });
       }
 
     }

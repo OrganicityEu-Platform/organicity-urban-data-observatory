@@ -39,12 +39,12 @@
                 return;
             }
 
-            var entityName = object.id.split(":");
+            var entityName = object.id.split(':');
 
             entityName = entityName.slice(4, entityName.length);
             entityName = _.map(entityName, unfoldCase);
 
-            object.name = entityName.join(" ");
+            object.name = entityName.join(' ');
 
             return object.name;
         }
@@ -70,7 +70,7 @@
                 location += ', ' + country;
             }
 
-            if (locationSource.justOwnerLocation) location += ' (provider location)';
+            if (locationSource.justOwnerLocation){ location += ' (provider location)'; }
 
             return location;
         }
@@ -102,14 +102,14 @@
         }
 
         function parseUserTags(object) {
-            var user_tags = ["organicity"]; //temp
+            var user_tags = ['organicity']; //temp
             return user_tags;
         }
 
         function parseType(object) {
-            var entityTypeComp = parseTypeComponents(object)
+            var entityTypeComp = parseTypeComponents(object);
             if (entityTypeComp) {
-                return _.map(entityTypeComp, unfoldCase).join(" ");
+                return _.map(entityTypeComp, unfoldCase).join(' ');
             } else {
                 return 'Asset';
             }
@@ -126,9 +126,9 @@
         function parseTypeComponents(object) {
             if (object.type) {
                 var entityTypeComp = object.type.split(':');
-                if (entityTypeComp && entityTypeComp.length <= 0) return false;
+                if (entityTypeComp && entityTypeComp.length <= 0){ return false; }
                 entityTypeComp = _.reject(entityTypeComp, function(a) {
-                    return ["oc", "urn", "entitytype"].indexOf(a.toLowerCase()) >= 0
+                    return ['oc', 'urn', 'entitytype'].indexOf(a.toLowerCase()) >= 0;
                 });
                 return entityTypeComp;
             } else {
@@ -157,10 +157,10 @@
 
         function parseDescription(object) {
             if (_.contains(object.data.attributes.types, 'description') && object.data.attributes.data.description.value) {
-                return object.data.attributes.data.description.value
+                return object.data.attributes.data.description.value;
             } else {
                 if (isExperimenter(object)) {
-                    return 'This asset is provided by an Organicity Experiment.'
+                    return 'This asset is provided by an Organicity Experiment.';
                 } else {
                     return 'This ' + unfoldCase(object.context.service) +
                         ' asset is provided by the ' + object.context.position.city +
@@ -210,12 +210,12 @@
         function parseOrigin(object) {
             if (_.contains(object.data.attributes.types, 'origin')) {
                 if (object.data.attributes.data.origin.value) {
-                    return object.data.attributes.data.origin.value
+                    return object.data.attributes.data.origin.value;
                 } else {
-                    return false
+                    return false;
                 }
             } else {
-                return false
+                return false;
             }
         }
 
@@ -234,17 +234,17 @@
 
         function parseStateName(object) {
             if (!object.state) {
-                object.state = (object.data.attributes.length > 0) ? "has_published" : "never_published";
+                object.state = (object.data.attributes.length > 0) ? 'has_published' : 'never_published';
             }
             return object.state.replace('_', ' ');
         }
 
         function parseADSurl(object) {
-            return 'https://discovery.organicity.eu/v0/assets/' + object.uuid
+            return 'https://discovery.organicity.eu/v0/assets/' + object.uuid;
         }
 
         function parseJSON(object) {
-            return Restangular.stripRestangular(object)
+            return Restangular.stripRestangular(object);
         }
 
         function parseAvatar() {
@@ -277,7 +277,7 @@
         function unfoldCase(str) {
             return str.replace(/([A-Z][a-z])/g, ' $1').replace(/^./, function(str) {
                 return str.toUpperCase();
-            })
+            });
         }
 
         function lowerCase(str) {

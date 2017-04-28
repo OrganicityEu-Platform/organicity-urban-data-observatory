@@ -142,7 +142,7 @@
 
       function findHistoricalUri(){
         var sensorEntity = vm.sensors ? vm.sensors.filter(function(sensorEnt) {
-          return sensorEnt.id === 'urn:oc:attributeType:datasource'
+          return sensorEnt.id === 'urn:oc:attributeType:datasource';
         }) : [];
         if(!sensorEntity[0]) {
           return;
@@ -215,7 +215,7 @@
       // calls api to get sensor data and saves it to sensorsData array
       function getChartData(entityID, sensorID, dateFrom, dateTo, options) {
         var sensorsHistoricalData = sensor.getSensorsDataNew(entityID, sensorID, dateFrom, dateTo);
-        if(typeof sensorsHistoricalData != 'undefined') {
+        if(typeof sensorsHistoricalData !== 'undefined') {
           return sensorsHistoricalData
           .then(function(data) {
             sensorsData[sensorID] = data.data;
@@ -542,8 +542,8 @@
 
       function watchReliability() {
         $scope.$watch('vm.reliability', function (newVal, oldVal) {
-          if (oldVal == newVal) return;
-          if (newVal == undefined) return;
+          if (oldVal === newVal){ return; }
+          if (newVal === undefined){ return;}
           var annotationObject = {
             annotationId: null,
             application: 'urn:oc:application:reputation',
@@ -553,7 +553,7 @@
             tagUrn: 'urn:oc:tag:Reliability:Score',
             textValue: 'No Text Value',
             user: 'UserA'
-          }
+          };
           annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
             function (response) {
               console.log("annotation completed");
@@ -568,21 +568,21 @@
         annotation.getAnnotation(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tag:Reliability:Score').then( //todo fix user
           function (response) {
             console.log(response);
-            if (response.numericValue != undefined) {
+            if (response.numericValue !== undefined) {
               vm.reliability = response.numericValue;
             }
             watchReliability();
           },
           function (response) {
             console.log(response);
-            watchReliability()
+            watchReliability();
           });
       }
 
       function watchAvailability() {
         $scope.$watch('vm.availability', function (newVal, oldVal) {
-          if (oldVal == newVal) return;
-          if (newVal == undefined) return;
+          if (oldVal === newVal){ return;}
+          if (newVal === undefined){ return;}
           var annotationObject = {
             annotationId: null,
             application: 'urn:oc:application:reputation',
@@ -592,7 +592,7 @@
             tagUrn: 'urn:oc:tag:Availability:Score',
             textValue: 'No Text Value',
             user: 'UserA'
-          }
+          };
           annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
             function (response) {
               console.log("annotation completed");
@@ -607,21 +607,21 @@
         annotation.getAnnotation(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tag:Availability:Score').then( //todo fix user
           function (response) {
             console.log(response);
-            if (response.numericValue != undefined) {
+            if (response.numericValue !== undefined) {
               vm.availability = response.numericValue;
             }
             watchAvailability();
           },
           function (response) {
             console.log(response);
-            watchAvailability()
+            watchAvailability();
           });
       }
 
       function watchUsability() {
         $scope.$watch('vm.usability', function (newVal, oldVal) {
-          if (oldVal == newVal) return;
-          if (newVal == undefined) return;
+          if (oldVal === newVal){ return;}
+          if (newVal === undefined){ return;}
           var annotationObject = {
             annotationId: null,
             application: 'urn:oc:application:reputation',
@@ -631,7 +631,7 @@
             tagUrn: 'urn:oc:tag:Usability:Score',
             textValue: 'No Text Value',
             user: 'UserA'
-          }
+          };
           annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
             function () {
               console.log("annotation completed");
@@ -646,23 +646,23 @@
         annotation.getAnnotation(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tag:Usability:Score').then( //todo fix user
           function (response) {
             console.log(response);
-            if (response.numericValue != undefined) {
+            if (response.numericValue !== undefined) {
               vm.usability = response.numericValue;
             }
             watchUsability();
           },
           function (response) {
             console.log(response);
-            watchUsability()
+            watchUsability();
           });
       }
 
       function watchLike() {
         $scope.$watch('vm.like', function (newVal, oldVal) {
-          if (oldVal == newVal) return;
-          if (newVal == undefined) return;
+          if (oldVal === newVal){ return;}
+          if (newVal === undefined){ return;}
           var tag = 'urn:oc:tag:DirectFeedback:Like';
-          if (newVal == 'false') {
+          if (newVal === 'false') {
             tag = 'urn:oc:tag:DirectFeedback:Dislike';
           }
           var annotationObject = {
@@ -674,7 +674,7 @@
             tagUrn: tag,
             textValue: 'No Text Value',
             user: 'UserA'
-          }
+          };
           annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
             function (response) {
               console.log("annotation completed");
@@ -689,11 +689,12 @@
         annotation.getAnnotationForApplication(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tagDomain:DirectFeedback').then( //todo fix user
           function (response) {
             console.log(response);
-            if (response.tagUrn != undefined) {
-              if (response.tagUrn == 'urn:oc:tag:DirectFeedback:Dislike')
+            if (response.tagUrn !== undefined) {
+              if (response.tagUrn === 'urn:oc:tag:DirectFeedback:Dislike'){
                 vm.like = 'false';
-              else
+              } else {
                 vm.like = 'true';
+              }
             }
             watchLike();
           },
@@ -707,7 +708,7 @@
       function updateReputation(){
         if (vm.sensors) {
           for (var sensor in vm.sensors) {
-            if (vm.sensors[sensor].uuid == 'urn_oc_attributeType_reputation') {
+            if (vm.sensors[sensor].uuid === 'urn_oc_attributeType_reputation') {
                 vm.reputation=vm.sensors[sensor].value;
                 vm.stars= Math.floor(vm.reputation/5);
                 console.log(vm.stars);

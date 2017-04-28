@@ -80,7 +80,7 @@
                             lat: layer.feature.geometry.coordinates[1],
                             lng: layer.feature.geometry.coordinates[0],
                             zoom: 11
-                        }
+                        };
                         $rootScope.$broadcast('centerMap', {center: center});
                     }
                 });
@@ -102,7 +102,7 @@
         }
 
         function isCluster(feature) {
-            return (feature.properties.id.indexOf('site') == -1) ? false : true;
+            return (feature.properties.id.indexOf('site') === -1) ? false : true;
         }
 
     }]);

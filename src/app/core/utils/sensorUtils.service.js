@@ -56,7 +56,7 @@
         } else if(sensorData.type) {
           var nameParts = sensor.split(':');
           if (nameParts.length > 1) {
-            var sensorExtra = nameParts[nameParts.length-1]
+            var sensorExtra = nameParts[nameParts.length-1];
             sensorExtra = (sensorExtra.toUpperCase() === sensorExtra) ? sensorExtra : sensorExtra.replace(/([A-Z])/g, ' $1').toUpperCase();
             return sensorExtra;
           }

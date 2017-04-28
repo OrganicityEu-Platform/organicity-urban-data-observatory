@@ -32,7 +32,7 @@
       }
 
       function selectedItemChange(result) {
-          if(result.type !== "location"){
+          if(result.type !== 'location'){
             $location.path('/assets/' + result.id);
           } else {
             animation.goToLocation({lat: result.lat, lng: result.lng, type: result.type});
@@ -58,33 +58,33 @@
       }
 
      function getMetadata(keywords){
-          keywords = keywords.replace(" ", "+");
+          keywords = keywords.replace(' ', '+');
           return asset.getMetadata(keywords);
       }
 
       function getPlacesMapzen(location){
-          location = location.replace(" ", "+");
+          location = location.replace(' ', '+');
           return $http.get('https://search.mapzen.com/v1/autocomplete?api_key=search-h8Qe8fY&text='+ location);
       }
 
       function filterPlaces(places){
-        if (!places ||  !places.data || places.data.features.length === 0) return [];
+        if (!places ||  !places.data || places.data.features.length === 0){ return [];}
         places = places.data.features.slice(0, 3); //just first 5 results
         return _.map(places, getMapzenPlaceReadyForModel);
       }
 
       function filterEntities(assets){
-        if (!assets || assets.length === 0) return [];
+        if (!assets || assets.length === 0){ return [];}
         return _.map(assets, getMetadataReadyForModel);
       }
 
       function getMapzenPlaceReadyForModel(place){
         var searchResult = {
-          type: "location",
+          type: 'location',
           name: place.properties.label,
           longitude: place.geometry.coordinates[0],
           latitude: place.geometry.coordinates[1]
-        }
+        };
         return new SearchResultLocation(searchResult);
       }
 
@@ -95,7 +95,7 @@
       function joinSearches(data){
         var e = filterEntities(data[0]);
         var p = filterPlaces(data[1]);
-        return p.concat(e);;
+        return p.concat(e);
       }
 
     }

@@ -58,7 +58,7 @@
           'TimeInstant',
           'access:scope',
           'name'
-        ]
+        ];
 
         var sensors = _(this.data.types)
             .chain()
