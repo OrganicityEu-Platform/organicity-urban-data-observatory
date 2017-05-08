@@ -4,8 +4,8 @@
   angular.module('app.components')
     .controller('LayoutController', LayoutController);
 
-    LayoutController.$inject = ['$location', '$state', '$scope', 'auth', 'animation', '$timeout', 'DROPDOWN_OPTIONS_COMMUNITY', 'DROPDOWN_OPTIONS_USER'];
-    function LayoutController($location, $state, $scope, auth, animation, $timeout, DROPDOWN_OPTIONS_COMMUNITY, DROPDOWN_OPTIONS_USER) {
+    LayoutController.$inject = ['$location', '$state', '$scope', 'auth', 'animation', '$timeout', 'DROPDOWN_OPTIONS_COMMUNITY', 'DROPDOWN_OPTIONS_USER', '$auth'];
+    function LayoutController($location, $state, $scope, auth, animation, $timeout, DROPDOWN_OPTIONS_COMMUNITY, DROPDOWN_OPTIONS_USER, $auth) {
       var vm = this;
       vm.navRightLayout = 'space-around center';
 
@@ -22,6 +22,9 @@
         }
       });
 
+      $scope.authenticate = function(provider) {
+        $auth.authenticate(provider);
+      };
       // listen for logout events so that the navbar can be updated
       $scope.$on('loggedOut', function() {
         vm.isLoggedIn = false;

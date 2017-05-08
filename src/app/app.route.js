@@ -8,8 +8,18 @@
       Check app.config.js to know how states are protected
     */
 
-    config.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$logProvider'];
-    function config($stateProvider, $urlRouterProvider, $locationProvider, $logProvider) {
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$logProvider', '$authProvider'];
+    function config($stateProvider, $urlRouterProvider, $locationProvider, $logProvider, $authProvider) {
+      $authProvider.oauth2({
+        name: 'organicity',
+        url: 'http://localhost/keycloak',
+        provider: 'keycloak',
+        //url: 'http://localhost/keycloak',
+        clientId: '4faf6d12-9d7e-4999-9070-9ef36bb45841',
+        redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+        authorizationEndpoint: 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth'
+      });
+
       $stateProvider
         /*
          -- Landing state --
