@@ -4,8 +4,8 @@
   angular.module('app.components')
     .controller('LayoutController', LayoutController);
 
-    LayoutController.$inject = ['$location', '$state', '$scope', 'auth', 'animation', '$timeout', 'DROPDOWN_OPTIONS_COMMUNITY', 'DROPDOWN_OPTIONS_USER'];
-    function LayoutController($location, $state, $scope, auth, animation, $timeout, DROPDOWN_OPTIONS_COMMUNITY, DROPDOWN_OPTIONS_USER) {
+    LayoutController.$inject = ['$location', '$state', '$scope', 'auth', 'animation', '$timeout', 'DROPDOWN_OPTIONS_COMMUNITY', 'DROPDOWN_OPTIONS_USER', '$auth'];
+    function LayoutController($location, $state, $scope, auth, animation, $timeout, DROPDOWN_OPTIONS_COMMUNITY, DROPDOWN_OPTIONS_USER, $auth) {
       var vm = this;
       vm.navRightLayout = 'space-around center';
 
@@ -21,6 +21,24 @@
           $scope.$digest();
         }
       });
+
+      $scope.authenticate = function(provider) {
+        $auth.authenticate(provider)
+          .then(function() {
+
+            console.log('logged in with: auth.authenticate(provider), token is:');
+            console.log( $auth.getToken());
+
+            // Here we should call auth.saveData(token)
+            auth.saveData($auth.getToken());
+
+            // This localstorage is a string, should it be an object?
+            // window.localStorage.getItem('satellizer_token')
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      };
 
       // listen for logout events so that the navbar can be updated
       $scope.$on('loggedOut', function() {
