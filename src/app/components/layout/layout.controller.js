@@ -25,11 +25,7 @@
       $scope.authenticate = function(provider) {
         $auth.authenticate(provider)
           .then(function() {
-
-            console.log('logged in with: auth.authenticate(provider), token is:');
-            console.log( $auth.getToken());
-
-            // Here we should call auth.saveData(token)
+            // console.log( $auth.getToken());
             auth.saveData($auth.getToken());
 
             // This localstorage is a string, should it be an object?
