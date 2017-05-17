@@ -10,6 +10,9 @@
 
     config.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$logProvider', '$authProvider'];
     function config($stateProvider, $urlRouterProvider, $locationProvider, $logProvider, $authProvider) {
+      //unlinkUrl gets called with $auth.unlink('organicity');
+      $authProvider.unlinkUrl = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout';
+      //                      = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=https://observatory.organicity.eu';
       $authProvider.oauth2({
         name: 'organicity',
         url: 'http://localhost/keycloak',

@@ -9,6 +9,7 @@
 
       $scope.answer = function(answer) {
         $scope.waitingFromServer = true;
+        // TODO: does login() accept arguments?
         auth.login(answer)
           .then(function(data) {
             /*jshint camelcase: false */

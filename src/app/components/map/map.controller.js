@@ -160,7 +160,7 @@
       // This is tmp.
       var clusters = asset.getAllClusters();
       if (clusters) {
-        console.warn(clusters);
+//        console.warn(clusters);
         vm.layers = {
           baselayers: mapUtils.getBaseLayers(),
           overlays: new Overlays(clusters, 'Asset Types')
