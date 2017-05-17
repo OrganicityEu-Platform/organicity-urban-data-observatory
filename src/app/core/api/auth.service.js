@@ -36,10 +36,9 @@
       //////////////////////////
 
       function initialize() {
-        console.log('initialize()...');
         setCurrentUser('appLoad');
-        console.log('End initialize()');
       }
+
       //run on app initialization so that we can keep auth across different sessions
       function setCurrentUser(time) {
         // 1. Return if not authenticated
@@ -47,9 +46,7 @@
         // 3. Create 'newUser' with enriched data
         // 4. Broadcast
 
-        console.log('setCurrentUser - ');
 
-        // TODO: When to clear localStorage?
         // If we are authenticated, we should have token (but it could be an invalid JWT!)
         console.log('isAuthenticated?: ' + $auth.isAuthenticated());
         if(!$auth.isAuthenticated()) {
@@ -95,7 +92,7 @@
       // TODO: do we need this? - Called from myProfileController
       // Why can we updateUser? This will only get saved in localstorage, not on accounts.organ
       function updateUser() {
-        console.log('updateUser() ...');
+        console.log('updateUser ...');
         return getCurrentUserInfo()
           .then(function(data) {
             console.log('data :');
@@ -107,8 +104,8 @@
       // TODO: Called by app.route.js, app.config.js, userProfile.contoller, layout.contoller
       // function gets called 4 times on app start!
       function getCurrentUser() {
-        console.log('returns user: ');
-        console.log(user);
+        // console.log('returns user: ');
+        // console.log(user);
         return user;
       }
 
@@ -180,7 +177,7 @@
         var jwtDecoded = jwtHelper.decodeToken(token);
         if (jwtHelper.isTokenExpired(token)) {
           console.log('EXPIRED, need to login and return token');
-          // Expects login() to also return the token, which it does not.
+          // Expects login() to also return the token, which it does not anymore!
           return login();
         } else {
           console.log('Token not expired, returning token');
