@@ -47,7 +47,7 @@
 
     animation.viewLoaded();
 
-    leafletData.getMap().then(function() {
+    leafletData.getMap("organicityMap").then(function() {
       vm.controls.minimap = {
         type: 'minimap',
         layer: mapUtils.getBaseLayers().oc,
