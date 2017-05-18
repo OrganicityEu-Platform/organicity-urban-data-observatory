@@ -1,6 +1,7 @@
 (function() {
   'use strict';
 
+  //TODO remove controller
   angular.module('app.components')
     .controller('LoginDialogController', LoginDialogController);
 

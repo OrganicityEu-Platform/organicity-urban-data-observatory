@@ -55,7 +55,9 @@
 
         // Decoded token saved in 'data' var.
         var data = $auth.getPayload();
-        //console.log(data);
+
+        // Restangular needs this token (app.config.js)
+        user.token = $auth.getToken();
 
         // 'data' needs to be enriched  with 'location.city|country', which is done in 'userData()'
         var enrichedData = JSON.parse(userData(data));
@@ -114,7 +116,6 @@
       }
       // TODO: Only called once in loginDialog.controller
       function saveData(token) {
-        console.log('saveData token to localStorage...');
         $auth.setToken(token);
         setCurrentUser();
       }

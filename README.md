@@ -66,6 +66,11 @@ Constants: <Name of constant uppercase joined by an underscore>. Ex: PROFILE_TOO
 
 For data that has been resolved from the router, I've normally appended 'Data' to the name.
 
+### Working locally against a local assets API
+
+If you want to work against a local assets API, change the file 'asset.api.service.js' to:
+`RestangularConfigurer.setBaseUrl('http://localhost/v0'); //http://discovery.organicity.eu/v0`
+
 ### Deployment
 
 * **Staging:**  Do `cap staging deploy` and select the branch you want to deploy at http://staging.organicity.smartcitizen.me/
