@@ -68,7 +68,7 @@ For data that has been resolved from the router, I've normally appended 'Data' t
 
 ### Working locally against a local assets API
 
-If you want to work against a local assets API, change the file 'asset.api.service.js' to:
+If you want to work against a local assets API, change the file 'src/app/core/api/asset.api.service.js' to:
 `RestangularConfigurer.setBaseUrl('http://localhost/v0'); //http://discovery.organicity.eu/v0`
 
 ### Deployment
