@@ -15,6 +15,8 @@
       //                      = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=https://observatory.organicity.eu';
       $authProvider.oauth2({
         name: 'organicity',
+        // TODO: change URL
+        // url: 'http://discovery.organicity.eu/keycloak',
         url: 'http://localhost/keycloak',
         provider: 'keycloak',
         clientId: '4faf6d12-9d7e-4999-9070-9ef36bb45841',
