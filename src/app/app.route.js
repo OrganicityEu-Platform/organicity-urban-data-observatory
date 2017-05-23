@@ -16,8 +16,8 @@
       $authProvider.oauth2({
         name: 'organicity',
         // TODO: change URL
-        // url: 'http://discovery.organicity.eu/keycloak',
-        url: 'http://localhost/keycloak',
+        url: 'https://discovery.organicity.eu/keycloak',
+        //  url: 'http://localhost/keycloak',
         provider: 'keycloak',
         clientId: '4faf6d12-9d7e-4999-9070-9ef36bb45841',
         redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,

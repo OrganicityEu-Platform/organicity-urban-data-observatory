@@ -128,8 +128,6 @@
 
         console.log('login() ======= ');
 
-        // TODO: should we clean out tokens before we login?
-        // Should we also log out?
         $auth.removeToken();
 
         $auth.authenticate('organicity')
