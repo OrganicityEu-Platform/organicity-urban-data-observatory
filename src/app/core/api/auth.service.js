@@ -112,7 +112,7 @@
       }
 
       function isAuth() {
-        return $auth.isAuthenticated;
+        return $auth.isAuthenticated();
       }
       // TODO: Only called once in loginDialog.controller
       function saveData(token) {
