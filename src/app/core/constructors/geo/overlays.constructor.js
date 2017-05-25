@@ -8,9 +8,20 @@
          */
         function Overlays(featureCollections, group) {
             var self = this;
+
+            // We get an error if we pass an empty featureCollection to a new Layer
+            if (_.isEmpty(featureCollections)) {
+              console.log('featureCollections empty');
+              return;
+            }
+
+
+            // TODO: What is this checking?
+            // Because this item always has a length
             if (!featureCollections.length) {
               featureCollections = [featureCollections];
             }
+
             _.each(featureCollections, function(featureCollection) {
                 self[getOverlayName(featureCollection)] = new Layer(featureCollection, group);
             });
