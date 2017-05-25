@@ -22,7 +22,6 @@
         setCurrentUser: setCurrentUser,
         getCurrentUser: getCurrentUser,
         updateUser: updateUser,
-        saveData: saveData,
         login: login,
         logout: logout,
         callback: callback,
@@ -113,11 +112,6 @@
 
       function isAuth() {
         return $auth.isAuthenticated();
-      }
-      // TODO: Only called once in loginDialog.controller
-      function saveData(token) {
-        $auth.setToken(token);
-        setCurrentUser();
       }
 
       function login() {
