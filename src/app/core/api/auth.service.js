@@ -21,10 +21,8 @@
         isAuth: isAuth,
         setCurrentUser: setCurrentUser,
         getCurrentUser: getCurrentUser,
-        updateUser: updateUser,
         login: login,
         logout: logout,
-        callback: callback,
         recoverPassword: recoverPassword,
         getResetPassword: getResetPassword,
         patchResetPassword: patchResetPassword,
@@ -60,18 +58,10 @@
 
         // 'data' needs to be enriched  with 'location.city|country', which is done in 'userData()'
         var enrichedData = JSON.parse(userData(data));
-        //console.log(enrichedData);
 
         // Users need this enriched data when they are created:
         var newUser = new AuthUser(enrichedData);
-        //console.log(newUser);
 
-        //TODO: Is this useless? What does the .path('/') do?
-        //check sensitive information
-        if(user.data && user.data.role !== newUser.role) {
-          user.data = newUser;
-          $location.path('/');
-        }
         user.data = newUser;
 
         // used for app initialization
@@ -90,22 +80,9 @@
         }
       }
 
-      // TODO: do we need this? - Called from myProfileController
-      // Why can we updateUser? This will only get saved in localstorage, not on accounts.organ
-      function updateUser() {
-        console.log('updateUser ...');
-        return getCurrentUserInfo()
-          .then(function(data) {
-            console.log('data :');
-            console.log(data);
-            //$window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
-          });
-      }
-
       // TODO: Called by app.route.js, app.config.js, userProfile.contoller, layout.contoller
       // function gets called 4 times on app start!
       function getCurrentUser() {
-        // console.log('returns user: ');
         // console.log(user);
         return user;
       }
@@ -126,30 +103,13 @@
 
         $auth.authenticate('organicity')
           .then(function() {
-            // Save token to localStorage, encoded!
-            $auth.setToken($auth.getToken());
+            // NOTE: (Also saves token to localStorage, encoded)
 
             setCurrentUser();
           })
           .catch(function(error) {
             console.log(error);
           });
-
-        // TODO: the login function NEED to return anything?
-        // 2 unused function depended on that.
-      }
-
-      function callback() {
-        //TODO: called from app.route.js:369
-        // All it does is save the token
-        console.log('callback()');
-        //console.log($location.$$hash);
-        //var token = $location.$$hash.split('&')[1].slice(13);
-        //window.localStorage.setItem('organicity.token', JSON.stringify(token) );
-        //var jwtDecoded = jwtHelper.decodeToken(token);
-        //window.localStorage.setItem('organicity.data', userData(jwtDecoded) );
-
-        return $location.path('/resources');
       }
 
       function logout() {
@@ -157,25 +117,20 @@
         $auth.logout();
 
         // TODO: Should we also unlink app? See app.route.js, unlinkUrl
-        // $auth.unlink('organicity');
+
+        /*
+        $auth.unlink('organicity')
+          .then(function(response){
+            console.log(response);
+          })
+          .catch(function(response){
+            console.log(response);
+          });
+        */
+
 
         // Notice the redirect_uri
         //$window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=https://observatory.organicity.eu';
-      }
-
-      // TODO: do we need this? - Used by updateUser
-      function getCurrentUserInfo() {
-        console.log('getCurrentUserInfo...');
-        var token = $auth.getToken();
-        var jwtDecoded = jwtHelper.decodeToken(token);
-        if (jwtHelper.isTokenExpired(token)) {
-          console.log('EXPIRED, need to login and return token');
-          // Expects login() to also return the token, which it does not anymore!
-          return login();
-        } else {
-          console.log('Token not expired, returning token');
-          return userData(jwtDecoded);
-        }
       }
 
       function userData(jwtDecoded) {
