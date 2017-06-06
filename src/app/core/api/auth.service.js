@@ -21,6 +21,8 @@
         isAuth: isAuth,
         setCurrentUser: setCurrentUser,
         getCurrentUser: getCurrentUser,
+        hasUserData: hasUserData,
+        renewToken: renewToken,
         login: login,
         logout: logout,
         recoverPassword: recoverPassword,
@@ -91,6 +93,26 @@
         return $auth.isAuthenticated();
       }
 
+      function hasUserData() {
+        return user.data ? true: false;
+      }
+
+      function renewToken(){
+        console.log('login with renewToken()');
+
+        // If we have the "refresh_token" our api will use that method instead.
+        console.log($rootScope.refreshToken);
+        $auth.authenticate('organicity', { "refresh_token" : $rootScope.refreshToken })
+          .then(function(response) {
+            //console.log(response);
+
+            setCurrentUser();
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+
       function login() {
 
         // Here it should go the logic for the login oauth flow
@@ -102,8 +124,10 @@
         $auth.removeToken();
 
         $auth.authenticate('organicity')
-          .then(function() {
+          .then(function(response) {
             // NOTE: (Also saves token to localStorage, encoded)
+            $rootScope.refreshToken = response.data.extratoken;
+            //console.log($rootScope.refreshToken);
 
             setCurrentUser();
           })
@@ -115,6 +139,7 @@
       function logout() {
         // $auth.logout calls $auth.removeToken
         $auth.logout();
+        user.data = undefined;
 
         // TODO: Should we also unlink app? See app.route.js, unlinkUrl
 

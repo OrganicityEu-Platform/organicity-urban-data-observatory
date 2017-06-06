@@ -30,16 +30,29 @@
       });
 
       Restangular.addFullRequestInterceptor(function (element, operation, what, url, headers, params, httpConfig) {
-        if (auth.isAuth()) {
-          var token = auth.getCurrentUser().token;
-          headers.Authorization = 'Bearer ' + token;
+        // After 1 login you should have user.data
+        // It only gets removed on /logout
+        if( auth.hasUserData() ) {
+
+          if (auth.isAuth()) {
+            var token = auth.getCurrentUser().token;
+            headers.Authorization = 'Bearer ' + token;
+          }else{
+            // When can this run? At least 5 min after first login.
+            // When you have user.data but token has expired
+            auth.renewToken(function(){
+              var token = auth.getCurrentUser().token;
+              headers.Authorization = 'Bearer ' + token;
+            });
+          }
+          return {
+            element: element,
+            headers: headers,
+            params: params,
+            httpConfig: httpConfig
+          };
         }
-        return {
-          element: element,
-          headers: headers,
-          params: params,
-          httpConfig: httpConfig
-        };
+
       });
     }
 
