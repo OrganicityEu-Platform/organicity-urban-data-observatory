@@ -47,15 +47,15 @@
 
     animation.viewLoaded();
 
-    leafletData.getMap('organicityMap').then(function() {
-      vm.controls.minimap = {
-        type: 'minimap',
-        layer: mapUtils.getBaseLayers().oc,
-        toggleDisplay: true,
-        minimized: true,
-        zoomLevelOffset: -4
-      };
-    });
+//    leafletData.getMap('organicityMap').then(function() {
+//      vm.controls.minimap = {
+//        type: 'minimap',
+//        layer: mapUtils.getBaseLayers().oc,
+//        toggleDisplay: true,
+//        minimized: true,
+//        zoomLevelOffset: -4
+//      };
+//    });
 
     $scope.$on('goToLocation', function(event, data) {
       goToLocation(event, data);

@@ -22,6 +22,7 @@
         setCurrentUser: setCurrentUser,
         getCurrentUser: getCurrentUser,
         hasUserData: hasUserData,
+        hasRefreshToken: hasRefreshToken,
         renewToken: renewToken,
         login: login,
         logout: logout,
@@ -97,11 +98,14 @@
         return user.data ? true: false;
       }
 
+      function hasRefreshToken(){
+        return typeof $rootScope.refreshToken !== 'undefined';
+      }
+
       function renewToken(){
         console.log('login with renewToken()');
 
         // If we have the "refresh_token" our api will use that method instead.
-        console.log($rootScope.refreshToken);
         $auth.authenticate('organicity', { "refresh_token" : $rootScope.refreshToken })
           .then(function(response) {
             //console.log(response);
@@ -119,15 +123,14 @@
         // GET https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://localhost:8080/resources/&scope=&state=
         // POST https://accounts.organicity.eu/realms/organicity/login-actions/authenticate?code=QZXmSAhIOKkMv1Wqw0qA5j__l-hIWCYdaO6niY5B9Bc.3dd256c6-1ad5-4f87-9ba1-cbdac04a9e2c&execution=7c8382a4-624c-4911-9135-242e1f2b0af1
 
-        console.log('login() ======= ');
+        console.log('login()');
 
         $auth.removeToken();
 
         $auth.authenticate('organicity')
           .then(function(response) {
             // NOTE: (Also saves token to localStorage, encoded)
-            $rootScope.refreshToken = response.data.extratoken;
-            //console.log($rootScope.refreshToken);
+            $rootScope.refreshToken = response.data.rtoken;
 
             setCurrentUser();
           })
@@ -140,6 +143,7 @@
         // $auth.logout calls $auth.removeToken
         $auth.logout();
         user.data = undefined;
+        $rootScope.refreshToken = undefined;
 
         // TODO: Should we also unlink app? See app.route.js, unlinkUrl
 
