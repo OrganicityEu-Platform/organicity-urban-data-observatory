@@ -74,11 +74,14 @@
           vm.annotation.statistics = result;
 
           var statistics = vm.annotation.statistics;
-          var w1 = (statistics.assetRate / 5);
-          var w2 = (statistics.totalRates / statistics.globalTotalRates);
-          var w3 = (statistics.annotationsCount / statistics.globalAnnotationsCount);
-          var w4 = ( (statistics.lastAnnotation - statistics.globalFirstAnnotation) / (statistics.globalLastAnnotation - statistics.globalFirstAnnotation));
-          var reputation = 5 * (0.7 * w1 + 0.1 * w2 + 0.1 * w3 + 0.1 * w4);
+          var reputation =0;
+          if (statistics.totalRates > 0) {
+            var w1 = (statistics.assetRate / 5);
+            var w2 = (statistics.totalRates / statistics.globalTotalRates);
+            var w3 = (statistics.annotationsCount / statistics.globalAnnotationsCount);
+            var w4 = ( (statistics.lastAnnotation - statistics.globalFirstAnnotation) / (statistics.globalLastAnnotation - statistics.globalFirstAnnotation));
+            reputation = 5 * (0.7 * w1 + 0.1 * w2 + 0.1 * w3 + 0.1 * w4);
+          }
           console.log(reputation);
           vm.annotation.stars = reputation.toFixed(2);
           $scope.$parent.vm.stars = Math.round(reputation);
