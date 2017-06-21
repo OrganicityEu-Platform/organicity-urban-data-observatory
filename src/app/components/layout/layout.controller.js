@@ -22,6 +22,15 @@
         }
       });
 
+      $scope.isLogged = function(){
+        console.log('have refreshToken?: ' + auth.hasRefreshToken());
+        auth.setCurrentUser();
+      };
+
+      $scope.relog = function(){
+        auth.renewToken();
+      };
+
       // listen for logout events so that the navbar can be updated
       $scope.$on('loggedOut', function() {
         vm.isLoggedIn = false;

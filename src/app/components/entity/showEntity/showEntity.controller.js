@@ -25,11 +25,14 @@
       var picker = initializePicker();
 
       if(entityData){
+        console.log('we have entityData');
+        console.log(entityData);
         animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: $stateParams.id });
       }
 
       vm.hasHistorical = false;
 
+      // TODO: This can be undefined
       vm.entity = entityData;
       vm.geolocate = geolocate;
 
@@ -493,6 +496,14 @@
               lat:position.coords.latitude,
               lng:position.coords.longitude
             };
+
+            if (typeof entity === 'undefined' ) {
+              // Instead of erroring, log this warning and return.
+              console.log('Entity not defined, returning.');
+              return;
+            }
+
+            // TODO: Where is this entity defined?
             entity.getEntities(location)
               .then(function(data){
                 data = data.plain();

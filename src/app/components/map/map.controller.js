@@ -47,15 +47,15 @@
 
     animation.viewLoaded();
 
-    leafletData.getMap().then(function() {
-      vm.controls.minimap = {
-        type: 'minimap',
-        layer: mapUtils.getBaseLayers().oc,
-        toggleDisplay: true,
-        minimized: true,
-        zoomLevelOffset: -4
-      };
-    });
+//    leafletData.getMap('organicityMap').then(function() {
+//      vm.controls.minimap = {
+//        type: 'minimap',
+//        layer: mapUtils.getBaseLayers().oc,
+//        toggleDisplay: true,
+//        minimized: true,
+//        zoomLevelOffset: -4
+//      };
+//    });
 
     $scope.$on('goToLocation', function(event, data) {
       goToLocation(event, data);
@@ -160,7 +160,7 @@
       // This is tmp.
       var clusters = asset.getAllClusters();
       if (clusters) {
-        console.warn(clusters);
+//        console.warn(clusters);
         vm.layers = {
           baselayers: mapUtils.getBaseLayers(),
           overlays: new Overlays(clusters, 'Asset Types')

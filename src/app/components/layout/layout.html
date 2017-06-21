@@ -21,8 +21,10 @@
       </md-button>
     </section>
 
-    <search flex></search> 
+    <search flex></search>
 
+    <div ng-show="vm.isShown" class="md-button" ng-click="isLogged()">l?</div>
+    <div ng-show="vm.isShown" class="md-button" ng-click="relog()">relog</div>
     <section layout="row" class="nav_right" layout-align="{{vm.navRightLayout}}">
 
       <div ng-show="vm.isShown" store logged="vm.isLoggedin" class="md-flat full_height get"></div>

@@ -20,5 +20,6 @@ angular.module('app', [
   'angular-clipboard',
   'ngSanitize',
   '720kb.socialshare',
+  'satellizer',
   'jsonFormatter'
 ]);
