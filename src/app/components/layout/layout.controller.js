@@ -4,8 +4,8 @@
   angular.module('app.components')
     .controller('LayoutController', LayoutController);
 
-    LayoutController.$inject = ['$location', '$state', '$scope', 'auth', 'animation', '$timeout', 'DROPDOWN_OPTIONS_COMMUNITY', 'DROPDOWN_OPTIONS_USER'];
-    function LayoutController($location, $state, $scope, auth, animation, $timeout, DROPDOWN_OPTIONS_COMMUNITY, DROPDOWN_OPTIONS_USER) {
+    LayoutController.$inject = ['$location', '$state', '$scope', 'auth', 'animation', '$timeout', 'DROPDOWN_OPTIONS_DOCUMENTATION', 'DROPDOWN_OPTIONS_SUPPORT', 'DROPDOWN_OPTIONS_TOOLS'];
+    function LayoutController($location, $state, $scope, auth, animation, $timeout, DROPDOWN_OPTIONS_DOCUMENTATION, DROPDOWN_OPTIONS_SUPPORT, DROPDOWN_OPTIONS_TOOLS) {
       var vm = this;
       vm.navRightLayout = 'space-around center';
 
@@ -45,13 +45,14 @@
       vm.isLoggedin = false;
       vm.logout = logout;
 
-      vm.dropdownOptions = DROPDOWN_OPTIONS_USER;
-      vm.dropdownSelected = undefined;
+      vm.dropdownOptionsSupport = DROPDOWN_OPTIONS_SUPPORT;
+      vm.dropdownSelectedSupport = undefined;
 
-      vm.dropdownOptionsCommunity = DROPDOWN_OPTIONS_COMMUNITY;
-      vm.dropdownSelectedCommunity = undefined;
+      vm.dropdownOptionsDocumentation = DROPDOWN_OPTIONS_DOCUMENTATION;
+      vm.dropdownSelectedDocumentation = undefined;
 
-
+      vm.dropdownOptionsTool = DROPDOWN_OPTIONS_TOOLS;
+      vm.dropdownSelectedTool = undefined;
 
       $scope.$on('removeNav', function() {
         $scope.$apply(function() {
