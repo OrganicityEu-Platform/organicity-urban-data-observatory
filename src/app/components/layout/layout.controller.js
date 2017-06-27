@@ -23,8 +23,9 @@
       });
 
       $scope.isLogged = function(){
+        console.log('isAuth(): ' + auth.isAuth());
         console.log('have refreshToken?: ' + auth.hasRefreshToken());
-        auth.setCurrentUser();
+        console.log('vm.isLoggedin: ' + vm.isLoggedin);
       };
 
       $scope.relog = function(){
@@ -33,7 +34,7 @@
 
       // listen for logout events so that the navbar can be updated
       $scope.$on('loggedOut', function() {
-        vm.isLoggedIn = false;
+        vm.isLoggedin = false;
         vm.isShown = true;
         angular.element('navbar .wrap-dd-menu').css('display', 'none');
         vm.navRightLayout = 'space-around center';
