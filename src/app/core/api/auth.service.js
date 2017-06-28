@@ -110,7 +110,12 @@
       // So it will NOT contain email, family_name, given_name, name, preferred_username
       // Do NOT call 'setCurrentUser' after renewing since it will overwrite 'data' vars
       function renewToken(){
-        console.log('login with renewToken()');
+        console.log('-- login with renewToken()');
+
+        if (!hasRefreshToken()) {
+          console.log('No refresh token!');
+          return;
+        }
 
         // If we have the "refresh_token" our api will use that method instead.
         $auth.authenticate('organicity', { "refresh_token" : $rootScope.refreshToken })
