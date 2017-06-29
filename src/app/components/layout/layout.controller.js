@@ -11,6 +11,7 @@
 
       // listen for any login event so that the navbar can be updated
       $scope.$on('loggedIn', function(ev, options) {
+        console.log('Broadcast Received');
         vm.isLoggedin = true;
         vm.isShown = true;
         angular.element('.nav_right .wrap-dd-menu').css('display', 'initial');
@@ -23,13 +24,23 @@
       });
 
       $scope.isLogged = function(){
+        console.log('---');
         console.log('isAuth(): ' + auth.isAuth());
         console.log('have refreshToken?: ' + auth.hasRefreshToken());
-        console.log('vm.isLoggedin: ' + vm.isLoggedin);
       };
 
       $scope.relog = function(){
         auth.renewToken();
+      };
+
+      $scope.navupdate = function(){
+        if (auth.isAuth()) {
+          console.log('upd');
+          auth.updateNavbar('appLoad');
+        } else {
+          console.log('log false');
+          vm.isLoggedin = false;
+        }
       };
 
       // listen for logout events so that the navbar can be updated

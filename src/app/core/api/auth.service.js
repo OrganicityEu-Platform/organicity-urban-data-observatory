@@ -29,6 +29,7 @@
         recoverPassword: recoverPassword,
         getResetPassword: getResetPassword,
         patchResetPassword: patchResetPassword,
+        updateNavbar: updateNavbar,
         isAdmin: isAdmin
       };
       return service;
