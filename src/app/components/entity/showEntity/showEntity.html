@@ -250,6 +250,17 @@
       </div>
     </section>
 
+    <section  class="entity_recommendation" ng-if="vm.entity">
+      <div class="entity_detailed_content_container">
+        <div class="entity_detailed_title_container">
+          <md-icon class="entity_detailed_icon_title" md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
+          </md-icon>
+          <h2 class="entity_detailed_title">RECOMMENDATION</h2>
+        </div>
+        <div recommendation></div>
+      </div>
+    </section>
+
     <section  class="entity_annotation" ng-if="vm.entity">
       <div class="entity_detailed_content_container">
         <div class="entity_detailed_title_container">
