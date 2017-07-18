@@ -10,7 +10,11 @@
     initialize();
 
     var service = { //todo define here the methods pushing annotation
-      pushAnnotation: pushAnnotation, 
+      postAnnotation: postAnnotation,
+      postAssetRate: postAssetRate,
+      getProposedTagDomain: getProposedTagDomain,
+      getAnnotationStatistics: getAnnotationStatistics,
+      pushAnnotation: pushAnnotation,
       getAnnotation: getAnnotation, // Check this method related to reputation and the new getAssetAnnotations
       getAnnotationForApplication: getAnnotationForApplication,
       getAssetAnnotations: getAssetAnnotations,
@@ -29,6 +33,31 @@
       return annotationAPI.all('annotations/' + asset).post(annotation);
     }
 
+    function postAssetRate(asset, rate, user) {
+      var annotation = {
+        "assetUrn": asset,
+        "numericValue": parseInt(rate),
+        "textValue": "",
+        "application": "oc-reputation",
+        "tagUrn": "urn:oc:tag:Reliability:Score",
+        "user": "anon-"+user
+      };
+      return annotationAPI.all('annotations/' + asset).post(annotation);
+    }
+
+    function postAnnotation(asset, urn) {
+      var annotation = {
+        "assetUrn": asset,
+        "numericValue": 0,
+        "textValue": "",
+        "application": "oc-reputation",
+        "tagUrn": urn,
+        "user": ""
+      };
+      console.log(annotation);
+      return annotationAPI.all('annotations/' + asset).post(annotation);
+    }
+
     function getAnnotation(asset, user, application, tagUrn) { //todo async call
       var params = {
         'assetUrn': asset,
@@ -37,6 +66,16 @@
         'tagUrn': tagUrn
       };
       return annotationAPI.all('annotations/').get('', params);
+    }
+
+    function getAnnotationStatistics(asset) {
+      var params = {};
+      return annotationAPI.all('annotations/' + asset + '/statistics').get('', params);
+    }
+
+    function getProposedTagDomain(asset) {
+      var params = {};
+      return annotationAPI.all('tagDomains/urn:oc:tagDomain:IndoorHumidityLevels').get('', params);
     }
 
     function getAnnotationForApplication(asset, user, application, tagDomainUrn) { //todo async call

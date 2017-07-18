@@ -4,58 +4,74 @@
   angular.module('app.components')
     .factory('auth', auth);
 
-    auth.$inject = ['$http', '$location', '$rootScope', '$state', '$timeout', '$window', 'accountsAPI', 'alert', 'AuthUser', 'jwtHelper'];
-    function auth($http, $location, $rootScope, $state, $timeout, $window, accountsAPI, alert, AuthUser, jwtHelper) {
+    auth.$inject = ['$http', '$location', '$rootScope', '$state', '$timeout', '$window', 'accountsAPI', 'alert', 'AuthUser', 'jwtHelper', '$auth'];
+    function auth($http, $location, $rootScope, $state, $timeout, $window, accountsAPI, alert, AuthUser, jwtHelper, $auth) {
 
-    	var user = {
+      var user = {
         token: null,
         data: null
       };
 
       //wait until http interceptor is added to Restangular
       $timeout(function() {
-    	  initialize();
+        initialize();
       }, 100);
 
-    	var service = {
+      var service = {
         isAuth: isAuth,
         setCurrentUser: setCurrentUser,
         getCurrentUser: getCurrentUser,
-        updateUser: updateUser,
-        saveData: saveData,
+        hasUserData: hasUserData,
+        hasRefreshToken: hasRefreshToken,
+        renewToken: renewToken,
         login: login,
         logout: logout,
-        callback: callback,
         recoverPassword: recoverPassword,
         getResetPassword: getResetPassword,
         patchResetPassword: patchResetPassword,
+        updateNavbar: updateNavbar,
         isAdmin: isAdmin
-    	};
-    	return service;
+      };
+      return service;
 
       //////////////////////////
 
       function initialize() {
         setCurrentUser('appLoad');
       }
+
       //run on app initialization so that we can keep auth across different sessions
       function setCurrentUser(time) {
-        user.token = $window.localStorage.getItem('organicity.token') && JSON.parse( $window.localStorage.getItem('organicity.token') );
-        // Check for user properties
-        user.data = $window.localStorage.getItem('organicity.data') && new AuthUser(JSON.parse( $window.localStorage.getItem('organicity.data') ));
-        if(!user.token) {
+        // 1. Return if not authenticated
+        // 2. Create (decoded) 'data' var from token in storage
+        // 3. Create 'newUser' with enriched data
+        // 4. Broadcast
+
+
+        // If we are authenticated, we should have token (but it could be an invalid JWT!)
+        console.log('isAuthenticated?: ' + $auth.isAuthenticated());
+        if(!$auth.isAuthenticated()) {
           return;
         }
-        var data = JSON.parse(getCurrentUserInfo());
-        $window.localStorage.setItem('organicity.data', JSON.stringify(data) );
-        var newUser = new AuthUser(data);
-        //check sensitive information
-        if(user.data && user.data.role !== newUser.role) {
-          user.data = newUser;
-          $location.path('/');
-        }
+
+        // Decoded token saved in 'data' var.
+        var data = $auth.getPayload();
+
+        // Restangular needs this token (app.config.js)
+        user.token = $auth.getToken();
+
+        // 'data' needs to be enriched  with 'location.city|country', which is done in 'userData()'
+        var enrichedData = JSON.parse(userData(data));
+
+        // Users need this enriched data when they are created:
+        var newUser = new AuthUser(enrichedData);
+
         user.data = newUser;
 
+        updateNavbar(time);
+      }
+
+      function updateNavbar(time){
         // used for app initialization
         if(time && time === 'appLoad') {
           //wait until navbar is loaded to emit event
@@ -70,53 +86,46 @@
             $rootScope.$broadcast('loggedIn', {});
           }, 2000);
         }
-        // return getCurrentUserInfo()
-        //   .then(function(data) {
-        //     $window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
-        //
-        //     var newUser = new AuthUser(data);
-        //     //check sensitive information
-        //     if(user.data && user.data.role !== newUser.role) {
-        //       user.data = newUser;
-        //       $location.path('/');
-        //     }
-        //     user.data = newUser;
-        //
-        //     // used for app initialization
-        //     if(time && time === 'appLoad') {
-        //       //wait until navbar is loaded to emit event
-        //       $timeout(function() {
-        //         $rootScope.$broadcast('loggedIn', {time: 'appLoad'});
-        //       }, 3000);
-        //     } else {
-        //       // used for login
-        //       $state.reload();
-        //       $timeout(function() {
-        //         alert.success('Login was successful');
-        //         $rootScope.$broadcast('loggedIn', {});
-        //       }, 2000);
-        //     }
-        //   });
       }
 
-      function updateUser() {
-        return getCurrentUserInfo()
-          .then(function(data) {
-            $window.localStorage.setItem('organicity.data', JSON.stringify(data.plain()) );
-          });
-      }
-
+      // TODO: Called by app.route.js, app.config.js, userProfile.contoller, layout.contoller
+      // function gets called 4 times on app start!
       function getCurrentUser() {
+        // console.log(user);
         return user;
       }
 
       function isAuth() {
-        return !!$window.localStorage.getItem('organicity.token');
+        return $auth.isAuthenticated();
       }
-      //save to localstorage and
-      function saveData(token) {
-        $window.localStorage.setItem('organicity.token', JSON.stringify(token) );
-        setCurrentUser();
+
+      function hasUserData() {
+        return user.data ? true: false;
+      }
+
+      function hasRefreshToken(){
+        return typeof $rootScope.refreshToken !== 'undefined';
+      }
+
+      // When we use renewToken() to re-login, the user info is NOT included in the jwt!
+      // So it will NOT contain email, family_name, given_name, name, preferred_username
+      // Do NOT call 'setCurrentUser' after renewing since it will overwrite 'data' vars
+      function renewToken(){
+        console.log('-- login with renewToken()');
+
+        if (!hasRefreshToken()) {
+          console.log('No refresh token!');
+          return;
+        }
+
+        // If we have the "refresh_token" our api will use that method instead.
+        $auth.authenticate('organicity', { "refresh_token" : $rootScope.refreshToken })
+          .then(function(response) {
+            updateNavbar(0);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
 
       function login() {
@@ -125,35 +134,43 @@
         // GET https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://localhost:8080/resources/&scope=&state=
         // POST https://accounts.organicity.eu/realms/organicity/login-actions/authenticate?code=QZXmSAhIOKkMv1Wqw0qA5j__l-hIWCYdaO6niY5B9Bc.3dd256c6-1ad5-4f87-9ba1-cbdac04a9e2c&execution=7c8382a4-624c-4911-9135-242e1f2b0af1
 
-        console.log('NEW LOGIN!');
-        window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo&redirect_uri=https://observatory.organicity.eu/callback&scope=&state=';
-      }
+        console.log('login()');
 
-      function callback() {
-        console.log($location.$$hash);
-        var token = $location.$$hash.split('&')[1].slice(13);
-        window.localStorage.setItem('organicity.token', JSON.stringify(token) );
-        var jwtDecoded = jwtHelper.decodeToken(token);
-        window.localStorage.setItem('organicity.data', userData(jwtDecoded) );
+        $auth.removeToken();
 
-        return $location.path('/resources');
+        $auth.authenticate('organicity')
+          .then(function(response) {
+            // NOTE: (Also saves token to localStorage, encoded)
+            $rootScope.refreshToken = response.data.rtoken;
+
+            setCurrentUser();
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
 
       function logout() {
-        $window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=https://observatory.organicity.eu';
-        $window.localStorage.removeItem('organicity.token');
-        $window.localStorage.removeItem('organicity.data');
-      }
+        // $auth.logout calls $auth.removeToken
+        $auth.logout();
+        user.data = undefined;
+        $rootScope.refreshToken = undefined;
 
-      function getCurrentUserInfo() {
-        var token = $window.localStorage.getItem('organicity.token');
-        var jwtDecoded = jwtHelper.decodeToken(token);
-        if (jwtHelper.isTokenExpired(token)) {
-          console.log('EXPIRED');
-          return login();
-        } else {
-          return userData(jwtDecoded);
-        }
+        // TODO: Should we also unlink app? See app.route.js, unlinkUrl
+
+        /*
+        $auth.unlink('organicity')
+          .then(function(response){
+            console.log(response);
+          })
+          .catch(function(response){
+            console.log(response);
+          });
+        */
+
+
+        // Notice the redirect_uri
+        //$window.location.href = 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/logout?redirect_uri=https://observatory.organicity.eu';
       }
 
       function userData(jwtDecoded) {

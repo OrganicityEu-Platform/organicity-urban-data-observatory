@@ -11,6 +11,7 @@
 
       // listen for any login event so that the navbar can be updated
       $scope.$on('loggedIn', function(ev, options) {
+        console.log('Broadcast Received');
         vm.isLoggedin = true;
         vm.isShown = true;
         angular.element('.nav_right .wrap-dd-menu').css('display', 'initial');
@@ -24,7 +25,7 @@
 
       // listen for logout events so that the navbar can be updated
       $scope.$on('loggedOut', function() {
-        vm.isLoggedIn = false;
+        vm.isLoggedin = false;
         vm.isShown = true;
         angular.element('navbar .wrap-dd-menu').css('display', 'none');
         vm.navRightLayout = 'space-around center';
