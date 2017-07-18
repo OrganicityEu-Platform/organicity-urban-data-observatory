@@ -23,26 +23,6 @@
         }
       });
 
-      $scope.isLogged = function(){
-        console.log('---');
-        console.log('isAuth(): ' + auth.isAuth());
-        console.log('have refreshToken?: ' + auth.hasRefreshToken());
-      };
-
-      $scope.relog = function(){
-        auth.renewToken();
-      };
-
-      $scope.navupdate = function(){
-        if (auth.isAuth()) {
-          console.log('upd');
-          auth.updateNavbar('appLoad');
-        } else {
-          console.log('log false');
-          vm.isLoggedin = false;
-        }
-      };
-
       // listen for logout events so that the navbar can be updated
       $scope.$on('loggedOut', function() {
         vm.isLoggedin = false;
