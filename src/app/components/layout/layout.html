@@ -6,19 +6,24 @@
       </md-icon>
     </a>
     <section layout="row" class="nav_left" layout-align="space-around center">
-      <md-button ng-show="vm.isShown" href="/" class="md-flat full_height map">
-        <md-icon md-svg-src="./mediassets/images/map_icon.svg" class="nav_icon">
-        </md-icon>
-        <span>Map</span>
+      <md-button ng-show="vm.isShown" href="" class="md-flat full_height community" aria-label=""
+          dropdown-menu="vm.dropdownOptionsTool"
+          dropdown-model="vm.dropdownSelectedTool"
+          dropdown-item-label="text" layout="row" layout-align="center center">
+        <span>Tools</span>
       </md-button>
       <md-button ng-show="vm.isShown" href="" class="md-flat full_height community" aria-label=""
-          dropdown-menu="vm.dropdownOptionsCommunity"
-          dropdown-model="vm.dropdownSelectedCommunity"
+          dropdown-menu="vm.dropdownOptionsDocumentation"
+          dropdown-model="vm.dropdownSelectedDocumentation"
           dropdown-item-label="text" layout="row" layout-align="center center">
-        <md-icon md-svg-src="./mediassets/images/community_icon.svg" class="nav_icon">
-        </md-icon>
-        <span>Community</span>
+        <span>Docs</span>
       </md-button>
+      <md-button ng-show="vm.isShown" href="" class="md-flat full_height community" aria-label=""
+          dropdown-menu="vm.dropdownOptionsSupport"
+          dropdown-model="vm.dropdownSelectedSupport"
+          dropdown-item-label="text" layout="row" layout-align="center center">
+        <span>Support</span>
+      </md-button>      
     </section>
 
     <search flex></search>

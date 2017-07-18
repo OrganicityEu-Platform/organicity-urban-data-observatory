@@ -100,13 +100,10 @@ body {
   }
 
   .nav_left {
-    width: 204px;
-    margin: 0px 16px;
-    .map {
-      width: 70px;
-    }
+    width: 240px;
+    margin: 0px 20px 0px 0px;
     .community {
-      width: 114px;
+      width: 70px;
     }
   }
 
@@ -2250,17 +2247,18 @@ path {
       color: $organicity_pink;
       font-weight: bold;
       margin-left: 8px;
-      margin-right: 38px;
+      margin-right: 8px;
     }
   }
 }
 // community dropdown
 .nav_left {
   .wrap-dd-menu {
-    width: 114px;
+    width: 160px;
     display: inline-block;
     padding: 0;
     margin: 0;
+    position: static !important;
   }
   .wrap-dd-menu .dropdown {
     top: 80%;
