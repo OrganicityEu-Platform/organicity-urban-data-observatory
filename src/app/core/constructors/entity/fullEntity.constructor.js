@@ -34,8 +34,8 @@
         this.description = entityUtils.parseDescription(object);
         this.owner = entityUtils.parseOwner(object);
         this.data = object.data.attributes;
-        this.latitude = object.context.position.latitude;
-        this.longitude = object.context.position.longitude;
+        this.latitude = entityUtils.parsePosition(object).latitude;
+        this.longitude = entityUtils.parsePosition(object).longitude;
         this.typeURN = entityUtils.parseTypeURN(object);
         this.json = entityUtils.parseJSON(object);
         this.ADSurl = entityUtils.parseADSurl(this);
