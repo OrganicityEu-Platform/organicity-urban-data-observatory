@@ -2,7 +2,7 @@
 lock '3.6.1'
 
 set :application, 'oc-observatory-web'
-set :repo_url, 'git@github.com:OrganicityEu/UrbanDataObservatory.git'
+set :repo_url, 'git@github.com:OrganicityEu-Platform/organicity-urban-data-observatory.git'
 
 set :linked_dirs, %w{node_modules app/bower_components}
 set :default_env, {
