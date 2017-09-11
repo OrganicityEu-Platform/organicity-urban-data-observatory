@@ -29,6 +29,7 @@
         recoverPassword: recoverPassword,
         getResetPassword: getResetPassword,
         patchResetPassword: patchResetPassword,
+        updateNavbar: updateNavbar,
         isAdmin: isAdmin
       };
       return service;
@@ -67,6 +68,10 @@
 
         user.data = newUser;
 
+        updateNavbar(time);
+      }
+
+      function updateNavbar(time){
         // used for app initialization
         if(time && time === 'appLoad') {
           //wait until navbar is loaded to emit event
@@ -102,15 +107,21 @@
         return typeof $rootScope.refreshToken !== 'undefined';
       }
 
+      // When we use renewToken() to re-login, the user info is NOT included in the jwt!
+      // So it will NOT contain email, family_name, given_name, name, preferred_username
+      // Do NOT call 'setCurrentUser' after renewing since it will overwrite 'data' vars
       function renewToken(){
-        console.log('login with renewToken()');
+        console.log('-- login with renewToken()');
+
+        if (!hasRefreshToken()) {
+          console.log('No refresh token!');
+          return;
+        }
 
         // If we have the "refresh_token" our api will use that method instead.
         $auth.authenticate('organicity', { "refresh_token" : $rootScope.refreshToken })
           .then(function(response) {
-            //console.log(response);
-
-            setCurrentUser();
+            updateNavbar(0);
           })
           .catch(function(error) {
             console.log(error);

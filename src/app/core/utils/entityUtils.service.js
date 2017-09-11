@@ -27,7 +27,8 @@
             parseTypeURN: parseTypeURN,
             parseDescription: parseDescription,
             parseADSurl: parseADSurl,
-            parseJSON: parseJSON
+            parseJSON: parseJSON,
+            parsePosition: parsePosition
         };
 
         return service;
@@ -254,6 +255,20 @@
         function parseSensorTime(sensor) {
             /*jshint camelcase: false */
             return moment(sensor.recorded_at).format('');
+        }
+
+        function parsePosition(object){
+            if(object.context.position.geometry) {
+                return {
+                    latitude: object.context.position.geometry.coordinates[0][1],
+                    longitude: object.context.position.geometry.coordinates[0][0]
+                }
+            } else {
+                return {
+                    latitude: object.context.position.latitude,
+                    longitude: object.context.position.longitude
+                }
+            }
         }
 
         function belongsToUser(entititesArray, entityID) {
