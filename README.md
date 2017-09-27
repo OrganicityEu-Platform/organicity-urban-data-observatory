@@ -20,7 +20,7 @@ Also gulp: `npm install -g gulp` (with `sudo` if you are using Mac).
 Clone the repository using:
 
 ```
-git clone https://github.com/OrganicityEu/UrbanDataObservatory.git
+git clone https://github.com/OrganicityEu-Platform/organicity-urban-data-observatory.git
 cd UrbanDataObservatory
 ```
 
