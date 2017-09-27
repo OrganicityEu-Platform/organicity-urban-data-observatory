@@ -23,28 +23,29 @@
 
     }
 
-    function pushRecommender(asset, accessKey) {
+    function pushRecommender(asset, accessKey, userId) {
       var params = {
         'accessKey': accessKey
       };
 
       var data = {
-        'event': '$set',
-        'entityType': 'item',
-        'entityId': asset
+        'event': 'view',
+        'entityType': 'user',
+        'entityId': userId,
+        'targetEntityType':'item',
+        'targetEntityId':asset
       };
 
-      console.log(params);
-      console.log(data);
       return recommenderAPI.all('events/events.json').post(data, params);
     }
 
-    function getRecommender(asset, accessKey) {
-      var params = {
-        'assetUrn': asset,
-        'accessKey': accessKey
+    function getRecommender(asset, number) {
+      var data = {
+        'items': asset,
+        //'accessKey': accessKey
+        'num':number
       };
-      return recommenderAPI.all('events/events.json').get('', params);
+      return recommenderAPI.all('queries/queries.json').post(data);
     }
 
   }

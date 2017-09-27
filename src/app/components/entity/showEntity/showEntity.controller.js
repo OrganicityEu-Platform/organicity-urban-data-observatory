@@ -24,6 +24,7 @@
       var mainSensorID, compareSensorID;
       var picker = initializePicker();
 
+
       if(entityData){
         console.log('we have entityData');
         console.log(entityData);
@@ -113,6 +114,7 @@
             }
           }
         }
+
       }
 
       function findHistoricalUri(){
