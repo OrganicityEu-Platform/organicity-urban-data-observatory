@@ -22,17 +22,19 @@
 
       var entity = $scope.$parent.vm.entity;
 
-      //TODO: get the user from auth.
       //TODO: get accessKey from environment variable / config
-      console.log('Here is the VM')
-      console.log(auth.getCurrentUser());
+      
+      var user =auth.getCurrentUser();
+      //var userId = user.id;
+      //for Testing
+      var userId = "u1";
 
 
-      //GET PROPER USERID AND ACCESSkEY
-      var userId = "u1"
+      //TODO: handle error properly - placeholder and spinner
+      //GET  ACCESSkEY
+      
       var accessKey = "532xFqhj89sbCGhlEb8l1Ihmvrs-Y3gfOgR-UvjoRXKWbon5srEm1N2lbcqpXTae"
 
-      //TODO: connect with the proper service functions
       recommender.push(entity.id, accessKey,userId).then(function(response) {
         console.log('interaction pushed to recommendation engine');
         
@@ -41,21 +43,21 @@
         console.log(err);
       });
 
-      
-
+      $scope.isLoading = true;      
       recommender.get([entity.id], 4).then(function(response) {
         console.log("get recommendations done");
         var itemScores = response.itemScores;
 
         var assetInfoPromises = []
 
-
+        //get asset URN
         assetInfoPromises = itemScores.map(function(obj){
           return $http.get(baseAssetUrl+obj.item);
         });
 
-        Promise.all(assetInfoPromises).then(response => { 
-          console.log(response);
+
+
+        Promise.all(assetInfoPromises).then(function(response){ 
           response.forEach(function(assetInfo){
             var asset = {
                     'id':assetInfo.id,
@@ -66,7 +68,9 @@
                   };
 
             vm.recomendedAssets.push(asset);
-          }); 
+            
+          });
+          $scope.isLoading = false; 
         });
 
         //vm.recomendedAssets = ['Recommended assets 1', 'Recommended assets 2']
@@ -74,6 +78,9 @@
         console.log("get recommendations error");
         console.log(err);
       });
+
+
+
     }
 
 

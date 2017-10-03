@@ -24,6 +24,9 @@
     }
 
     function pushRecommender(asset, accessKey, userId) {
+      if(userId===null){
+        return Promise.reject("No user id");
+      }
       var params = {
         'accessKey': accessKey
       };
