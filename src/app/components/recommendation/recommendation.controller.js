@@ -22,16 +22,11 @@
 
       var entity = $scope.$parent.vm.entity;
 
-      //TODO: get accessKey from environment variable / config
+      
       
       var user =auth.getCurrentUser();
-      //var userId = user.id;
-      //for Testing
-      var userId = "u1";
-
-
-      //TODO: handle error properly - placeholder and spinner
-      //GET  ACCESSkEY
+      var userId = user.id;
+      
       
       var accessKey = "532xFqhj89sbCGhlEb8l1Ihmvrs-Y3gfOgR-UvjoRXKWbon5srEm1N2lbcqpXTae"
 
@@ -73,7 +68,6 @@
           $scope.isLoading = false; 
         });
 
-        //vm.recomendedAssets = ['Recommended assets 1', 'Recommended assets 2']
       },function(err){
         console.log("get recommendations error");
         console.log(err);
@@ -83,9 +77,5 @@
 
     }
 
-
-    function getAssetInformation(url){
-      
-    }
   }
 })();
