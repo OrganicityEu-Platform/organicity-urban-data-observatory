@@ -1,10 +1,13 @@
-<div class="entity_detailed_content_container" layout="row">
-  <div class="entity_details_content_main" flex>
-    <p>Here the recommendation</p>
-    <div ng-repeat="recommendedAsset in vm.recomendedAssets">
-      {{ recommendedAsset }}
-    </div>
-  </div>
+<div class="entity_detailed_content_container" layout="column">
+	<md-progress-circular md-mode="indeterminate" ng-show='isLoading'></md-progress-circular>
+	<div layout='row' layout-align='center center'>
+		<div ng-repeat="asset in vm.recomendedAssets" style='border-style:solid;border-radius:15px;padding:2px;margin:5px'>
+		  	name: <h3>{{ asset.name }}</h3>
+			type: <h4>{{ asset.service }}</h4>
+			location: <p>{{ asset.position }}</p>
+			<p><a ng-href="{{ asset.url }}">link</a></p>
+		</div>
+	</div>
 </div>
 
 
