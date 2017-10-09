@@ -65,7 +65,12 @@
 
       vm.showSensorOnChart = showSensorOnChart;
       vm.moveChart = moveChart;
-      vm.loadingChart = true;
+      vm.chartAvailable = findHistoricalUri();
+      vm.loadingChart = vm.chartAvailable ? true : false;
+
+
+      console.log(vm.chartAvailable);
+
       // event listener on change of value of main sensor selector
       $scope.$watch('vm.selectedSensor', function(newVal, oldVal) {
         vm.selectedSensorToCompare = undefined;
@@ -116,42 +121,39 @@
         vm.loadingChart = false;
       });
 
-      // initialize();
-
       ///////////////
 
-      function initialize() {
-        $timeout(function() {
-          colorSensorMainIcon();
-          colorArrows();
-          colorClock();
-          // events below can probably be refactored to use $viewContentLoaded https://github.com/angular-ui/ui-router/wiki#user-content-view-load-events
-          animation.viewLoaded();
-          animation.mapStateLoaded();
-        }, 1000);
+      // function initialize() {
+      //   $timeout(function() {
+      //     colorSensorMainIcon();
+      //     colorArrows();
+      //     colorClock();
+      //     // events below can probably be refactored to use $viewContentLoaded https://github.com/angular-ui/ui-router/wiki#user-content-view-load-events
+      //     animation.viewLoaded();
+      //     animation.mapStateLoaded();
+      //   }, 1000);
 
-        if(vm.entity){
-          if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
-            alert.info.longTime();
-          } else {
-            if(geolocation.isHTML5GeolocationGranted()){
-              geolocate();
-            }
-          }
-          console.log(vm.entity);
-          initReputation();
-        }
-      }
+      //   if(vm.entity){
+      //     if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
+      //       alert.info.longTime();
+      //     } else {
+      //       if(geolocation.isHTML5GeolocationGranted()){
+      //         geolocate();
+      //       }
+      //     }
+      //     console.log(vm.entity);
+      //     initReputation();
+      //   }
+      // }
 
       function findHistoricalUri(){
         var sensorEntity = vm.sensors ? vm.sensors.filter(function(sensorEnt) {
           return sensorEnt.id === 'urn:oc:attributeType:datasource';
         }) : [];
+
         if(!sensorEntity[0]) {
           return;
-        }
-        else {
-          console.log(sensorEntity);
+        } else {
           sensorEntity = sensorEntity.pop();
           return sensorEntity.value;
         }
