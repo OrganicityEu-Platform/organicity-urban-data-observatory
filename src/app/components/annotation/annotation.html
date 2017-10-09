@@ -1,10 +1,10 @@
 <div class="entity_detailed_content_container" layout="row">
   <div class="entity_details_content_main" flex>
-    <div class="entity_annotion_labels" ng-repeat="tag in vm.annotation.tags">
+    <div ng-if="vm.annotation.tags.length" class="entity_annotion_labels" ng-repeat="tag in vm.annotation.tags">
       <span tooltips tooltip-side="right" tooltip-template="{{tag.tooltip}}">{{ tag.name }}</span>
     </div>
     <div class="clearfix"></div>
-    <div class="entity_annotion_filters">
+    <div ng-if="vm.annotation.filters.length" class="entity_annotion_filters">
       <p>
         <span>Filter by</span>
         <md-select placeholder="NONE" ng-model="vm.selectedSensorToCompare">
@@ -17,7 +17,7 @@
       </p>
     </div>
     <div>
-      <span>How would you rate this asset?</span>
+      <h4>How would you rate this asset?</h4>
       <a href="" ng-click="vm.addReputation(1)" role="button" id="rep-star-1" class="rep-star fa fa-fw fa-star-o"
          style="text-decoration: none;color: inherit;"></a>
       <a href="" ng-click="vm.addReputation(2)" role="button" id="rep-star-2" class="rep-star fa fa-fw fa-star-o"
@@ -32,7 +32,7 @@
       <a id="rep-thanks"></a>
     </div>
     <div>
-      <span>Asset Reputaion: <span>{{vm.annotation.stars}}</span></span>
+      <p><i>Asset Reputation: <span>{{vm.annotation.stars}}</span></i></p>
     </div>
   </div>
   <div class="entity_annotation_ask" flex>
@@ -49,6 +49,3 @@
     </p>
   </div>
 </div>
-
-
-
