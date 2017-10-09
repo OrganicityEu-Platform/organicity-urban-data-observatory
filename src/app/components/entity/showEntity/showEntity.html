@@ -96,7 +96,7 @@
     </md-button>
   </section>
   <section class="entity_detailed">
-    <section class="entity_chart">
+    <section ng-show="vm.chartAvailable" class="entity_chart">
       <div class="container" layout="row">
         <div class="entity_chart_left">
           <div class="sensor_select">
@@ -261,7 +261,7 @@
       </div>
     </section>
 
-<!--     <section  class="entity_reputation" ng-if="vm.entity">
+    <section  class="entity_reputation" ng-if="vm.entity">
       <div class="entity_detailed_content_container">
         <div class="entity_detailed_title_container">
           <md-icon class="entity_detailed_icon_title" md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
@@ -282,7 +282,8 @@
           </div>
         </div>
       </div>
-    </section> -->
+    </section>
+    
     <section class="entity_owner" ng-if="vm.entity">
       <div class="entity_detailed_content_container">
         <div class="entity_detailed_title_container">
