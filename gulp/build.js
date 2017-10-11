@@ -1,6 +1,8 @@
 'use strict';
 
 var gulp = require('gulp');
+var replace = require('replace');
+var gutil = require('gulp-util')
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
@@ -81,9 +83,7 @@ module.exports = function(options) {
   });
 
   gulp.task('version', function(){
-    var p = require('./package.json');
-    var replace = require('replace');
-
+    var p = require('./../package.json');
     gutil.log(' -- The version is now: ' + p.version);
 
     replace({
