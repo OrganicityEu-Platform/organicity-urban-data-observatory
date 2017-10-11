@@ -85,7 +85,6 @@ module.exports = function(options) {
   gulp.task('version', function(){
     var p = require('./../package.json');
     gutil.log(' -- The version is now: ' + p.version);
-    gutil.log('Git hash is: ' + revision);
 
     replace({
       regex: "Version.*",
