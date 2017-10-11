@@ -1,6 +1,8 @@
 'use strict';
 
 var gulp = require('gulp');
+var replace = require('replace');
+var gutil = require('gulp-util')
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
@@ -80,6 +82,21 @@ module.exports = function(options) {
       .pipe(gulp.dest(options.dist + '/'));
   });
 
+  gulp.task('version', function(){
+    var p = require('./../package.json');
+    gutil.log(' -- The version is now: ' + p.version);
+
+    replace({
+      regex: "Version.*",
+      replacement: "Version: " + p.version,
+      paths: ['./src/app/components/footer/footer.html'],
+      recursive: true,
+      silent: true,
+    });
+
+});
+
+
 
   gulp.task('clean', function (done) {
     $.del([options.dist + '/', options.tmp + '/'], done);
@@ -90,5 +107,5 @@ module.exports = function(options) {
       .pipe(gulp.dest(options.dist + '/styles/images'));
   });
 
-  gulp.task('build', ['html', 'fonts', 'other', 'external-assets']);
+  gulp.task('build', ['html', 'fonts', 'other', 'external-assets', 'version']);
 };
