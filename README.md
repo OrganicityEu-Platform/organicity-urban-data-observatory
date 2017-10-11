@@ -79,3 +79,4 @@ Edit /etc/hosts to contain:
 
 * **Staging:**  Do `cap staging deploy` and select the branch you want to deploy at http://staging.organicity.smartcitizen.me/
 * **Production:** Do `cap production deploy` to deploy the `master` branch at http://organicity.smartcitizen.me/
+
