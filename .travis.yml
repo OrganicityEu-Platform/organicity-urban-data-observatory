@@ -14,4 +14,8 @@ before_install:
   - npm install
 
 script:
+  - pwd
+  - ls
+  - ls ./node_modules
+  - ./node_modules/gulp/bin/gulp.js -v
   - ./node_modules/gulp/bin/gulp.js build
