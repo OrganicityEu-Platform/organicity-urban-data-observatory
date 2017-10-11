@@ -2,7 +2,7 @@
   "name": "smartcitizen",
   "version": "0.1.6",
   "scripts": {
-    "postinstall": "bower install"
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "devDependencies": {
     "browser-sync": "~2.1.4",
@@ -54,6 +54,7 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
+    "bower": "^1.8.2",
     "replace": "^0.3.0",
     "satellizer": "^0.15.5"
   }
