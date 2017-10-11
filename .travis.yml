@@ -1,0 +1,17 @@
+language: node_js
+
+node_js:
+  - "7"
+
+cache:
+  directories:
+    - "node_modules"
+
+install:
+  echo "------------ before install"
+
+before_install:
+  - npm install
+
+script:
+  - ./node_modules/gulp/bin/gulp.js build
