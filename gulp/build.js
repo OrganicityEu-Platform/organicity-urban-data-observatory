@@ -85,16 +85,11 @@ module.exports = function(options) {
   gulp.task('version', function(){
     var p = require('./../package.json');
     gutil.log(' -- The version is now: ' + p.version);
-
-    var revision = require('child_process')
-    .execSync('git rev-parse HEAD')
-    .toString().trim()
-
     gutil.log('Git hash is: ' + revision);
 
     replace({
       regex: "Version.*",
-      replacement: "Version: " + p.version + '. Hash: ' + revision,
+      replacement: "Version: " + p.version,
       paths: ['./src/app/components/footer/footer.html'],
       recursive: true,
       silent: true,
