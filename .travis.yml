@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - "7"
+  - "4"
 
 cache:
   directories:
@@ -14,8 +14,7 @@ before_install:
   - npm install
 
 script:
-  - pwd
-  - ls
-  - ls ./node_modules
+  #- pwd
+  - node -v
   - ./node_modules/gulp/bin/gulp.js -v
   - ./node_modules/gulp/bin/gulp.js build
