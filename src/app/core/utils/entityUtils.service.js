@@ -92,8 +92,8 @@
 
             entityName = object.id.split(':');
 
-            var entityName = entityName.splice(3, entityName.length - 1); // Remove urn header
-            var entityName = entityName.splice(0, entityName.length - 1); // Remove urn entity name
+            entityName = entityName.splice(3, entityName.length - 1); // Remove urn header
+            entityName = entityName.splice(0, entityName.length - 1); // Remove urn entity name
 
             systemTags = systemTags.concat(entityName);
 
@@ -172,9 +172,10 @@
         }
 
         function parseOwner(object) {
+            var owner;
             if (isExperimenter(object)) {
 
-                var owner = {
+                owner = {
                     id: object.context.experimenter,
                     username: 'Experimenter ' + object.context.experimenter,
                     avatar: './mediassets/images/avatar.svg'
@@ -190,7 +191,7 @@
 
             } else {
 
-                var owner = {
+                owner = {
                     id: object.related.site.id,
                     username: object.related.site.name + ' Site',
                     city: object.context.position.city,
