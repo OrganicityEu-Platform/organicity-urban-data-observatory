@@ -45,7 +45,7 @@
       $scope.$on('loggedOut', function() {
         $location.path('/');
       });
-      $scope.$on("$destroy", function() {
+      $scope.$on('$destroy', function() {
         if (updateentititesTimer) {
             $interval.cancel(updateentititesTimer);
         }

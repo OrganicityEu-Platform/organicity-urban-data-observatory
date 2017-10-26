@@ -262,12 +262,12 @@
                 return {
                     latitude: object.context.position.geometry.coordinates[0][1],
                     longitude: object.context.position.geometry.coordinates[0][0]
-                }
+                };
             } else {
                 return {
                     latitude: object.context.position.latitude,
                     longitude: object.context.position.longitude
-                }
+                };
             }
         }
 

@@ -569,10 +569,10 @@
           };
           annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
             function (response) {
-              console.log("annotation completed");
+              console.log('annotation completed');
             },
             function (response) {
-              console.log("failed");
+              console.log('failed');
             });
         });
       }
@@ -608,10 +608,10 @@
           };
           annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
             function (response) {
-              console.log("annotation completed");
+              console.log('annotation completed');
             },
             function (response) {
-              console.log("failed");
+              console.log('failed');
             });
         });
       }
@@ -647,10 +647,10 @@
           };
           annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
             function () {
-              console.log("annotation completed");
+              console.log('annotation completed');
             },
             function () {
-              console.log("failed");
+              console.log('failed');
             });
         });
       }
@@ -690,10 +690,10 @@
           };
           annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
             function (response) {
-              console.log("annotation completed");
+              console.log('annotation completed');
             },
             function (response) {
-              console.log("failed" + response);
+              console.log('failed' + response);
             });
         });
       }
