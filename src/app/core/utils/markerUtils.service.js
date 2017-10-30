@@ -28,6 +28,7 @@
 
       function parseType(object) {
         var entityType;
+        var typeString;
         if (!object.name) {
           entityType = '';
         }
@@ -35,11 +36,11 @@
           entityType = object.name; //tmp
         }
         else if (object.properties && object.properties.type) {
-          var typeString = object.properties.type.split(':');
+          typeString = object.properties.type.split(':');
           entityType = typeString[typeString.length-1];
         }
         else if (object.type) {
-          var typeString = object.type.split(':');
+          typeString = object.type.split(':');
           entityType = typeString[typeString.length-1];
         }
         return entityType;
@@ -65,11 +66,14 @@
         return unfoldCase(entityType[entityType.length-1]);
       }
 
+       
+       /*
       function parseLocation(object) {
-          /* We do not support it on the ADS GEOJson*/
+          // We do not support it on the ADS GEOJson
           var location = '';
           return location;
       }
+      */
 
       function parseLocation(object) {
         if(!object.site || object.split === null){ return; }
@@ -189,8 +193,8 @@
 
           entityName = object.id.split(':');
 
-          var entityName = entityName.splice(3, entityName.length - 1); // Remove urn header
-          var entityName = entityName.splice(0, entityName.length - 1); // Remove urn entity name
+          entityName = entityName.splice(3, entityName.length - 1); // Remove urn header
+          entityName = entityName.splice(0, entityName.length - 1); // Remove urn entity name
 
           systemTags = systemTags.concat(entityName);
 

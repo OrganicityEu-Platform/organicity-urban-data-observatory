@@ -79,7 +79,7 @@
         <div layout="row">
           <div>
           </div>
-          <div class="sensor_value" ng-class="{sensor_value_null: sensor.value === 'N/A'}">{{ sensor.value }}</div>
+          <div class="sensor_value" ng-class="{sensor_value_null: sensor.isNumeric == false}">{{ sensor.value }}</div>
           <div class="sensor_right">
             <div class="sensor_unit">{{ sensor.unit }}</div>
             <md-icon ng-if="sensor.arrow" md-svg-src="{{ sensor.arrow }}" class="sensor_arrow">
@@ -96,7 +96,7 @@
     </md-button>
   </section>
   <section class="entity_detailed">
-    <section class="entity_chart">
+    <section ng-show="vm.chartAvailable" class="entity_chart">
       <div class="container" layout="row">
         <div class="entity_chart_left">
           <div class="sensor_select">
@@ -228,6 +228,9 @@
               </div>
               <div class="entity_details_description">
                 <h4 class="entity_details_description_title">Share this asset:</h4>
+                <a ng-click="vm.copyUrl()">
+                  <md-icon class="entity_social_icon" md-svg-src="./mediassets/images/social_copy.svg">
+                </a>
                 <a ng-click="vm.twitter()">
                   <md-icon class="entity_social_icon" md-svg-src="./mediassets/images/social_twitter.svg">
                 </a>
@@ -261,7 +264,7 @@
       </div>
     </section>
 
-<!--     <section  class="entity_reputation" ng-if="vm.entity">
+    <section  class="entity_reputation" ng-if="vm.entity">
       <div class="entity_detailed_content_container">
         <div class="entity_detailed_title_container">
           <md-icon class="entity_detailed_icon_title" md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
@@ -282,7 +285,8 @@
           </div>
         </div>
       </div>
-    </section> -->
+    </section>
+    
     <section class="entity_owner" ng-if="vm.entity">
       <div class="entity_detailed_content_container">
         <div class="entity_detailed_title_container">

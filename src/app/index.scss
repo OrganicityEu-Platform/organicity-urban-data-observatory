@@ -120,8 +120,8 @@ body {
       margin-left: 8px;
 
       .md-button.md-default-theme {
-        border: 2px solid #00FFA8;
-        color: #00FFA8;
+        border: 2px solid $organicity_pink;
+        color: $organicity_pink;
         border-radius: 50px;
         padding: 9px 11px;
         width: 79px;
@@ -347,7 +347,7 @@ md-toast.pink {
  */
 
 md-progress-linear.md-default-theme .md-bar{
-  background-color: #044150;
+  background-color: $organicity_pink;
 }
 
 /**
@@ -781,7 +781,9 @@ section .entity_menu {
       color: white;
     }
     .sensor_value_null {
-      opacity: 0.15;
+      font-size: 18px;
+      font-weight: normal;
+      text-align: center;
     }
     .sensor_icon {
       width: 16px;
@@ -1288,10 +1290,10 @@ entity COMMENTS MODULE
   bottom: 4px;
 }
 md-progress-linear.md-default-theme.md-hue-3 .md-container{
-  background-color: rgba(79, 201, 232, 0.05);
+  background-color: rgba(239, 64, 112, 0.05);
 }
 md-progress-linear.md-default-theme.md-hue-3 .md-bar {
-  background-color: #4FC9E8;
+  background-color: $organicity_pink;
 }
 .chart_spinner {
   position: absolute;
@@ -3044,6 +3046,30 @@ div[urn]{
 
 .angular-leaflet-control-layers .lf-row .lf-icons {
   float: right;
+}
+
+/* JSON Formatter */
+
+.json-formatter-row  {
+
+  .key {
+    color: $organicity_pink;
+  }
+
+  .string {
+    color: $background_blue_dark_chart;
+    background-color: $background_blue_light;
+  }
+
+  .constructor-name  {
+    color: $background_blue_dark_chart;
+    font-style: italic;
+  }
+
+  .number, .bracket  {
+    color: $organicity_pink !important;
+  }
+  
 }
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
