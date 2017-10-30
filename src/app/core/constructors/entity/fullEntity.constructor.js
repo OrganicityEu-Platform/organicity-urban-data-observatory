@@ -49,6 +49,7 @@
         var ignoreData = [
           'datasource',
           'origin',
+          'annotations',
           'description',
           'location',
           'latitude',
