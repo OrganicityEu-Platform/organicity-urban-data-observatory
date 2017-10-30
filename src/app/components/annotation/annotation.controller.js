@@ -5,8 +5,8 @@
   angular.module('app.components')
     .controller('AnnotationController', AnnotationController);
 
-  AnnotationController.$inject = ['$scope', '$mdDialog', 'annotation'];
-  function AnnotationController($scope, $mdDialog, annotation) {
+  AnnotationController.$inject = ['$scope', '$mdDialog', 'annotation', 'alert'];
+  function AnnotationController($scope, $mdDialog, annotation, alert) {
 
     var vm = this;
 
@@ -20,6 +20,7 @@
         $('#ask_user_for_annotation').hide();
         $('#thank_user_for_annotations').removeClass('fa fa-circle-o-notch fa-spin');
         $('#thank_user_for_annotations').text('Thanks!');
+        alert.success('Annotation updated! Thanks');
       });
 
     };
@@ -31,6 +32,7 @@
         $('.rep-star').hide();
         $('#rep-thanks').removeClass('fa fa-circle-o-notch fa-spin');
         $('#rep-thanks').text('Thanks!');
+        alert.success('Reputation updated! Thanks');
       });
     };
 
