@@ -79,7 +79,7 @@
         <div layout="row">
           <div>
           </div>
-          <div class="sensor_value" ng-class="{sensor_value_null: sensor.value === 'N/A'}">{{ sensor.value }}</div>
+          <div class="sensor_value" ng-class="{sensor_value_null: sensor.isNumeric == false}">{{ sensor.value }}</div>
           <div class="sensor_right">
             <div class="sensor_unit">{{ sensor.unit }}</div>
             <md-icon ng-if="sensor.arrow" md-svg-src="{{ sensor.arrow }}" class="sensor_arrow">

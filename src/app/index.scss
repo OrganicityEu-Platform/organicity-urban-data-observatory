@@ -781,7 +781,9 @@ section .entity_menu {
       color: white;
     }
     .sensor_value_null {
-      opacity: 0.15;
+      font-size: 18px;
+      font-weight: normal;
+      text-align: center;
     }
     .sensor_icon {
       width: 16px;
