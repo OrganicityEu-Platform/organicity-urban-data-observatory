@@ -41,6 +41,7 @@
       vm.twitter = socialSharing.twitter;
       vm.facebook = socialSharing.facebook;
       vm.email = socialSharing.email;
+      vm.copyUrl = socialSharing.copyUrl;
 
       vm.snippetOptions = {
           lineWrapping: false,
