@@ -40,7 +40,7 @@
       vm.filterentitites = filterentitites;
       vm.filterTools = filterTools;
 
-      var updateentititesTimer = undefined;
+      var updateentititesTimer;
 
       $scope.$on('loggedOut', function() {
         $location.path('/');

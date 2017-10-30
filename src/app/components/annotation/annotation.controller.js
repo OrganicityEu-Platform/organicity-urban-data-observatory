@@ -27,7 +27,7 @@
       var assetUrn = $scope.$parent.vm.entity.id;
       //TODO: should add here an user identifier for posting the annotation
       $('#rep-thanks').addClass('fa fa-circle-o-notch fa-spin');
-      annotation.postAssetRate(assetUrn, rate, (new Date).getTime()).then(function (e) {
+      annotation.postAssetRate(assetUrn, rate, (new Date()).getTime()).then(function (e) {
         $('.rep-star').hide();
         $('#rep-thanks').removeClass('fa fa-circle-o-notch fa-spin');
         $('#rep-thanks').text('Thanks!');
