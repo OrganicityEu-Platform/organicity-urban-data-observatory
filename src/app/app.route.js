@@ -19,7 +19,7 @@
         url: 'https://discovery.organicity.eu/keycloak',
         //  url: 'http://localhost/keycloak',
         provider: 'keycloak',
-        clientId: '4faf6d12-9d7e-4999-9070-9ef36bb45841',
+        clientId: 'observatory',
         redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
         authorizationEndpoint: 'https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth'
       });
