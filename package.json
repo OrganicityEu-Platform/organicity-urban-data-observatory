@@ -1,10 +1,10 @@
 {
   "name": "smartcitizen",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "license": "AGPL-3.0",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/npm/npm.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npm/npm.git"
   },
   "scripts": {
     "postinstall": "bower install"
