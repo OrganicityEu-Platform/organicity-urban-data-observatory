@@ -5,8 +5,8 @@
   angular.module('app.components')
     .controller('AnnotationController', AnnotationController);
 
-  AnnotationController.$inject = ['$scope', '$mdDialog', 'annotation'];
-  function AnnotationController($scope, $mdDialog, annotation) {
+  AnnotationController.$inject = ['$scope', '$mdDialog', 'annotation', 'alert'];
+  function AnnotationController($scope, $mdDialog, annotation, alert) {
 
     var vm = this;
 
@@ -15,22 +15,24 @@
 
     vm.addAnnotation = function (urn) {
       //TODO: should add here an user identifier for posting the annotation
-      $("#thank_user_for_annotations").addClass("fa fa-circle-o-notch fa-spin");
+      $('#thank_user_for_annotations').addClass('fa fa-circle-o-notch fa-spin');
       annotation.postAnnotation($scope.$parent.vm.entity.id, urn).then(function (e) {
-        $("#ask_user_for_annotation").hide();
-        $("#thank_user_for_annotations").removeClass("fa fa-circle-o-notch fa-spin");
-        $("#thank_user_for_annotations").text("Thanks!");
+        $('#ask_user_for_annotation').hide();
+        $('#thank_user_for_annotations').removeClass('fa fa-circle-o-notch fa-spin');
+        $('#thank_user_for_annotations').text('Thanks!');
+        alert.success('Annotation updated! Thanks');
       });
 
     };
     vm.addReputation = function (rate) {
       var assetUrn = $scope.$parent.vm.entity.id;
       //TODO: should add here an user identifier for posting the annotation
-      $("#rep-thanks").addClass("fa fa-circle-o-notch fa-spin");
-      annotation.postAssetRate(assetUrn, rate, (new Date).getTime()).then(function (e) {
-        $(".rep-star").hide();
-        $("#rep-thanks").removeClass("fa fa-circle-o-notch fa-spin");
-        $("#rep-thanks").text("Thanks!");
+      $('#rep-thanks').addClass('fa fa-circle-o-notch fa-spin');
+      annotation.postAssetRate(assetUrn, rate, (new Date()).getTime()).then(function (e) {
+        $('.rep-star').hide();
+        $('#rep-thanks').removeClass('fa fa-circle-o-notch fa-spin');
+        $('#rep-thanks').text('Thanks!');
+        alert.success('Reputation updated! Thanks');
       });
     };
 
@@ -52,18 +54,20 @@
 
 
             angular.forEach(response, function (value, key) {
-              var tagUrn = value["tagUrn"];
-              if (uniqueTags.indexOf(tagUrn) !== -1)return;
+              var tagUrn = value['tagUrn'];
+              if (uniqueTags.indexOf(tagUrn) !== -1){
+                return;
+              }
               uniqueTags.push(tagUrn);
-              var splitName = tagUrn.split(":");
+              var splitName = tagUrn.split(':');
               annotation.getTag(tagUrn).then(function (result) {
                 var tag = {
-                  "name": splitName.slice(4).join(" "),
-                  "tooltip": result.name
+                  'name': splitName.slice(4).join(' '),
+                  'tooltip': result.name
                 };
                 tags.push(tag);
               });
-              filters = filterUsers(value["user"]);
+              filters = filterUsers(value['user']);
             });
 
             vm.annotation.tags = tags;
@@ -97,13 +101,13 @@
       var distinctUser = {};
       if (username === 'jamaica') {
         distinctUser = {
-          "id": 0,
-          "name": "Automated"
+          'id': 0,
+          'name': 'Automated'
         };
       } else {
         distinctUser = {
-          "id": 1,
-          "name": "Experimenters"
+          'id': 1,
+          'name': 'Experimenters'
         };
       }
       if (users.indexOf(distinctUser) === -1) {

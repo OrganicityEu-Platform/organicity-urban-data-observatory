@@ -26,8 +26,6 @@
 
 
       if(entityData){
-        console.log('we have entityData');
-        console.log(entityData);
         animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: $stateParams.id });
       }
 
@@ -42,6 +40,7 @@
       vm.twitter = socialSharing.twitter;
       vm.facebook = socialSharing.facebook;
       vm.email = socialSharing.email;
+      vm.copyUrl = socialSharing.copyUrl;
 
       vm.snippetOptions = {
           lineWrapping: false,
@@ -66,7 +65,9 @@
 
       vm.showSensorOnChart = showSensorOnChart;
       vm.moveChart = moveChart;
-      vm.loadingChart = true;
+      vm.chartAvailable = findHistoricalUri();
+      vm.loadingChart = vm.chartAvailable ? true : false;
+
       // event listener on change of value of main sensor selector
       $scope.$watch('vm.selectedSensor', function(newVal, oldVal) {
         vm.selectedSensorToCompare = undefined;
@@ -89,10 +90,9 @@
         vm.loadingChart = false;
       });
 
-      // initialize();
-
       ///////////////
 
+<<<<<<< HEAD
       function initialize() {
         // TODO: check why this is disabled
 
@@ -117,15 +117,16 @@
 
       }
 
+=======
+>>>>>>> master
       function findHistoricalUri(){
         var sensorEntity = vm.sensors ? vm.sensors.filter(function(sensorEnt) {
           return sensorEnt.id === 'urn:oc:attributeType:datasource';
         }) : [];
+
         if(!sensorEntity[0]) {
           return;
-        }
-        else {
-          console.log(sensorEntity);
+        } else {
           sensorEntity = sensorEntity.pop();
           return sensorEntity.value;
         }
@@ -487,7 +488,6 @@
                     return new HasSensorEntity(entity);
                   })
                   .filter(function(entity) {
-                    console.log(entity);
                     return !!entity.longitude && !!entity.latitude;
                   })
                   .find(function(entity) {

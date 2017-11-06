@@ -1,18 +1,21 @@
 (function() {
   'use strict';
   angular.module('app.components').controller('MapController', MapController);
-  MapController.$inject = ['$scope', '$state', '$timeout', '$location', 'entitiesLayers', 'Overlays', 'asset', '$mdDialog', 'leafletData', 'mapUtils', 'markerUtils', 'alert', 'animation'];
+  MapController.$inject = ['$scope', '$state', '$timeout', '$location', 'entitiesLayers', 'Overlays', 'asset', '$mdDialog', 'leafletData', 'mapUtils', 'markerUtils', 'alert', 'animation', 'leafletMapEvents'];
 
-  function MapController($scope, $state, $timeout, $location, entitiesLayers, Overlays, asset, $mdDialog, leafletData, mapUtils, markerUtils, alert, animation) {
+  function MapController($scope, $state, $timeout, $location, entitiesLayers, Overlays, asset, $mdDialog, leafletData, mapUtils, markerUtils, alert, animation, leafletMapEvents) {
     var vm = this;
     var updateType;
     var mapMoved = false;
-    var entityLoaded = false;
     var mapClicked = false;
 
     vm.tiles = mapUtils.getBaseLayers().oc.url;
 
     vm.controls = {};
+
+    vm.activeEntity = {}
+
+    vm.entityLoading = true;
 
     vm.layers = {
       baselayers: mapUtils.getBaseLayers(),
@@ -40,22 +43,12 @@
 
     vm.events = {
       map: {
-        enable: ['dragend', 'zoomend', 'moveend', 'popupopen', 'popupclose', 'mousedown', 'dblclick', 'click', 'touchstart', 'mouseup'],
+        enable: ['dragend', 'zoomend', 'moveend', 'popupopen', 'popupclose', 'mousedown', 'dblclick', 'click', 'touchstart', 'mouseup', 'load', 'viewreset'],
         logic: 'emit'
       }
     };
 
     animation.viewLoaded();
-
-//    leafletData.getMap('organicityMap').then(function() {
-//      vm.controls.minimap = {
-//        type: 'minimap',
-//        layer: mapUtils.getBaseLayers().oc,
-//        toggleDisplay: true,
-//        minimized: true,
-//        zoomLevelOffset: -4
-//      };
-//    });
 
     $scope.$on('goToLocation', function(event, data) {
       goToLocation(event, data);
@@ -65,60 +58,71 @@
         $location.search({ map: centerHash });
     });
 
-    $scope.changeLocation = function(centerHash) {
-        $location.search({ map: centerHash });
-    };
-
-    $scope.$watch('vm.center.zoom', function() {
-      updateMarkers();
-    });
-
-    $scope.$watch('vm.bounds', function() {
-      updateMarkers();
-    });
-
-    $scope.$on('centerMap', function(event, data) {
-      vm.center = data.center;
+    $scope.$on('leafletDirectiveMap.organicityMap.moveend', function(event){
+      movementEnded()
     });
 
     $scope.$on('entityLoaded', function(event, data) {
-
-      vm.entityLoading = false;
-      vm.center = {
-        lat: parseFloat(data.lat),
-        lng: parseFloat(data.lng),
-        zoom: 20
-      };
-
+      vm.activeEntity = data;
+      updateCenter();
       updateMarkers();
-
-      $timeout(function(currentMarker) {
-        leafletData.getLayers('organicityMap')
-          .then(function(layers) {
-            var overlays = layers.overlays;
-            for (var o in overlays) {
-              var currentMarker = _.find(overlays[o].getLayers(), function(marker) {
-                if (data.id === marker.feature.properties.id) {
-                  console.log(marker);
-                  marker.focus = true;
-                  marker.openPopup();
-                  return marker;
-                }
-              });
-            }
-            entityLoaded = true;
-          }, function(error) {
-            console.log(error);
-          });
-      }, 250);
     });
 
+    function movementEnded() {
+      if(vm.entityLoading){
+        updatePopups();
+      } else {
+        updateMarkers();
+      }
+    }
+
+    function updateCenter(){
+      vm.center = {
+        lat: parseFloat(vm.activeEntity.lat),
+        lng: parseFloat(vm.activeEntity.lng),
+        zoom: 20
+      };
+    }
+
+    function updatePopups(){
+      // Tmp. Safety timeout
+      $timeout(function() {
+
+        leafletData.getLayers('organicityMap').then(function(layers) {
+          activateMarkerPopup(vm.activeEntity, layers);
+        });
+
+        $scope.changeLocation = function(centerHash) {
+          $location.search({ map: centerHash });
+        };
+
+        $scope.$on('centerMap', function(event, data) {
+          vm.center = data.center;
+        });
+
+        vm.entityLoading = false;
+
+      }, 2000);
+    }
+
+    function activateMarkerPopup(data, layers) {
+        var overlays = layers.overlays;
+        for (var overlay in overlays) {
+          var currentMarker = _.find(overlays[overlay].getLayers(), function(marker) {
+            if (data.id === marker.feature.properties.id) {
+              marker.focus = true;
+              marker.openPopup();
+              return marker;
+            }
+          });
+        }
+    }
 
     function updateMarkers() {
       if (vm.center.zoom >= 8) {
-        safeFunction(updateAreaMarkers, 'lastMarkersUpdate', 1500);
+        updateAreaMarkers();
       } else {
-        safeFunction(updateClusters, 'lastClustersUpdate', 1500);
+        updateClusters();
       }
 
       if (vm.controls.minimap) {
@@ -127,15 +131,11 @@
 
     }
 
-    function safeFunction(fn, time, interval) {
-      if (!vm[time] || new Date().getTime() - vm[time] > interval) {
-        fn();
-        vm[time] = new Date().getTime();
-      } 
-    }
-
     function updateAreaMarkers() {
-      vm.center.radius = (vm.bounds) ? getDistanceInKm(vm.center, vm.bounds.southWest) : 10;
+
+      vm.entityLoading = true;
+
+      vm.center.radius = (vm.bounds) ? getDistanceInKm(vm.center, vm.bounds.southWest) : 0.5;
 
       var params = {
         lat: vm.center.lat,
@@ -149,32 +149,37 @@
         asset.setAllEntities(data);
         vm.layers = {
           baselayers: mapUtils.getBaseLayers(),
+          // This is tmp.
           overlays: new Overlays(JSON.parse(JSON.stringify(data)), 'Asset Types')
         };
+        vm.entityLoading = false;
       }, function(error) {
-        console.log(error);
+        vm.entityLoading = false;
+        alert.error("Sorry, there was an error while updating the map. Please, reload the website.");
       });
     }
 
     function updateClusters() {
       // This is tmp.
+      vm.entityLoading = true;
       var clusters = asset.getAllClusters();
       if (clusters) {
-//        console.warn(clusters);
         vm.layers = {
           baselayers: mapUtils.getBaseLayers(),
           overlays: new Overlays(clusters, 'Asset Types')
         };
+        vm.entityLoading = false;
       } else {
         asset.getClusterGeoJSON().then(function(data) {
-          console.warn(data);
           asset.setAllClusters(data);
           vm.layers = {
             baselayers: mapUtils.getBaseLayers(),
             overlays: new Overlays(data, 'Asset Types')
           };
+          vm.entityLoading = false;
         }, function(error) {
-          console.log(error);
+          vm.entityLoading = false;
+          alert.error("Sorry, there was an error while updating the map. Please, reload the website.");
         });
       }
 
@@ -187,7 +192,6 @@
     }
 
     function getZoomLevel(data) {
-      console.log(data);
       var LAYER_ZOOMS = [{name:'venue', zoom:18}, {name:'address', zoom:18}, {name:'neighbourhood', zoom:13}, {name:'locality', zoom:13}, {name:'localadmin', zoom:10}, {name:'county', zoom:10}, {name:'region', zoom:8}, {name:'country', zoom:7}, {name:'coarse', zoom:7}];
       if (!data.layer) {
         return 10;
