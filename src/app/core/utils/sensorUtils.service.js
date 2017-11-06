@@ -15,7 +15,8 @@
         getSensorIcon: getSensorIcon,
         getSensorArrow: getSensorArrow,
         getSensorColor: getSensorColor,
-        getSensorDescription: getSensorDescription
+        getSensorDescription: getSensorDescription,
+        isSensorNumeric: isSensorNumeric
       };
       return service;
 
@@ -65,13 +66,21 @@
         }
       }
 
+      function isSensorNumeric(sensor){
+        var value = sensor.value;
+        if(isNaN(parseInt(value))) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+
       function getSensorValue(sensor) {
         var value = sensor.value;
         if (sensor.type === 'urn:oc:attributeType:datasource') {
           value = sensor.value;
-        } else if(isNaN(parseInt(value))) {
-          value =  'N/A';
-        } else if((sensor.type === 'coords') || (sensor.type === 'geo:point')){
+        }
+        else if((sensor.type === 'coords') || (sensor.type === 'geo:point')){
           value = sensor.value;
         } else {
           value = value.toString();

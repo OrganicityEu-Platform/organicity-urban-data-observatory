@@ -12,7 +12,7 @@
     var vm = this;
     vm.recomendedAssets = [];
 
-    var baseAssetUrl = "https://discovery.organicity.eu/v0/assets/"
+    var baseAssetUrl = 'https://discovery.organicity.eu/v0/assets/';
 
 
     initialize();
@@ -28,19 +28,19 @@
       var userId = user.id;
       
       
-      var accessKey = "532xFqhj89sbCGhlEb8l1Ihmvrs-Y3gfOgR-UvjoRXKWbon5srEm1N2lbcqpXTae"
+      var accessKey = '532xFqhj89sbCGhlEb8l1Ihmvrs-Y3gfOgR-UvjoRXKWbon5srEm1N2lbcqpXTae';
 
       recommender.push(entity.id, accessKey,userId).then(function(response) {
         console.log('interaction pushed to recommendation engine');
         
       }, function(err){
-        console.log("interaction not pushed to recommendation engine");
+        console.log('interaction not pushed to recommendation engine');
         console.log(err);
       });
 
       $scope.isLoading = true;      
       recommender.get([entity.id], 4).then(function(response) {
-        console.log("get recommendations done");
+        console.log('get recommendations done');
         var itemScores = response.itemScores;
 
         var assetInfoPromises = []
@@ -58,7 +58,7 @@
                     'id':assetInfo.id,
                     'name':assetInfo.data.context.name,
                     'service':assetInfo.data.context.service,
-                    'position':assetInfo.data.context.position.city+", "+assetInfo.data.context.position.country,
+                    'position':assetInfo.data.context.position.city+', '+assetInfo.data.context.position.country,
                     'url':assetInfo.config.url
                   };
 
@@ -69,7 +69,7 @@
         });
 
       },function(err){
-        console.log("get recommendations error");
+        console.log('get recommendations error');
         console.log(err);
       });
 

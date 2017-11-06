@@ -9,14 +9,14 @@
       'utils', 'sensor', '$mdDialog',
       // 'belongsToUser',
       'timeUtils', 'animation', '$location', 'auth', 'entityUtils', 'userUtils',
-      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'asset', 'HasSensorEntity', 'geolocation', 'socialSharing'];
+      '$timeout', 'mainSensors', 'compareSensors', 'alert', '$q', 'asset', 'HasSensorEntity', 'geolocation', 'annotation', 'socialSharing'];
 
     function entityController($state, $scope, $stateParams, entityData,
       // ownerEntitites,
       utils, sensor, $mdDialog,
       // belongsToUser,
       timeUtils, animation, $location, auth, entityUtils, userUtils,
-      $timeout, mainSensors, compareSensors, alert, $q, asset, HasSensorEntity, geolocation, socialSharing) {
+      $timeout, mainSensors, compareSensors, alert, $q, asset, HasSensorEntity, geolocation, annotation, socialSharing) {
 
       var vm = this;
       var sensorsData = [];
@@ -24,10 +24,7 @@
       var mainSensorID, compareSensorID;
       var picker = initializePicker();
 
-
       if(entityData){
-        console.log('we have entityData');
-        console.log(entityData);
         animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: $stateParams.id });
       }
 
@@ -42,6 +39,7 @@
       vm.twitter = socialSharing.twitter;
       vm.facebook = socialSharing.facebook;
       vm.email = socialSharing.email;
+      vm.copyUrl = socialSharing.copyUrl;
 
       vm.snippetOptions = {
           lineWrapping: false,
@@ -66,7 +64,9 @@
 
       vm.showSensorOnChart = showSensorOnChart;
       vm.moveChart = moveChart;
-      vm.loadingChart = true;
+      vm.chartAvailable = findHistoricalUri();
+      vm.loadingChart = vm.chartAvailable ? true : false;
+
       // event listener on change of value of main sensor selector
       $scope.$watch('vm.selectedSensor', function(newVal, oldVal) {
         vm.selectedSensorToCompare = undefined;
@@ -89,43 +89,16 @@
         vm.loadingChart = false;
       });
 
-      // initialize();
-
       ///////////////
-
-      function initialize() {
-        // TODO: check why this is disabled
-
-        $timeout(function() {
-          colorSensorMainIcon();
-          colorArrows();
-          colorClock();
-          // events below can probably be refactored to use $viewContentLoaded https://github.com/angular-ui/ui-router/wiki#user-content-view-load-events
-          animation.viewLoaded();
-          animation.mapStateLoaded();
-        }, 1000);
-
-        if(vm.entity){
-          if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
-            alert.info.longTime();
-          } else {
-            if(geolocation.isHTML5GeolocationGranted()){
-              geolocate();
-            }
-          }
-        }
-
-      }
 
       function findHistoricalUri(){
         var sensorEntity = vm.sensors ? vm.sensors.filter(function(sensorEnt) {
           return sensorEnt.id === 'urn:oc:attributeType:datasource';
         }) : [];
+
         if(!sensorEntity[0]) {
           return;
-        }
-        else {
-          console.log(sensorEntity);
+        } else {
           sensorEntity = sensorEntity.pop();
           return sensorEntity.value;
         }
@@ -487,7 +460,6 @@
                     return new HasSensorEntity(entity);
                   })
                   .filter(function(entity) {
-                    console.log(entity);
                     return !!entity.longitude && !!entity.latitude;
                   })
                   .find(function(entity) {

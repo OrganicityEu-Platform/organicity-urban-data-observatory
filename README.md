@@ -10,6 +10,9 @@ This tool is based on the [SmartCitizen](http://smartcitizen.me) front-end frame
 You need git to clone the repository. You can get git from
 [http://git-scm.com/](http://git-scm.com/).
 
+
+This project uses node version 4.2, see the version number in the file `.nvmrc`
+
 We also use a number of node.js tools to initialize and test the Web App. You must have node.js and
 its package manager (npm) installed. You can get them from [http://nodejs.org/](http://nodejs.org/).
 
@@ -20,7 +23,7 @@ Also gulp: `npm install -g gulp` (with `sudo` if you are using Mac).
 Clone the repository using:
 
 ```
-git clone https://github.com/OrganicityEu/UrbanDataObservatory.git
+git clone https://github.com/OrganicityEu-Platform/organicity-urban-data-observatory.git
 cd UrbanDataObservatory
 ```
 
@@ -79,3 +82,4 @@ Edit /etc/hosts to contain:
 
 * **Staging:**  Do `cap staging deploy` and select the branch you want to deploy at http://staging.organicity.smartcitizen.me/
 * **Production:** Do `cap production deploy` to deploy the `master` branch at http://organicity.smartcitizen.me/
+

@@ -35,24 +35,24 @@
 
     function postAssetRate(asset, rate, user) {
       var annotation = {
-        "assetUrn": asset,
-        "numericValue": parseInt(rate),
-        "textValue": "",
-        "application": "oc-reputation",
-        "tagUrn": "urn:oc:tag:Reliability:Score",
-        "user": "anon-"+user
+        'assetUrn': asset,
+        'numericValue': parseInt(rate),
+        'textValue': '',
+        'application': 'oc-reputation',
+        'tagUrn': 'urn:oc:tag:Reliability:Score',
+        'user': 'anon-'+user
       };
       return annotationAPI.all('annotations/' + asset).post(annotation);
     }
 
     function postAnnotation(asset, urn) {
       var annotation = {
-        "assetUrn": asset,
-        "numericValue": 0,
-        "textValue": "",
-        "application": "oc-reputation",
-        "tagUrn": urn,
-        "user": ""
+        'assetUrn': asset,
+        'numericValue': 0,
+        'textValue': '',
+        'application': 'oc-reputation',
+        'tagUrn': urn,
+        'user': ''
       };
       console.log(annotation);
       return annotationAPI.all('annotations/' + asset).post(annotation);

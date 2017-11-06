@@ -119,7 +119,7 @@
         }
 
         // If we have the "refresh_token" our api will use that method instead.
-        $auth.authenticate('organicity', { "refresh_token" : $rootScope.refreshToken })
+        $auth.authenticate('organicity', { 'refresh_token' : $rootScope.refreshToken })
           .then(function(response) {
             updateNavbar(0);
           })
