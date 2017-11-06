@@ -25,7 +25,7 @@
       
       
       var user =auth.getCurrentUser();
-      var userId = user.id;
+      var userId = user.data.id;
       
       
       var accessKey = '532xFqhj89sbCGhlEb8l1Ihmvrs-Y3gfOgR-UvjoRXKWbon5srEm1N2lbcqpXTae';
