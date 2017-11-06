@@ -52,9 +52,18 @@
           return $http.get(baseAssetUrl+obj.item);
         });
 
-
+        
 
         Promise.all(assetInfoPromises).then(function(response){ 
+
+        var placeholder = angular.element( document.querySelector( '#placeholder' ) );
+        if(assetInfoPromises.length>0){
+          placeholder.empty();
+          console.log("founds assets");
+        }else{
+          placeholder.html("No recommendations found for this asset");
+        }
+
           response.forEach(function(assetInfo){
             var asset = {
                     'id':assetInfo.id,
@@ -67,6 +76,7 @@
             vm.recomendedAssets.push(asset);
             
           });
+
           $scope.isLoading = false; 
         });
 
