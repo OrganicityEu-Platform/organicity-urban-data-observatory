@@ -5,13 +5,12 @@
   angular.module('app.components')
     .controller('AnnotationController', AnnotationController);
 
-  AnnotationController.$inject = ['$scope', '$mdDialog', 'annotation', 'alert'];
-  function AnnotationController($scope, $mdDialog, annotation, alert) {
+  AnnotationController.$inject = ['$scope', '$mdDialog', 'annotation', 'alert', '$state'];
+  function AnnotationController($scope, $mdDialog, annotation, alert, $state) {
 
     var vm = this;
 
     initialize();
-
 
     vm.addAnnotation = function (urn) {
       //TODO: should add here an user identifier for posting the annotation
@@ -21,9 +20,11 @@
         $('#thank_user_for_annotations').removeClass('fa fa-circle-o-notch fa-spin');
         $('#thank_user_for_annotations').text('Thanks!');
         alert.success('Annotation updated! Thanks');
+        $state.reload();
       });
 
     };
+
     vm.addReputation = function (rate) {
       var assetUrn = $scope.$parent.vm.entity.id;
       //TODO: should add here an user identifier for posting the annotation
@@ -33,6 +34,7 @@
         $('#rep-thanks').removeClass('fa fa-circle-o-notch fa-spin');
         $('#rep-thanks').text('Thanks!');
         alert.success('Reputation updated! Thanks');
+        $state.reload();
       });
     };
 
@@ -79,7 +81,7 @@
           vm.annotation.statistics = result;
 
           var statistics = vm.annotation.statistics;
-          var reputation =0;
+          var reputation = 0;
           if (statistics.totalRates > 0) {
             var w1 = (statistics.assetRate / 5);
             var w2 = (statistics.totalRates / statistics.globalTotalRates);

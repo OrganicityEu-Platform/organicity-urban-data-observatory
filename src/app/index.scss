@@ -567,10 +567,17 @@ section.map {
 
 .entity_annotation {
   .entity_details_content_main {
+    margin-right: 30px;
   }
   .entity_annotation_ask {
   }
   .entity_reputation_tab {
+    a {
+      text-decoration: none;
+    }
+    .fa-star-o {
+      color: #EF4070;
+    }
   }
   .annotation_highlight_text {
     background-color: $organicity_pink;
@@ -2656,6 +2663,16 @@ path {
   background-color: $blue_light;
   border-radius: 20px;
   padding: 8px 31px;
+}
+.annotation_tags span{
+  float: left;
+  margin-right: 5px;
+}
+.md-button.md-default-theme.tag{
+  color: white;
+  background-color: $blue_light;
+  border-radius: 20px;
+  padding: 4px 10px;
 }
 .md-button.md-default-theme.myProfile_addentityButton:focus {
   background-color: $blue_light;

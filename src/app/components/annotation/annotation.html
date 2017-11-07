@@ -1,11 +1,12 @@
 <div class="entity_detailed_content_container" layout="row">
   <div class="entity_details_content_main" flex>
-    <h3>What OrganiCity knows about this Asset</h3>
-    <div>
-      <!--<div ng-if="vm.annotation.tags.length" >-->
-      <span tooltips tooltip-side="top" tooltip-template="{{tag.tooltip}}" ng-if="vm.annotation.tags.length"
-            style="float: left;" ng-repeat="tag in vm.annotation.tags">
-        <md-button class="call-to-action">{{ tag.name }}</md-button>&nbsp;
+    <h3>What we know about this asset?</h3>
+    <div class="annotation_tags">
+      <span tooltips tooltip-side="top" tooltip-template="{{tag.tooltip}}" ng-if="vm.annotation.tags.length" ng-repeat="tag in vm.annotation.tags">
+        <md-button class="tag">{{ tag.name }}</md-button>
+      </span>
+      <span ng-if="!vm.annotation.tags.length">
+        No annotations available, yet!
       </span>
     </div>
     <div class="clearfix"></div>
@@ -27,20 +28,20 @@
   <div class="entity_reputation_tab" flex>
     <h3>How would you rate this asset?</h3>
     <div>
-      <a href="" ng-click="vm.addReputation(1)" role="button" id="rep-star-1" style="text-decoration: none;">
-        <i class="rep-star fa fa-fw fa-star-o" style="color: #EF4070 !important;"></i>
+      <a href="" ng-click="vm.addReputation(1)" role="button" id="rep-star-1">
+        <i class="rep-star fa fa-fw fa-star-o"></i>
       </a>
-      <a href="" ng-click="vm.addReputation(2)" role="button" id="rep-star-2" style="text-decoration: none;">
-        <i class="rep-star fa fa-fw fa-star-o" style="color: #EF4070 !important;"></i>
+      <a href="" ng-click="vm.addReputation(2)" role="button" id="rep-star-2">
+        <i class="rep-star fa fa-fw fa-star-o"></i>
       </a>
-      <a href="" ng-click="vm.addReputation(3)" role="button" id="rep-star-3" style="text-decoration: none;">
-        <i class="rep-star fa fa-fw fa-star-o" style="color: #EF4070 !important;"></i>
+      <a href="" ng-click="vm.addReputation(3)" role="button" id="rep-star-3">
+        <i class="rep-star fa fa-fw fa-star-o"></i>
       </a>
-      <a href="" ng-click="vm.addReputation(4)" role="button" id="rep-star-4" style="text-decoration: none;">
-        <i class="rep-star fa fa-fw fa-star-o" style="color: #EF4070 !important;"></i>
+      <a href="" ng-click="vm.addReputation(4)" role="button" id="rep-star-4">
+        <i class="rep-star fa fa-fw fa-star-o"></i>
       </a>
-      <a href="" ng-click="vm.addReputation(5)" role="button" id="rep-star-5" style="text-decoration: none;">
-        <i class="rep-star fa fa-fw fa-star-o" style="color: #EF4070 !important;"></i>
+      <a href="" ng-click="vm.addReputation(5)" role="button" id="rep-star-5">
+        <i class="rep-star fa fa-fw fa-star-o"></i>
       </a>
       <a class=""></a>
       <a id="rep-thanks"></a>
@@ -53,7 +54,7 @@
     <h3 id="ask_user_for_annotation">Do you think any of these is true?</h3>
     <h3>
       <span ng-repeat="tag in vm.annotation.proposed.tags">
-      <md-button class="call-to-action" ng-click="vm.addAnnotation(tag.urn)">{{ tag.name }}</md-button>&nbsp;
+        <md-button class="call-to-action" ng-click="vm.addAnnotation(tag.urn)">{{ tag.name }}</md-button>&nbsp;
       </span>
     </h3>
     <h3 id="thank_user_for_annotations"></h3>
