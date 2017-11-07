@@ -1,12 +1,13 @@
+//jshint esnext: true
 (function() {
   'use strict';
 
   angular.module('app.components')
     .factory('recommender', recommender);
 
-  recommender.$inject = ['recommenderAPI', '$window', 'timeUtils', '$filter', '$q'];
+  recommender.$inject = ['recommenderAPI'];
 
-  function recommender(recommenderAPI, $window, timeUtils, $filter, $q) {
+  function recommender(recommenderAPI) {
 
     initialize();
 

@@ -1,4 +1,5 @@
 /*jshint sub:true*/
+//jshint esnext: true
 (function() {
   'use strict';
 
@@ -33,7 +34,9 @@
       var accessKey = '532xFqhj89sbCGhlEb8l1Ihmvrs-Y3gfOgR-UvjoRXKWbon5srEm1N2lbcqpXTae';
 
       recommender.push(entity.id, accessKey,userId).then(function(response) {
-        console.log('interaction pushed to recommendation engine');
+        if(response){
+          console.log('interaction pushed to recommendation engine');
+        }
         
       }, function(err){
         console.log('interaction not pushed to recommendation engine');
@@ -42,26 +45,26 @@
 
       $scope.isLoading = true;      
       recommender.get([entity.id], 4).then(function(response) {
-        console.log('get recommendations done');
+        if(response){
+          console.log('get recommendations done');
+        }
         var itemScores = response.itemScores;
 
-        var assetInfoPromises = []
+        var assetInfoPromises = [];
 
         //get asset URN
         assetInfoPromises = itemScores.map(function(obj){
           return $http.get(baseAssetUrl+obj.item);
         });
-
-        
-
+      
         Promise.all(assetInfoPromises).then(function(response){ 
 
         var placeholder = angular.element( document.querySelector( '#placeholder' ) );
         if(assetInfoPromises.length>0){
           placeholder.empty();
-          console.log("founds assets");
+          console.log('founds assets');
         }else{
-          placeholder.html("No recommendations found for this asset");
+          placeholder.html('No recommendations found for this asset');
         }
 
           response.forEach(function(assetInfo){
