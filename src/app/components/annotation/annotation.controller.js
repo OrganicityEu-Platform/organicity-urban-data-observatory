@@ -45,6 +45,7 @@
       displayAssetAnnotations(entity);
 
       function displayAssetAnnotations(entity) {
+        vm.entity = entity;
         annotation.getAssetAnnotations(entity.id).then(
           function (response) {
 
@@ -91,7 +92,7 @@
           $scope.$parent.vm.stars = Math.round(reputation);
         });
         annotation.getProposedTagDomain(entity.id).then(function (result) {
-          vm.annotation.proposed = result;
+          vm.annotation.proposed = result[0];
         });
       }
     }
