@@ -75,7 +75,7 @@
 
     function getProposedTagDomain(asset) {
       var params = {};
-      return annotationAPI.all('tagDomains/urn:oc:tagDomain:IndoorHumidityLevels').get('', params);
+      return annotationAPI.all('tagDomains/asset/' + asset).get('', params);
     }
 
     function getAnnotationForApplication(asset, user, application, tagDomainUrn) { //todo async call
