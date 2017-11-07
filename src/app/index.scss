@@ -566,9 +566,11 @@ section.map {
 }
 
 .entity_annotation {
+  .entity_details_content_main {
+  }
   .entity_annotation_ask {
-    background-color: #eee;
-    padding: 30px;
+  }
+  .entity_reputation_tab {
   }
   .annotation_highlight_text {
     background-color: $organicity_pink;
@@ -585,28 +587,26 @@ section.map {
       margin-right: 5px;
       margin-bottom: 5px;
       padding: 3px 8px;
-      border-radius: 20px; 
+      border-radius: 20px;
       display: block;
     }
     span:hover {
       background-color: $organicity_pink;
     }
     float: left;
-    
   }
   .entity_annotion_filter {
- 
   }
 
   .add_annotation {
-    text-align: right; 
+    text-align: right;
     margin-right: 50px;
 
     .md-button {
       color: white;
       background-color: $organicity_pink;
       border-radius: 20px;
-      padding: 8px 31px;  
+      padding: 8px 31px;
     }
 
   }
@@ -3069,7 +3069,7 @@ div[urn]{
   .number, .bracket  {
     color: $organicity_pink !important;
   }
-  
+
 }
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
