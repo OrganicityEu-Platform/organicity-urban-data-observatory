@@ -1,16 +1,12 @@
 <div class="entity_detailed_content_container" layout="column">
-	<md-progress-circular md-mode="indeterminate" ng-show='isLoading'></md-progress-circular>
-	<div layout='row' layout-align='center center'>
-		<div id='placeholder'>
-			No recommendations available
-		</div>
-		<div ng-repeat="asset in vm.recomendedAssets" style='border-style:solid;border-radius:15px;padding:2px;margin:5px'>
-		  	name: <h3>{{ asset.name }}</h3>
-			type: <h4>{{ asset.service }}</h4>
-			location: <p>{{ asset.position }}</p>
-			<p><a ng-href="{{ asset.url }}">link</a></p>
-		</div>
-	</div>
+	<md-progress-circular md-mode="indeterminate" class="md-accent md-hue-1" ng-show='vm.isLoading'></md-progress-circular>
+	<p ng-if="!vm.isLoading && !vm.recomendedAssets.length">
+		Sorry, there are no recommendations available.
+	</p>
+	<p ng-if="vm.recomendedAssets.length">
+		Assets recommended for you:
+	</p>
+	<entity-list entities="vm.recomendedAssets"></entity-list>
 </div>
 
 

@@ -2311,7 +2311,6 @@ path {
   border-top: 1px solid #EAECF1;
   border-right: 1px solid #EAECF1;
   border-left: 1px solid #EAECF1;
-  height: 82px;
   background-color: white;
   border-radius: 0 !important;
   text-transform: none;
@@ -2331,10 +2330,26 @@ path {
       border-bottom: 0px;
     }
   }
-
-  .chips {
-    position: absolute;
-    right: 130px;
+  h4 {
+    color: $organicity_pink;
+    margin-top: 10px;
+  }
+  md-icon {
+    height: 14px;
+    width: 14px;
+  }
+}
+.entityList_details_labels {
+  margin-top: 40px;
+  color: white;
+  font-size: 14px;
+  span {
+    background-color: $secondary_color;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    float: left;
   }
 }
 .entityList_primary {
