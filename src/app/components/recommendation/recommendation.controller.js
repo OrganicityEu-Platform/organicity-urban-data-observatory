@@ -83,6 +83,7 @@
       },function(err){
         console.log('get recommendations error');
         console.log(err);
+        $scope.isLoading = false;
       });
 
 
