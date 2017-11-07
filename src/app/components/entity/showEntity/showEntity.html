@@ -172,7 +172,7 @@
             </div>
           </div>
           <!-- <div style="clear: both"></div> -->
-          <md-progress-circular ng-show="vm.loadingChart" class="md-hue-3 chart_spinner"
+          <md-progress-circular ng-show="vm.loadingChart" class="md-accent md-hue-1 chart_spinner"
           md-mode="indeterminate"></md-progress-circular>
           <div ng-show="!vm.hasHistorical" class="chart_nodata md-hue-3">
             <h3>No historical data is available</h3>
@@ -261,6 +261,17 @@
           <h2 class="entity_detailed_title">ANNOTATIONS & REPUTATION</h2>
         </div>
         <div annotation></div>
+      </div>
+    </section>
+
+    <section  class="entity_recommendation" ng-if="vm.entity">
+      <div class="entity_detailed_content_container">
+        <div class="entity_detailed_title_container">
+          <md-icon class="entity_detailed_icon_title" md-svg-src="./mediassets/images/entity_details_icon_normal.svg">
+          </md-icon>
+          <h2 class="entity_detailed_title">RECOMMENDATIONS</h2>
+        </div>
+        <div recommendation></div>
       </div>
     </section>
 

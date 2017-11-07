@@ -1,0 +1,13 @@
+<div class="entity_detailed_content_container" layout="column">
+	<md-progress-circular md-mode="indeterminate" class="md-accent md-hue-1" ng-show='vm.isLoading'></md-progress-circular>
+	<p ng-if="!vm.isLoading && !vm.recomendedAssets.length">
+		Sorry, there are no recommendations available.
+	</p>
+	<p ng-if="vm.recomendedAssets.length">
+		Assets recommended for you:
+	</p>
+	<entity-list entities="vm.recomendedAssets"></entity-list>
+</div>
+
+
+

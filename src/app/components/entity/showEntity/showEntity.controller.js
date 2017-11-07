@@ -83,35 +83,7 @@
 
         vm.sensorsToCompare = getSensorsToCompare();
 
-        // $timeout(function() {
-        //   colorSensorMainIcon();
-        //   colorSensorCompareName();
-
-        //   setSensor({type: 'main', value: newVal});
-        //   changeChart([mainSensorID]);
-        // }, 100);
-
       });
-
-      // event listener on change of value of compare sensor selector
-      // $scope.$watch('vm.selectedSensorToCompare', function(newVal, oldVal) {
-      //   vm.sensorsToCompare.forEach(function(sensor) {
-      //     if(sensor.uuid === newVal) {
-      //       _.extend(vm.selectedSensorToCompareData, sensor);
-      //     }
-      //   });
-
-      //   $timeout(function() {
-      //     colorSensorCompareName();
-      //     setSensor({type: 'compare', value: newVal});
-
-      //     if(oldVal === undefined && newVal === undefined) {
-      //       return;
-      //     }
-      //     changeChart([compareSensorID]);
-      //   }, 100);
-
-      // });
 
       $scope.$on('hideChartSpinner', function() {
         vm.loadingChart = false;
