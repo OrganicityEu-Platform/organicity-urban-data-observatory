@@ -54,9 +54,9 @@
       goToLocation(event, data);
     });
 
-    $scope.$on('centerUrlHash', function(event, centerHash) {
-        $location.search({ map: centerHash });
-    });
+    // $scope.$on('centerUrlHash', function(event, centerHash) {
+    //     $location.search({ map: centerHash });
+    // });
 
     $scope.$on('leafletDirectiveMap.organicityMap.moveend', function(event){
       movementEnded()
