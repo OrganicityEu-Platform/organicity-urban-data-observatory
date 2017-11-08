@@ -89,7 +89,6 @@
             var w4 = ( (statistics.lastAnnotation - statistics.globalFirstAnnotation) / (statistics.globalLastAnnotation - statistics.globalFirstAnnotation));
             reputation = 5 * (0.7 * w1 + 0.1 * w2 + 0.1 * w3 + 0.1 * w4);
           }
-          console.log(reputation);
           vm.annotation.stars = reputation.toFixed(2);
           $scope.$parent.vm.stars = Math.round(reputation);
         });

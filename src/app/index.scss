@@ -99,6 +99,38 @@ body {
     padding: 24px 10px;
   }
 
+  .wrap-dd-menu {
+    width: 30px;
+    display: inline-table;
+    padding: 0 0;
+  }
+
+  .dropdown {
+    top: 70%;
+    line-height: 1em;
+    left: -25px;
+    right: -25px;
+
+    li a {
+      float: left;
+      padding: 20px 0;
+      width: 200px;
+      text-align: center;
+      border-bottom: 0px;
+      font-size: 16px;
+      color: $organicity_pink;
+    }
+
+    li a:hover {
+      background-color: $background_blue_light;
+    }
+
+    li:first-of-type a, li:last-of-type a {
+      border-radius: 0 !important;
+    }
+
+  }
+
   .nav_left {
     width: 240px;
     margin: 0px 20px 0px 0px;
@@ -2678,6 +2710,7 @@ path {
   background-color: $blue_light;
   border-radius: 20px;
   padding: 8px 31px;
+  margin: 5px 0;
 }
 .annotation_tags span{
   float: left;

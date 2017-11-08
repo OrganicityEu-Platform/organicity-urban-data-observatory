@@ -47,6 +47,10 @@
 
             object.name = entityName.join(' ');
 
+            object.name = object.name.replace('-', ' ');
+
+            object.name = object.name.replace('  ', ' ');
+
             return object.name;
         }
 
