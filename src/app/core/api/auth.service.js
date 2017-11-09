@@ -49,7 +49,7 @@
 
 
         // If we are authenticated, we should have token (but it could be an invalid JWT!)
-        console.log('isAuthenticated?: ' + $auth.isAuthenticated());
+        //console.log('isAuthenticated?: ' + $auth.isAuthenticated());
         if(!$auth.isAuthenticated()) {
           return;
         }
@@ -91,7 +91,6 @@
       // TODO: Called by app.route.js, app.config.js, userProfile.contoller, layout.contoller
       // function gets called 4 times on app start!
       function getCurrentUser() {
-        // console.log(user);
         return user;
       }
 
@@ -134,7 +133,7 @@
         // GET https://accounts.organicity.eu/realms/organicity/protocol/openid-connect/auth/?response_type=token&client_id=udo-dev&redirect_uri=http://localhost:8080/resources/&scope=&state=
         // POST https://accounts.organicity.eu/realms/organicity/login-actions/authenticate?code=QZXmSAhIOKkMv1Wqw0qA5j__l-hIWCYdaO6niY5B9Bc.3dd256c6-1ad5-4f87-9ba1-cbdac04a9e2c&execution=7c8382a4-624c-4911-9135-242e1f2b0af1
 
-        console.log('login()');
+        //console.log('login()');
 
         $auth.removeToken();
 
