@@ -65,7 +65,7 @@
               var splitName = tagUrn.split(':');
               annotation.getTag(tagUrn).then(function (result) {
                 var tag = {
-                  'name': splitName.slice(4).join(' '),
+                  'name': splitName[splitName.length - 1],
                   'tooltip': result.name
                 };
                 tags.push(tag);
