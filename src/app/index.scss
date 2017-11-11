@@ -491,6 +491,13 @@ section.map {
   h1 {
     font-size: 3em;
   }
+
+  // Paths on Leaflet
+
+  path {
+    fill: $organicity_pink;
+  }
+
 }
 
 /*
@@ -1205,6 +1212,11 @@ section .entity_menu {
     margin-right: 8px;
     position: relative;
     top: -2px;
+
+    path {
+      fill: $organicity_pink;
+    }
+
   }
   .entity_social_icon:hover {
     transform: scale(1.25);
@@ -2067,11 +2079,6 @@ section .stickMenu {
   background-color: $organicity_pink;
 }
 
-// Paths
-
-path {
-  fill: $organicity_pink;
-}
 
 /**
  * OVERRIDE LEAFLET

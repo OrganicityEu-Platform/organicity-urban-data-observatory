@@ -26,7 +26,7 @@
             parseStateName: parseStateName,
             parseTypeURN: parseTypeURN,
             parseDescription: parseDescription,
-            parseADSurl: parseADSurl,
+            parseDataSourceURL: parseDataSourceURL,
             parseJSON: parseJSON,
             parsePosition: parsePosition
         };
@@ -245,8 +245,18 @@
             return object.state.replace('_', ' ');
         }
 
-        function parseADSurl(object) {
-            return 'https://discovery.organicity.eu/v0/assets/' + object.uuid;
+        function parseDataSourceURL(object) {
+            var attributes = object.data.data;
+            if (attributes.hasOwnProperty('datasource')
+                && attributes.datasource.hasOwnProperty('value')
+                && validURL(attributes.datasource.value)) {
+                var url = attributes.datasource.value;
+                // This appends '/' if it's not already present
+                if (url[url.length-1] != '/') url += '/';
+                return url;
+            } else {
+                return false;
+            }
         }
 
         function parseJSON(object) {
@@ -309,5 +319,10 @@
                 return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
             });
         }
+
+        function validURL(value) {
+            return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+        }
+
     }
 })();
