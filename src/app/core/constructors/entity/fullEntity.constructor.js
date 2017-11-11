@@ -38,14 +38,16 @@
         this.longitude = entityUtils.parsePosition(object).longitude;
         this.typeURN = entityUtils.parseTypeURN(object);
         this.json = entityUtils.parseJSON(object);
-        this.ADSurl = entityUtils.parseADSurl(this);
+        this.dataSourceURL = entityUtils.parseDataSourceURL(this);
       }
 
       FullEntity.prototype = Object.create(Entity.prototype);
       FullEntity.prototype.constructor = FullEntity;
 
       FullEntity.prototype.getSensors = function() {
-        var data = this.data.data;
+        var data = this.data.data,
+            types = this.data.types;
+
         var ignoreData = [
           'datasource',
           'origin',
@@ -61,16 +63,14 @@
           'name'
         ];
 
-        var sensors = _(this.data.types)
-            .chain()
-            .map(function(type, i) {
-              if (ignoreData.indexOf(type) === -1) {
-                return new Sensor(type, data[type], i);
-              }
-            }).value().filter(function( element ) {
-              return element !== undefined;
-            });
-            return sensors;
+        var sensors = types.filter(function(type) {
+          return !ignoreData.includes(type);
+        }).map(function(type, i) {
+          return new Sensor(type, data[type], i);
+        });
+
+        return sensors;
+
       };
       return FullEntity;
     }]);

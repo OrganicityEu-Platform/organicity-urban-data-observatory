@@ -9,7 +9,7 @@
 
       var service = {
         callAPI: callAPI,
-        getSensorsDataNew: getSensorsDataNew
+        getSensorsData: getSensorsData
       };
       return service;
 
@@ -19,39 +19,33 @@
         return assetsAPI.all('attibutes').getList(); // Not implemented
       }
 
-      function getSensorsDataNew(deviceID, sensorID, dateFrom, dateTo) {
-        var ignoreData = [
-          'urn_oc_attributeType_datasource',
-          'geo_point',
-          'urn_oc_attributeType_description',
-          'urn_oc_attributeType_reputation',
-        ];
-        if (ignoreData.indexOf(sensorID) > -1) {
-          return;
-        }
-        else {
+      function getSensorsData(dataSourceURL, deviceID, sensorID, dateFrom, dateTo) {
 
-          // This is for tests purposes:
+        // Example url:
+        // http://data.organicity.eu/urn:oc:entity:santander:irrigation:fixed:3248/atmosphericPressure/readings
 
-          dateFrom = utils.convertTime(dateFrom, false);  //API wants time with no seconds
-          dateTo = utils.convertTime(dateTo, false);      //API wants time with no seconds
-          sensorID = sensorID.replace(/_/g, ':');
-          return $http({
-            method: 'GET',
-            params: {
-                      'from': dateFrom,
-                      'to': dateTo,
-                      'attribute_id': sensorID,
-                    },
-            //url: 'http://dev.server.organicity.eu:12345/api/v1/entities/' + deviceID + '/readings'
-            url: 'http://api.smartphone-experimentation.eu/v1/entities/' + deviceID + '/readings'
-            
-          }).then(function successCallback(data) {
-              return data;
-          }, function errorCallback(error) {
-              return error;
-          });
-        }
+        dateFrom = utils.convertTime(dateFrom, false);  //API wants time with no seconds
+        dateTo = utils.convertTime(dateTo, false);      //API wants time with no seconds
+
+        var requestURL = dataSourceURL + deviceID + '/' + sensorID + '/readings';
+
+        requestURL = requestURL.replace(/^http:\/\//i, 'https://'); //Tmp  for old assets
+
+        var request = {
+          method: 'GET',
+          params: {
+                    'from': dateFrom,
+                    'to': dateTo
+                  },
+          url: requestURL
+        };
+
+        return $http(request).then(function successCallback(data) {
+            return data;
+        }, function errorCallback(error) {
+            return error;
+        });
       }
+
     }
 })();
