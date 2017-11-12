@@ -76,7 +76,7 @@
             if ($location.absUrl().indexOf('?') > 0) {
                 return $location.absUrl().substring(0, $location.absUrl().indexOf('?'));
             } else {
-                $location.absUrl();
+                return $location.absUrl();
             }
         }
 
