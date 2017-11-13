@@ -181,7 +181,24 @@
         ).then(function() {
           // after all sensors resolve, prepare data and attach it to scope
           // the variable on the scope will pass the data to the chart directive
-          vm.chartDataMain = prepareChartData([mainSensorID, compareSensorID]);
+
+          var ANNOTATIONS_FIXTURE = [{
+            time: "2017-07-05T18:14:33Z",
+            value: 'Test 1'
+          },{
+            time: "2017-07-05T19:14:33Z",
+            value: 'Test 2'
+          },{
+            time: "2017-07-06T06:14:33Z",
+            value: 'Test 3'
+          }];
+
+
+          vm.chartDataMain = {
+            sensors: prepareChartData([mainSensorID, compareSensorID]),
+            annotations: ANNOTATIONS_FIXTURE
+          }
+
         });
       }
       // calls api to get sensor data and saves it to sensorsData array

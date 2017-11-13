@@ -35,80 +35,114 @@
             return;
           }
 
-          if(newData !== undefined) {
-            // if there's data for 2 sensors
-            if(newData[0] && newData[1]) {
-              var sensorDataMain = newData[0].data;
-              // we could get some performance from saving the map in the entity controller on line 218 and putting that logic in here
-              var dataMain = sensorDataMain.map(function(dataPoint) {
-                return {
-                  date: dateFormat(dataPoint.time),
-                  count: dataPoint && dataPoint.count,
-                  value: dataPoint && dataPoint.value
-                };
-              });
-              // sort data points by date
-              dataMain.sort(function(a, b) {
-                return a.date - b.date;
-              });
+          chartData(newData.sensors);
 
-              var sensorDataCompare = newData[1].data;
-              var dataCompare = sensorDataCompare.map(function(dataPoint) {
-                return {
-                  date: dateFormat(dataPoint.time),
-                  count: dataPoint && dataPoint.count,
-                  value: dataPoint && dataPoint.value
-                };
-              });
-
-              dataCompare.sort(function(a, b) {
-                return a.date - b.date;
-              });
-
-              var data = [dataMain, dataCompare];
-              var colors = [newData[0].color, newData[1].color];
-              var units = [newData[0].unit, newData[1].unit];
-              // saves everything in case we need to re-render
-              lastData = {
-                data: data,
-                type: 'both',
-                color: colors,
-                unit: units
-              };
-              // call function to update the chart with the new data
-              updateChartData(data, {type: 'both', container: elem[0], color: colors, unit: units });
-            // if only data for the main sensor
-            } else if(newData[0]) {
-
-              var sensorData = newData[0].data;
-              /*jshint -W004 */
-              var data = sensorData.map(function(dataPoint) {
-                return {
-                  date: dateFormat(dataPoint.time),
-                  count: dataPoint && dataPoint.count,
-                  value: dataPoint && dataPoint.value
-                };
-              });
-
-              data.sort(function(a, b) {
-                return a.date - b.date;
-              });
-
-              var color = newData[0].color;
-              var unit = newData[0].unit;
-
-              lastData = {
-                data: data,
-                type: 'main',
-                color: color,
-                unit: unit
-              };
-
-              updateChartData(data, {type: 'main', container: elem[0], color: color, unit: unit });
-            }
-            animation.hideChartSpinner();
+          if (newData.annotations) {
+            annotationsData(newData.annotations);
           }
-        });
+
+        }, true);
+
+
+        function annotationsData(newData){
+            var annotationsData = newData;
+
+            /*jshint -W004 */
+            var data = annotationsData.map(function(dataPoint) {
+              return {
+                date: dateFormat(dataPoint.time),
+                count: dataPoint && dataPoint.count,
+                value: dataPoint && dataPoint.value
+              };
+            });
+
+            //We'll need to implement here
+            //persistance on the controller for reisizing...
+
+            data.sort(function(a, b) {
+              return a.date - b.date;
+            });
+
+            updateAnnotations(data);
+        }
+
+        function chartData(newData){
+            console.log(newData);
+            if(newData !== undefined) {
+              // if there's data for 2 sensors
+              if(newData[0] && newData[1]) {
+                var sensorDataMain = newData[0].data;
+                // we could get some performance from saving the map in the entity controller on line 218 and putting that logic in here
+                var dataMain = sensorDataMain.map(function(dataPoint) {
+                  return {
+                    date: dateFormat(dataPoint.time),
+                    count: dataPoint && dataPoint.count,
+                    value: dataPoint && dataPoint.value
+                  };
+                });
+                // sort data points by date
+                dataMain.sort(function(a, b) {
+                  return a.date - b.date;
+                });
+
+                var sensorDataCompare = newData[1].data;
+                var dataCompare = sensorDataCompare.map(function(dataPoint) {
+                  return {
+                    date: dateFormat(dataPoint.time),
+                    count: dataPoint && dataPoint.count,
+                    value: dataPoint && dataPoint.value
+                  };
+                });
+
+                dataCompare.sort(function(a, b) {
+                  return a.date - b.date;
+                });
+
+                var data = [dataMain, dataCompare];
+                var colors = [newData[0].color, newData[1].color];
+                var units = [newData[0].unit, newData[1].unit];
+                // saves everything in case we need to re-render
+                lastData = {
+                  data: data,
+                  type: 'both',
+                  color: colors,
+                  unit: units
+                };
+                // call function to update the chart with the new data
+                updateChartData(data, {type: 'both', container: elem[0], color: colors, unit: units });
+              // if only data for the main sensor
+              } else if(newData[0]) {
+
+                var sensorData = newData[0].data;
+                /*jshint -W004 */
+                var data = sensorData.map(function(dataPoint) {
+                  return {
+                    date: dateFormat(dataPoint.time),
+                    count: dataPoint && dataPoint.count,
+                    value: dataPoint && dataPoint.value
+                  };
+                });
+
+                data.sort(function(a, b) {
+                  return a.date - b.date;
+                });
+
+                var color = newData[0].color;
+                var unit = newData[0].unit;
+
+                lastData = {
+                  data: data,
+                  type: 'main',
+                  color: color,
+                  unit: unit
+                };
+
+                updateChartData(data, {type: 'main', container: elem[0], color: color, unit: unit });
+              }
+              animation.hideChartSpinner();
+            }
+        }
+
       }
 
       // creates the container that is re-used across different sensor charts
@@ -330,6 +364,34 @@
             popup.attr('transform', 'translate(' + (xScale(d.date) + 80) + ', ' + (d3.mouse(this)[1] - 20) + ')');
           }
         }
+      }
+
+    function updateAnnotations(data) {
+
+        var testTime = d3.time.format.utc("%Y-%m-%d");
+
+        var annotations = svg.selectAll(".chart_area")
+                    .data(data)
+                    .enter();
+
+        annotations.append("text")
+        .attr("x", function(d) { return xScale(d.date)+10 })
+        .text(function(d) { return 'Annotation at ' + testTime(d.date) })
+        .attr("fill", "#EF4070");
+
+        annotations.append("text")
+        .attr("x", function(d) { return xScale(d.date)+10 })
+        .attr("y", 20)
+        .text(function(d) { return 'Content: ' + d.value })
+        .attr("fill", "#EF4070");
+
+        annotations.append("line")
+        .attr("x1", function(d) { return xScale(d.date) })
+        .attr("y1", -40)
+        .attr("x2", function(d) { return xScale(d.date) })
+        .attr("y2", 200)
+        .attr("stroke", "#EF4070")
+        .attr("stroke-width", 2);
       }
 
       // function in charge of rendering when there's data for 2 sensors
