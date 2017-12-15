@@ -47,6 +47,12 @@ Note: in case you see something like:
 Run:
 `rm -Rf $(node -e "console.log(require('path').join(require('os').tmpdir(), 'tmpRepo'))")`
 
+
+### Docker quickstart
+`docker-compose up`
+
+Visit [localhost:8080](http://localhost:8080)
+
 ### Directory structure
 
 [Best Practice Recommendations for Angular App Structure](https://docs.google.com/document/d/1XXMvReO8-Awi1EZXAXS4PzDzdNvV6pGcuaF4Q9821Es/pub)
