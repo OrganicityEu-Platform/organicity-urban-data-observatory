@@ -25,8 +25,6 @@
       var picker = initializePicker();
 
       if(entityData){
-        console.log('we have entityData');
-        console.log(entityData);
         animation.entityLoaded({lat: entityData.latitude ,lng: entityData.longitude, id: $stateParams.id });
       }
 
@@ -41,6 +39,7 @@
       vm.twitter = socialSharing.twitter;
       vm.facebook = socialSharing.facebook;
       vm.email = socialSharing.email;
+      vm.copyUrl = socialSharing.copyUrl;
 
       vm.snippetOptions = {
           lineWrapping: false,
@@ -65,99 +64,68 @@
 
       vm.showSensorOnChart = showSensorOnChart;
       vm.moveChart = moveChart;
-      vm.chartAvailable = findHistoricalUri();
+      vm.chartAvailable = vm.entity && vm.entity.dataSourceURL ? true : false;
       vm.loadingChart = vm.chartAvailable ? true : false;
 
+      if (vm.chartAvailable) {
 
-      console.log(vm.chartAvailable);
+        // event listener on change of value of main sensor selector
+        $scope.$watch('vm.selectedSensor', function(newVal, oldVal) {
+          vm.selectedSensorToCompare = undefined;
+          vm.selectedSensorToCompareData = {};
+          vm.chartDataCompare = [];
+          compareSensorID = undefined;
 
-      // event listener on change of value of main sensor selector
-      $scope.$watch('vm.selectedSensor', function(newVal, oldVal) {
-        vm.selectedSensorToCompare = undefined;
-        vm.selectedSensorToCompareData = {};
-        vm.chartDataCompare = [];
-        compareSensorID = undefined;
-        if(vm.sensors){
-          vm.sensors.forEach(function(sensor) {
+          if(vm.sensors){
+            vm.sensors.forEach(function(sensor) {
+              if(sensor.uuid === newVal) {
+                _.extend(vm.selectedSensorData, sensor);
+              }
+            });
+          }
+
+          vm.sensorsToCompare = getSensorsToCompare();
+
+          $timeout(function() {
+            colorClock();
+            colorSensorMainIcon();
+            colorSensorCompareName();
+
+            setSensor({type: 'main', value: newVal});
+            if (picker){
+              changeChart([mainSensorID]);
+            }
+          }, 100);
+
+        });
+
+        // event listener on change of value of compare sensor selector
+        $scope.$watch('vm.selectedSensorToCompare', function(newVal, oldVal) {
+          vm.sensorsToCompare.forEach(function(sensor) {
             if(sensor.uuid === newVal) {
-              _.extend(vm.selectedSensorData, sensor);
+              _.extend(vm.selectedSensorToCompareData, sensor);
             }
           });
-        }
 
-        vm.sensorsToCompare = getSensorsToCompare();
+          $timeout(function() {
+            colorSensorCompareName();
+            setSensor({type: 'compare', value: newVal});
 
-        // $timeout(function() {
-        //   colorSensorMainIcon();
-        //   colorSensorCompareName();
+            if(oldVal === undefined && newVal === undefined) {
+              return;
+            }
+            changeChart([compareSensorID]);
+          }, 100);
 
-        //   setSensor({type: 'main', value: newVal});
-        //   changeChart([mainSensorID]);
-        // }, 100);
+        });
 
-      });
+        $scope.$on('hideChartSpinner', function() {
+          vm.loadingChart = false;
+        });
 
-      // event listener on change of value of compare sensor selector
-      // $scope.$watch('vm.selectedSensorToCompare', function(newVal, oldVal) {
-      //   vm.sensorsToCompare.forEach(function(sensor) {
-      //     if(sensor.uuid === newVal) {
-      //       _.extend(vm.selectedSensorToCompareData, sensor);
-      //     }
-      //   });
-
-      //   $timeout(function() {
-      //     colorSensorCompareName();
-      //     setSensor({type: 'compare', value: newVal});
-
-      //     if(oldVal === undefined && newVal === undefined) {
-      //       return;
-      //     }
-      //     changeChart([compareSensorID]);
-      //   }, 100);
-
-      // });
-
-      $scope.$on('hideChartSpinner', function() {
-        vm.loadingChart = false;
-      });
+      }
 
       ///////////////
-
-      // function initialize() {
-      //   $timeout(function() {
-      //     colorSensorMainIcon();
-      //     colorArrows();
-      //     colorClock();
-      //     // events below can probably be refactored to use $viewContentLoaded https://github.com/angular-ui/ui-router/wiki#user-content-view-load-events
-      //     animation.viewLoaded();
-      //     animation.mapStateLoaded();
-      //   }, 1000);
-
-      //   if(vm.entity){
-      //     if(!timeUtils.isWithin(1, 'months', vm.entity.time)) {
-      //       alert.info.longTime();
-      //     } else {
-      //       if(geolocation.isHTML5GeolocationGranted()){
-      //         geolocate();
-      //       }
-      //     }
-      //     console.log(vm.entity);
-      //     initReputation();
-      //   }
-      // }
-
-      function findHistoricalUri(){
-        var sensorEntity = vm.sensors ? vm.sensors.filter(function(sensorEnt) {
-          return sensorEnt.id === 'urn:oc:attributeType:datasource';
-        }) : [];
-
-        if(!sensorEntity[0]) {
-          return;
-        } else {
-          sensorEntity = sensorEntity.pop();
-          return sensorEntity.value;
-        }
-      }
 
       function removeUser() {
       }
@@ -184,7 +152,8 @@
         }) : [];
       }
 
-    function changeChart(sensorsID, options) {
+      function changeChart(sensorsID, options) {
+
         if(!sensorsID[0]) {
           return;
         }
@@ -199,12 +168,10 @@
         vm.loadingChart = true;
         //grab chart data and save it
         // it can be either 2 sensors or 1 sensor, so we use $q.all to wait for all
-/*        $q.all(
+       $q.all(
           _.map(sensorsID, function(sensorID) {
-            var id = vm.entity.uuid;//$stateParams.id
-
-            var chartData = getChartData(id, sensorID, options.from, options.to)
-            if(typeof chartData != 'undefined') {
+            var chartData = getChartData(vm.entity.dataSourceURL, vm.entity.uuid, sensorID, options.from, options.to)
+            if(chartData) {
               return chartData
               .then(function(data) {
                 return data.data;
@@ -215,19 +182,24 @@
           // after all sensors resolve, prepare data and attach it to scope
           // the variable on the scope will pass the data to the chart directive
           vm.chartDataMain = prepareChartData([mainSensorID, compareSensorID]);
-        });*/
+        });
       }
       // calls api to get sensor data and saves it to sensorsData array
-      function getChartData(entityID, sensorID, dateFrom, dateTo, options) {
-        var sensorsHistoricalData = sensor.getSensorsDataNew(entityID, sensorID, dateFrom, dateTo);
-        if(typeof sensorsHistoricalData !== 'undefined') {
+      function getChartData(dataSourceURL, entityID, sensorID, dateFrom, dateTo, options) {
+        var sensorsHistoricalData = sensor.getSensorsData(dataSourceURL, entityID, sensorID, dateFrom, dateTo);
+        if(sensorsHistoricalData) {
           return sensorsHistoricalData
           .then(function(data) {
-            sensorsData[sensorID] = data.data;
-            return data;
+            if (data && data.data && data.data.readings && data.data.readings.length) {
+              sensorsData[sensorID] = data.data;
+              return data;
+            } else {
+              sensorsData[sensorID] = [];
+              return false;
+            }
           }, function(data) {
             sensorsData[sensorID] = [];
-            return data;
+            return false;
           });
         }
       }
@@ -235,27 +207,28 @@
       function prepareChartData(sensorsID) {
         var compareSensor;
         var parsedDataMain = parseSensorData(sensorsData, sensorsID[0]);
-        if(parsedDataMain.length === 0) { //tmp. quick fix
-          vm.hasHistorical = false;
-        } else {
+        if(parsedDataMain && parsedDataMain.length) {
           vm.hasHistorical = true;
-        }
-
-        var mainSensor = {
-          data: parsedDataMain,
-          color: vm.selectedSensorData.color,
-          unit: vm.selectedSensorData.unit
-        };
-        if(sensorsID[1] && sensorsID[1] !== -1) {
-          var parsedDataCompare = parseSensorData(sensorsData, sensorsID[1]);
-          compareSensor = {
-            data: parsedDataCompare,
-            color: vm.selectedSensorToCompareData.color,
-            unit: vm.selectedSensorToCompareData.unit
+          var mainSensor = {
+            data: parsedDataMain,
+            color: vm.selectedSensorData.color,
+            unit: vm.selectedSensorData.unit
           };
+          if(sensorsID[1] && sensorsID[1] !== -1) {
+            var parsedDataCompare = parseSensorData(sensorsData, sensorsID[1]);
+            compareSensor = {
+              data: parsedDataCompare,
+              color: vm.selectedSensorToCompareData.color,
+              unit: vm.selectedSensorToCompareData.unit
+            };
+          }
+          var newChartData = [mainSensor, compareSensor];
+          return newChartData;
+        } else {
+          vm.loadingChart = false;
+          vm.hasHistorical = false;
+          return false;
         }
-        var newChartData = [mainSensor, compareSensor];
-        return newChartData;
       }
 
       function parseSensorData(data, sensorID) {
@@ -263,8 +236,8 @@
           return [];
         }
         return data[sensorID].readings.map(function(dataPoint) {
-          var time = moment(new Date(dataPoint.datetime)).format('YYYY-MM-DD[T]HH:mm:ss[Z]'); //tmp. ensure validation
-          var value = Number(dataPoint.value);
+          var time = moment(new Date(dataPoint.recvTime)).format('YYYY-MM-DD[T]HH:mm:ss[Z]'); //tmp. ensure validation
+          var value = Number(dataPoint.attrValue);
           var count = value === null ? 0 : value;
 
           return {
@@ -435,6 +408,10 @@
           return getSecondsFromDate( getToday() - (7 * 24 * 60 * 60 * 1000) );
         }
 
+        function getHalfAYearAgo() {
+          return getSecondsFromDate( getToday() - (6 * 30 * 24 * 60 * 60 * 1000) );
+        }
+
         function getDateToHaveDataInChart() {
           var today = moment();
           var lastTime = moment(entityData.time);
@@ -447,7 +424,8 @@
         if(entityData){
           if(timeUtils.isWithin(7, 'days', entityData.time) || !entityData.time) {
             //set from-picker to seven days ago
-            from_picker.set('select', getSevenDaysAgo());
+            from_picker.set('select', getHalfAYearAgo());
+            //from_picker.set('select', getSevenDaysAgo());
           } else {
             // set from-picker to
             from_picker.set('select', getDateToHaveDataInChart());
@@ -515,7 +493,6 @@
                     return new HasSensorEntity(entity);
                   })
                   .filter(function(entity) {
-                    console.log(entity);
                     return !!entity.longitude && !!entity.latitude;
                   })
                   .find(function(entity) {
@@ -533,204 +510,6 @@
           });
         }
       }
-
-      /* Reputation Module */
-
-      vm.reputation=undefined; //todo load reputation asset attribute to vm object
-      vm.stars=5;
-      vm.like = undefined;
-      vm.reliability = undefined;
-      vm.availability = undefined;
-      vm.usability = undefined;
-
-      function initReputation() {
-        setTimeout(function() {
-          // getReliability();
-          // getAvailability();
-          // getUsability();
-          // getLike();
-          updateReputation();    
-        }, 750);
-      }
-
-      function watchReliability() {
-        $scope.$watch('vm.reliability', function (newVal, oldVal) {
-          if (oldVal === newVal){ return; }
-          if (newVal === undefined){ return;}
-          var annotationObject = {
-            annotationId: null,
-            application: 'urn:oc:application:reputation',
-            assetUrn: vm.entity.uuid,
-            datetime: null,
-            numericValue: vm.reliability,
-            tagUrn: 'urn:oc:tag:Reliability:Score',
-            textValue: 'No Text Value',
-            user: 'UserA'
-          };
-          annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
-            function (response) {
-              console.log("annotation completed");
-            },
-            function (response) {
-              console.log("failed");
-            });
-        });
-      }
-
-      function getReliability() {
-        annotation.getAnnotation(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tag:Reliability:Score').then( //todo fix user
-          function (response) {
-            console.log(response);
-            if (response.numericValue !== undefined) {
-              vm.reliability = response.numericValue;
-            }
-            watchReliability();
-          },
-          function (response) {
-            console.log(response);
-            watchReliability();
-          });
-      }
-
-      function watchAvailability() {
-        $scope.$watch('vm.availability', function (newVal, oldVal) {
-          if (oldVal === newVal){ return;}
-          if (newVal === undefined){ return;}
-          var annotationObject = {
-            annotationId: null,
-            application: 'urn:oc:application:reputation',
-            assetUrn: vm.entity.uuid,
-            datetime: null,
-            numericValue: vm.availability,
-            tagUrn: 'urn:oc:tag:Availability:Score',
-            textValue: 'No Text Value',
-            user: 'UserA'
-          };
-          annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
-            function (response) {
-              console.log("annotation completed");
-            },
-            function (response) {
-              console.log("failed");
-            });
-        });
-      }
-
-      function getAvailability() {
-        annotation.getAnnotation(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tag:Availability:Score').then( //todo fix user
-          function (response) {
-            console.log(response);
-            if (response.numericValue !== undefined) {
-              vm.availability = response.numericValue;
-            }
-            watchAvailability();
-          },
-          function (response) {
-            console.log(response);
-            watchAvailability();
-          });
-      }
-
-      function watchUsability() {
-        $scope.$watch('vm.usability', function (newVal, oldVal) {
-          if (oldVal === newVal){ return;}
-          if (newVal === undefined){ return;}
-          var annotationObject = {
-            annotationId: null,
-            application: 'urn:oc:application:reputation',
-            assetUrn: vm.entity.uuid,
-            datetime: null,
-            numericValue: vm.usability,
-            tagUrn: 'urn:oc:tag:Usability:Score',
-            textValue: 'No Text Value',
-            user: 'UserA'
-          };
-          annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
-            function () {
-              console.log("annotation completed");
-            },
-            function () {
-              console.log("failed");
-            });
-        });
-      }
-
-      function getUsability() {
-        annotation.getAnnotation(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tag:Usability:Score').then( //todo fix user
-          function (response) {
-            console.log(response);
-            if (response.numericValue !== undefined) {
-              vm.usability = response.numericValue;
-            }
-            watchUsability();
-          },
-          function (response) {
-            console.log(response);
-            watchUsability();
-          });
-      }
-
-      function watchLike() {
-        $scope.$watch('vm.like', function (newVal, oldVal) {
-          if (oldVal === newVal){ return;}
-          if (newVal === undefined){ return;}
-          var tag = 'urn:oc:tag:DirectFeedback:Like';
-          if (newVal === 'false') {
-            tag = 'urn:oc:tag:DirectFeedback:Dislike';
-          }
-          var annotationObject = {
-            annotationId: null,
-            application: 'urn:oc:application:reputation',
-            assetUrn: vm.entity.uuid,
-            datetime: null,
-            numericValue: undefined,
-            tagUrn: tag,
-            textValue: 'No Text Value',
-            user: 'UserA'
-          };
-          annotation.pushAnnotation(vm.entity.uuid, annotationObject).then(
-            function (response) {
-              console.log("annotation completed");
-            },
-            function (response) {
-              console.log("failed" + response);
-            });
-        });
-      }
-
-      function getLike() {
-        annotation.getAnnotationForApplication(vm.entity.uuid, 'UserA', 'urn:oc:application:reputation', 'urn:oc:tagDomain:DirectFeedback').then( //todo fix user
-          function (response) {
-            console.log(response);
-            if (response.tagUrn !== undefined) {
-              if (response.tagUrn === 'urn:oc:tag:DirectFeedback:Dislike'){
-                vm.like = 'false';
-              } else {
-                vm.like = 'true';
-              }
-            }
-            watchLike();
-          },
-          function (response) {
-            console.log(response);
-            vm.like = undefined;
-            watchLike();
-          });
-      }
-
-      function updateReputation(){
-        if (vm.sensors) {
-          for (var sensor in vm.sensors) {
-            if (vm.sensors[sensor].uuid === 'urn_oc_attributeType_reputation') {
-                vm.reputation=vm.sensors[sensor].value;
-                vm.stars= Math.floor(vm.reputation/5);
-                console.log(vm.stars);
-            }
-          }
-        }
-      }
-
-      /* ENDS Reputation Module */
 
     }
 })();

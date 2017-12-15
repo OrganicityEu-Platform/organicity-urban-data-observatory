@@ -1,0 +1,25 @@
+<div class="entityList_parent" layout="row" layout-align="start center" ng-repeat="entity in entities track by entity.id">
+  <md-button ng-href="./assets/{{entity.id}}" class="entityList entityList_primary"
+      ng-class="{entityList_borderBottom: $last}"
+    layout="column">
+    <div layout="column">
+      <div class="entityList_container" layout="row" layout-align="start center">
+        <div class="entityList_content">
+          <h4>{{ entity.name || 'No name' }}</h4>
+          <p class="entityList_data">
+            <md-icon class="icon_label" md-svg-src="./mediassets/images/location_icon_light.svg">
+            </md-icon>
+            <span>{{ entity.location || 'No location' }}</span>
+            <md-icon class="icon_label" md-svg-src="./mediassets/images/sensor_icon.svg">
+            </md-icon>
+            <span>{{ entity.type || 'Unknown Entity'}}</span>
+          </p>
+        </div>
+        <div class="entityList_details_labels" layout="row" layout-align="start center">
+          <span ng-repeat="label in entity.labels">{{ label }}</span>
+          <span ng-repeat='tag in entity.userTags'>{{ tag }}</span>
+        </div>
+      </div>
+    </div>
+  </md-button>
+</div>

@@ -34,8 +34,9 @@
       <div ng-show="vm.isShown && !vm.isLoggedin" login class="navbar_login_button md-display-1"></div>
       <div ng-show="vm.isShown && !vm.isLoggedin" signup class="navbar_signup_button md-display-1"></div>
 
-      <md-button ng-show="vm.isShown && vm.isLoggedin" class="md-flat navbar_avatar_button" aria-label="" dropdown-menu="vm.dropdownOptions"
-          dropdown-model="vm.dropdownSelected"
+      <md-button ng-show="vm.isShown && vm.isLoggedin" class="md-flat navbar_avatar_button" aria-label=""
+          dropdown-menu="vm.dropdownOptionsUser"
+          dropdown-model="vm.dropdownSelectedUser"
           dropdown-item-label="text">
         <img class="navbar_avatar_icon" ng-src="{{ vm.currentUser.avatar || './mediassets/images/avatar.svg' }}" />
       </md-button>

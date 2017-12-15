@@ -99,6 +99,38 @@ body {
     padding: 24px 10px;
   }
 
+  .wrap-dd-menu {
+    width: 30px;
+    display: inline-table;
+    padding: 0 0;
+  }
+
+  .dropdown {
+    top: 70%;
+    line-height: 1em;
+    left: -25px;
+    right: -25px;
+
+    li a {
+      float: left;
+      padding: 20px 0;
+      width: 200px;
+      text-align: center;
+      border-bottom: 0px;
+      font-size: 16px;
+      color: $organicity_pink;
+    }
+
+    li a:hover {
+      background-color: $background_blue_light;
+    }
+
+    li:first-of-type a, li:last-of-type a {
+      border-radius: 0 !important;
+    }
+
+  }
+
   .nav_left {
     width: 240px;
     margin: 0px 20px 0px 0px;
@@ -120,8 +152,8 @@ body {
       margin-left: 8px;
 
       .md-button.md-default-theme {
-        border: 2px solid #00FFA8;
-        color: #00FFA8;
+        border: 2px solid $organicity_pink;
+        color: $organicity_pink;
         border-radius: 50px;
         padding: 9px 11px;
         width: 79px;
@@ -347,7 +379,7 @@ md-toast.pink {
  */
 
 md-progress-linear.md-default-theme .md-bar{
-  background-color: #044150;
+  background-color: $organicity_pink;
 }
 
 /**
@@ -459,6 +491,13 @@ section.map {
   h1 {
     font-size: 3em;
   }
+
+  // Paths on Leaflet
+
+  path {
+    fill: $organicity_pink;
+  }
+
 }
 
 /*
@@ -566,9 +605,18 @@ section.map {
 }
 
 .entity_annotation {
+  .entity_details_content_main {
+    margin-right: 30px;
+  }
   .entity_annotation_ask {
-    background-color: #eee;
-    padding: 30px;
+  }
+  .entity_reputation_tab {
+    a {
+      text-decoration: none;
+    }
+    .fa-star-o {
+      color: #EF4070;
+    }
   }
   .annotation_highlight_text {
     background-color: $organicity_pink;
@@ -585,28 +633,26 @@ section.map {
       margin-right: 5px;
       margin-bottom: 5px;
       padding: 3px 8px;
-      border-radius: 20px; 
+      border-radius: 20px;
       display: block;
     }
     span:hover {
       background-color: $organicity_pink;
     }
     float: left;
-    
   }
   .entity_annotion_filter {
- 
   }
 
   .add_annotation {
-    text-align: right; 
+    text-align: right;
     margin-right: 50px;
 
     .md-button {
       color: white;
       background-color: $organicity_pink;
       border-radius: 20px;
-      padding: 8px 31px;  
+      padding: 8px 31px;
     }
 
   }
@@ -781,7 +827,9 @@ section .entity_menu {
       color: white;
     }
     .sensor_value_null {
-      opacity: 0.15;
+      font-size: 18px;
+      font-weight: normal;
+      text-align: center;
     }
     .sensor_icon {
       width: 16px;
@@ -1164,6 +1212,11 @@ section .entity_menu {
     margin-right: 8px;
     position: relative;
     top: -2px;
+
+    path {
+      fill: $organicity_pink;
+    }
+
   }
   .entity_social_icon:hover {
     transform: scale(1.25);
@@ -1288,10 +1341,10 @@ entity COMMENTS MODULE
   bottom: 4px;
 }
 md-progress-linear.md-default-theme.md-hue-3 .md-container{
-  background-color: rgba(79, 201, 232, 0.05);
+  background-color: rgba(239, 64, 112, 0.05);
 }
 md-progress-linear.md-default-theme.md-hue-3 .md-bar {
-  background-color: #4FC9E8;
+  background-color: $organicity_pink;
 }
 .chart_spinner {
   position: absolute;
@@ -2026,11 +2079,6 @@ section .stickMenu {
   background-color: $organicity_pink;
 }
 
-// Paths
-
-path {
-  fill: $organicity_pink;
-}
 
 /**
  * OVERRIDE LEAFLET
@@ -2309,7 +2357,6 @@ path {
   border-top: 1px solid #EAECF1;
   border-right: 1px solid #EAECF1;
   border-left: 1px solid #EAECF1;
-  height: 82px;
   background-color: white;
   border-radius: 0 !important;
   text-transform: none;
@@ -2329,10 +2376,26 @@ path {
       border-bottom: 0px;
     }
   }
-
-  .chips {
-    position: absolute;
-    right: 130px;
+  h4 {
+    color: $organicity_pink;
+    margin-top: 10px;
+  }
+  md-icon {
+    height: 14px;
+    width: 14px;
+  }
+}
+.entityList_details_labels {
+  margin-top: 40px;
+  color: white;
+  font-size: 14px;
+  span {
+    background-color: $secondary_color;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    float: left;
   }
 }
 .entityList_primary {
@@ -2654,6 +2717,17 @@ path {
   background-color: $blue_light;
   border-radius: 20px;
   padding: 8px 31px;
+  margin: 5px 0;
+}
+.annotation_tags span{
+  float: left;
+  margin-right: 5px;
+}
+.md-button.md-default-theme.tag{
+  color: white;
+  background-color: $blue_light;
+  border-radius: 20px;
+  padding: 4px 10px;
 }
 .md-button.md-default-theme.myProfile_addentityButton:focus {
   background-color: $blue_light;
@@ -3067,7 +3141,7 @@ div[urn]{
   .number, .bracket  {
     color: $organicity_pink !important;
   }
-  
+
 }
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject

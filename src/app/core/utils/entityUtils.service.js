@@ -26,7 +26,7 @@
             parseStateName: parseStateName,
             parseTypeURN: parseTypeURN,
             parseDescription: parseDescription,
-            parseADSurl: parseADSurl,
+            parseDataSourceURL: parseDataSourceURL,
             parseJSON: parseJSON,
             parsePosition: parsePosition
         };
@@ -46,6 +46,10 @@
             entityName = _.map(entityName, unfoldCase);
 
             object.name = entityName.join(' ');
+
+            object.name = object.name.replace('-', ' ');
+
+            object.name = object.name.replace('  ', ' ');
 
             return object.name;
         }
@@ -92,8 +96,8 @@
 
             entityName = object.id.split(':');
 
-            var entityName = entityName.splice(3, entityName.length - 1); // Remove urn header
-            var entityName = entityName.splice(0, entityName.length - 1); // Remove urn entity name
+            entityName = entityName.splice(3, entityName.length - 1); // Remove urn header
+            entityName = entityName.splice(0, entityName.length - 1); // Remove urn entity name
 
             systemTags = systemTags.concat(entityName);
 
@@ -172,9 +176,10 @@
         }
 
         function parseOwner(object) {
+            var owner;
             if (isExperimenter(object)) {
 
-                var owner = {
+                owner = {
                     id: object.context.experimenter,
                     username: 'Experimenter ' + object.context.experimenter,
                     avatar: './mediassets/images/avatar.svg'
@@ -190,7 +195,7 @@
 
             } else {
 
-                var owner = {
+                owner = {
                     id: object.related.site.id,
                     username: object.related.site.name + ' Site',
                     city: object.context.position.city,
@@ -240,8 +245,18 @@
             return object.state.replace('_', ' ');
         }
 
-        function parseADSurl(object) {
-            return 'https://discovery.organicity.eu/v0/assets/' + object.uuid;
+        function parseDataSourceURL(object) {
+            var attributes = object.data.data;
+            if (attributes.hasOwnProperty('datasource')
+                && attributes.datasource.hasOwnProperty('value')
+                && validURL(attributes.datasource.value)) {
+                var url = attributes.datasource.value;
+                // This appends '/' if it's not already present
+                if (url[url.length-1] != '/') url += '/';
+                return url;
+            } else {
+                return false;
+            }
         }
 
         function parseJSON(object) {
@@ -262,12 +277,12 @@
                 return {
                     latitude: object.context.position.geometry.coordinates[0][1],
                     longitude: object.context.position.geometry.coordinates[0][0]
-                }
+                };
             } else {
                 return {
                     latitude: object.context.position.latitude,
                     longitude: object.context.position.longitude
-                }
+                };
             }
         }
 
@@ -304,5 +319,10 @@
                 return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
             });
         }
+
+        function validURL(value) {
+            return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
+        }
+
     }
 })();

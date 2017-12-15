@@ -1,8 +1,13 @@
 {
   "name": "smartcitizen",
-  "version": "0.1.7",
+  "version": "0.1.8",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npm/npm.git"
+  },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "postinstall": "bower install"
   },
   "devDependencies": {
     "browser-sync": "~2.1.4",

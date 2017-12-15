@@ -40,12 +40,12 @@
       vm.filterentitites = filterentitites;
       vm.filterTools = filterTools;
 
-      var updateentititesTimer = undefined;
+      var updateentititesTimer;
 
       $scope.$on('loggedOut', function() {
         $location.path('/');
       });
-      $scope.$on("$destroy", function() {
+      $scope.$on('$destroy', function() {
         if (updateentititesTimer) {
             $interval.cancel(updateentititesTimer);
         }

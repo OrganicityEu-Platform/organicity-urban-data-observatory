@@ -4,13 +4,14 @@
     angular.module('app.components')
         .factory('socialSharing', socialSharing);
 
-    socialSharing.$inject = ['$q', '$location', 'shortURL', 'Socialshare'];
+    socialSharing.$inject = ['$q', '$location', 'shortURL', 'Socialshare', 'clipboard', 'alert'];
 
-    function socialSharing($q, $location, shortURL, Socialshare) {
+    function socialSharing($q, $location, shortURL, Socialshare, clipboard, alert) {
         var service = {
             twitter: twitter,
             facebook: facebook,
-            email: email
+            email: email,
+            copyUrl: copyUrl
         };
 
         var assetShortURL;
@@ -27,6 +28,10 @@
 
         function email() {
             share(shareEmail);
+        }
+
+        function copyUrl(url) {
+            share(shareShortUrl);
         }
 
         function shareTwitter(url) {
@@ -62,11 +67,16 @@
             });
         }
 
+        function shareShortUrl(url) {
+            clipboard.copyText(url);
+            alert.success('A short url was copied to your clipboard!');
+        }
+
         function getURL() {
             if ($location.absUrl().indexOf('?') > 0) {
                 return $location.absUrl().substring(0, $location.absUrl().indexOf('?'));
             } else {
-                $location.absUrl();
+                return $location.absUrl();
             }
         }
 

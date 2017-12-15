@@ -1,0 +1,15 @@
+<div class="entity_detailed_content_container" layout="column">
+	<div layout="column" layout-align="center center">
+		<md-progress-circular ng-if='vm.isLoading' md-mode="indeterminate" class="md-accent md-hue-1"></md-progress-circular>
+		<p ng-if="vm.isLoading && !vm.recomendedAssets.length">
+			Wait, we are looking at new assets to recommend you!
+		</p>
+		<p ng-if="!vm.isLoading && !vm.recomendedAssets.length">
+		Sorry, there are no recommendations available.
+		</p>
+	</div>
+	<p ng-if="vm.recomendedAssets.length">
+		Assets recommended for you:
+	</p>
+	<entity-list entities="vm.recomendedAssets"></entity-list>
+</div>
