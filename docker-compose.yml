@@ -1,9 +1,12 @@
 version: '2.2'
 
 services:
-  urban:
+  app:
     build: .
     ports:
       - "8080:8080"
       - "3001:3001"
+    volumes:
+      - "./:/usr/src/app"
+    tty: true #color output
 
