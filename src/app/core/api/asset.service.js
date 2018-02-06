@@ -110,7 +110,8 @@
             ['15.110658', '46.362274', 'Velenje']         // Velenje
 					];
 
-					for(var i = 0; i < 4; i++) {
+					//for(var i = 0; i < 4; i++) {
+        for(var i = 0; i < locations.length; i++) {
 						var endpoint = 'assets/geo/zoom/1';
 						var params = {lat: locations[i][0],  long: locations[i][1]};
 
