@@ -40,7 +40,7 @@
       }
 
       function querySearch(query) {
-        return $q.all([getMetadata(query), getPlacesMapzen(query)])
+        return $q.all([getMetadata(query), getPlacesGoogle(query)])
           .then(function(data) {
 
             if(data.length === 0) {
@@ -60,6 +60,23 @@
      function getMetadata(keywords){
           keywords = keywords.replace(' ', '+');
           return asset.getMetadata(keywords);
+      }
+
+      function getPlacesGoogle(location){
+        // Before, we sent the 'search string' to 2 different functions, which queried an API
+        // Using Places API, the library itself wants to watch over the input.
+        location = location.replace(/\s+/g, '+');
+        console.log(location)
+
+        var options = { };
+
+        var input = document.getElementById('autocom'); // This is an extra input, which needs to be removed
+        // Autocomplete wants the input element as the first argument.
+        // in search/search.html, we need to add an ID to the md-autocomplete with 'md-input-it'
+        // But it does not work!
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+        console.log(autocomplete)
+        console.log(autocomplete.getPlace())
       }
 
       function getPlacesMapzen(location){
