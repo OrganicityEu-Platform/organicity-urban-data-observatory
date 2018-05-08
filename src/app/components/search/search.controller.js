@@ -64,7 +64,7 @@
 
       function getPlacesMapzen(location){
           location = location.replace(' ', '+');
-          return $http.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyCMUbKxhE3BWLRClSC6lxcWHMgXr7BB-J4&input='+ location);
+        //return $http.get('https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyCMUbKxhE3BWLRClSC6lxcWHMgXr7BB-J4&input='+ location);
       }
 
       function filterPlaces(places){
